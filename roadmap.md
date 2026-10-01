@@ -4,9 +4,9 @@ Handoff for the next session. Product lives in this repo (`last/`). One public p
 
 ## Where we are
 
-Commit `7472f45` on `main`. Dev server: `npm run dev` → http://localhost:3000.
+Commit `aec6a7f` on `main`. Dev server: `npm run dev` → http://localhost:3000.
 
-The page matches the updated Figma frames in [Beth](https://www.figma.com/design/qyO4FMguMfbsb5Bb8iU2Ut/Beth). Face is Open Runde. Body is `text-base` at 1rem. The mark is the 24px dithered dot tile in `components/mark.tsx`. The name is not set beside it. Page background is stone 50. Cards stay white. Column is `max-w-md`.
+The [Beth](https://www.figma.com/design/qyO4FMguMfbsb5Bb8iU2Ut/Beth) frames are the layout reference. Type and the column have moved on purpose since those frames: face is Open Runde (regular and medium) through `--font-sans`, body is `text-base` at 1rem, column is `max-w-md`. Do not put Departure Mono or the 16.5px size back. The mark is the 24px dithered dot tile in `components/mark.tsx`. The name is not set beside it. Page background is stone 50. Cards stay white.
 
 Taste: `design.md`. Voice: `lib/catalog.ts`. Placement: `lib/place.ts`. Roles: `lib/roles.ts`.
 
@@ -38,7 +38,25 @@ The ask screen uses the shadcn Questionnaire (`components/ui/questionnaire.tsx`)
 - Submit writes each answer into the query string and routes to `/?hands=…`.
 - `parseAnswers` in `lib/place.ts` reads that string. A partial or invalid query is treated as no answers.
 - The face is Open Runde through `--font-sans`. The title uses `font-heading`, which points at the same token. Do not set a second face on the questionnaire.
-- Beth’s Skip is a plain text link to `/?skip=1`. It is not `QuestionnaireSkip`. That control is for an optional item left blank, and every question here is required. Back, Next, and Lock stay large buttons.
+- Beth’s Skip is a plain text link to `/?skip=1`. It is not a button, and it is not `QuestionnaireSkip`. That control is for an optional item left blank, and every question here is required. Back, Next, and Lock are the questionnaire actions at `size="lg"`.
+- Each question is one choice. Do not turn an item on with `multiple`.
+
+## Done this session
+
+Shipped in `aec6a7f`.
+
+- Replaced the custom ask form with the shadcn Questionnaire. `@shadcn/react` is the dependency. `components/ui/questionnaire.tsx` is the installed component. `components/questions.tsx` only wires the catalog, the URL, and Skip.
+- Back, Next, and Lock use the large button size. Skip is a plain text link.
+- Column widened from `max-w-sm` to `max-w-md`.
+- Face switched from Departure Mono to Open Runde. The 16.5px `text-base` override is gone, so body type is 1rem again. Pixel-font antialiasing overrides are gone.
+
+## Parked
+
+Free text on a question. The shadcn field for “type your own” stays out of the MVP.
+
+A typed sentence is not an answer the rules understand. `parseAnswers` only accepts the closed values. Something would have to sort that sentence into one of those values, then `lockFrom` would still set the band. Jev is the fit for that sort, because it picks from a list you already published. An OpenAI chat that invents a level will disagree with the six questions. Either call needs a server, and this page has none.
+
+Unpark it only after a real person finishes the six questions and the fixed options feel like they do not fit. If the sort is unsure, show the closed choices. Do not guess a band.
 
 ## Open
 
