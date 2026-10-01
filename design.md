@@ -4,7 +4,7 @@ House taste for Last. Read this before changing UI. Same lock as Holt: shadcn pr
 
 ## Type
 
-- Face: Departure Mono (`--font-sans`), one weight. Body is `text-base` (16.5px / 24px), which is 1.5 times the 11px pixel grid. Do not turn antialiasing back on.
+- Face: Open Runde (`--font-sans`). Regular for body, medium for `font-medium`. Body is `text-base` (1rem).
 - The mark is the dithered 24px dot tile. The name is not set beside it.
 - Step count is `text-sm`. Badges are `text-xs` uppercase, square, `bg-muted`.
 - Section titles are uppercase. Rules are the characters `***` and `---`.
@@ -21,7 +21,7 @@ House taste for Last. Read this before changing UI. Same lock as Holt: shadcn pr
 ## Space
 
 - Prefer `gap-*` on flex and grid.
-- Article column: `max-w-sm`, `px-6`, `py-10`. The frames are a 390px phone column.
+- Article column: `max-w-md`, `px-6`, `py-10`.
 - No arbitrary values.
 
 ## Components

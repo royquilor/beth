@@ -2,115 +2,116 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import type { QuestionnaireItemStatus } from "@shadcn/react/questionnaire"
 
-import { Button, buttonVariants } from "@/components/ui/button"
+import {
+  Questionnaire,
+  QuestionnaireActions,
+  QuestionnaireChoice,
+  QuestionnaireChoices,
+  QuestionnaireError,
+  QuestionnaireItem,
+  QuestionnaireNext,
+  QuestionnairePrevious,
+  QuestionnaireProgress,
+  QuestionnaireSubmit,
+  QuestionnaireTitle,
+} from "@/components/ui/questionnaire"
 import { page, questions } from "@/lib/catalog"
-import { cn } from "cn"
+
+type QuestionId = (typeof questions)[number]["id"]
+
+// The component reads this list for progress and navigation.
+// Each name is the query key parseAnswers expects.
+const items = questions.map((question) => ({
+  name: question.id,
+  required: true,
+  choices: question.options.map((option) => ({ value: option.value })),
+}))
 
 /**
- * Six closed questions. Skip is a real mode.
- * Answers stay in the URL for the session. Nothing is stored.
+ * Six closed questions, composed from the shadcn Questionnaire.
+ * Every item is required, so the component's Skip stays unused.
+ * Beth's Skip is a mode: it leaves this form and opens every role.
+ * Answers stay in the URL. Nothing is stored.
+ * The face comes from --font-sans (Open Runde).
  */
 export function Questions() {
   const router = useRouter()
-  const [step, setStep] = useState(0)
-  const [draft, setDraft] = useState<Record<string, string>>({})
-  const question = questions[step]
-  const selected = draft[question.id]
-  const last = step === questions.length - 1
+  const [item, setItem] = useState<QuestionId>(questions[0].id)
+  const [statuses, setStatuses] = useState<
+    Partial<Record<QuestionId, QuestionnaireItemStatus>>
+  >({})
+  // Next and Lock stay off until the current question has an answer.
+  const unanswered = statuses[item] !== "answered"
 
-  function choose(value: string) {
-    setDraft((current) => ({ ...current, [question.id]: value }))
-  }
-
-  function submit(event: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    if (!selected) {
-      return
-    }
-
-    if (!last) {
-      setStep((current) => current + 1)
-      return
-    }
-
+    const formData = new FormData(event.currentTarget)
     const params = new URLSearchParams()
 
-    for (const item of questions) {
-      const value = item.id === question.id ? selected : draft[item.id]
+    for (const question of questions) {
+      const value = formData.get(question.id)
 
-      if (!value) {
+      if (typeof value !== "string" || value.length === 0) {
         return
       }
 
-      params.set(item.id, value)
+      params.set(question.id, value)
     }
 
     router.push(`/?${params.toString()}`)
   }
 
   return (
-    <form onSubmit={submit} className="flex flex-col gap-6">
-      <fieldset className="flex flex-col gap-6">
-        <legend className="flex flex-col gap-2">
-          <span className="text-sm leading-5 text-muted-foreground">
-            {step + 1} of {questions.length}
-          </span>
-          <span className="text-base">{question.prompt}</span>
-        </legend>
-        <div className="flex flex-col gap-2" role="presentation">
-          {question.options.map((option) => {
-            const checked = selected === option.value
-
-            return (
-              <label
-                key={option.value}
-                onClick={() => choose(option.value)}
-                className={cn(
-                  "flex w-full cursor-pointer items-center rounded-lg border bg-background px-3 py-2 text-base leading-5",
-                  checked ? "border-foreground" : "border-border",
-                  "has-[:focus-visible]:border-ring has-[:focus-visible]:ring-3 has-[:focus-visible]:ring-ring/50"
-                )}
-              >
-                <input
-                  type="radio"
-                  name={question.id}
-                  value={option.value}
-                  checked={checked}
-                  onChange={() => choose(option.value)}
-                  className="sr-only"
-                />
-                {option.label}
-              </label>
-            )
-          })}
-        </div>
-      </fieldset>
-      <div className="flex flex-wrap items-center gap-2">
-        {step > 0 ? (
-          <Button
-            type="button"
-            variant="outline"
-            className="shadow-sm"
-            onClick={() => setStep((current) => current - 1)}
+    <div className="flex flex-col gap-6">
+      <Questionnaire
+        item={item}
+        items={items}
+        onItemChange={(next) => setItem(next as QuestionId)}
+        onSubmit={handleSubmit}
+      >
+        <QuestionnaireProgress />
+        {questions.map((question) => (
+          <QuestionnaireItem
+            key={question.id}
+            name={question.id}
+            required
+            onStatusChange={(status) =>
+              setStatuses((current) => ({
+                ...current,
+                [question.id]: status,
+              }))
+            }
           >
-            {page.back}
-          </Button>
-        ) : null}
-        <Button type="submit" disabled={!selected}>
-          {last ? page.lock : page.next}
-        </Button>
-        <a
-          href="/?skip=1"
-          className={buttonVariants({
-            variant: "outline",
-            className: "shadow-sm",
-          })}
-        >
-          {page.skip}
-        </a>
-      </div>
-    </form>
+            <QuestionnaireTitle>{question.prompt}</QuestionnaireTitle>
+            <QuestionnaireChoices>
+              {question.options.map((option) => (
+                <QuestionnaireChoice key={option.value} value={option.value}>
+                  {option.label}
+                </QuestionnaireChoice>
+              ))}
+            </QuestionnaireChoices>
+            <QuestionnaireError />
+          </QuestionnaireItem>
+        ))}
+        <QuestionnaireActions>
+          <QuestionnairePrevious size="lg">{page.back}</QuestionnairePrevious>
+          <QuestionnaireNext size="lg" disabled={unanswered}>
+            {page.next}
+          </QuestionnaireNext>
+          <QuestionnaireSubmit size="lg" disabled={unanswered}>
+            {page.lock}
+          </QuestionnaireSubmit>
+        </QuestionnaireActions>
+      </Questionnaire>
+      <a
+        href="/?skip=1"
+        className="w-fit text-base text-muted-foreground hover:text-foreground"
+      >
+        {page.skip}
+      </a>
+    </div>
   )
 }

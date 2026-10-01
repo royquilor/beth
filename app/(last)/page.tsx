@@ -52,7 +52,7 @@ export default async function HomePage({
   const gaps = first(params.gaps) === "1"
 
   return (
-    <main className="mx-auto flex w-full max-w-sm flex-col gap-10 px-6 py-10">
+    <main className="mx-auto flex w-full max-w-md flex-col gap-10 px-6 py-10">
       <Lockup showQuestions={Boolean(answers || skip)} />
       <Rule />
       {answers ? (
