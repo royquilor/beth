@@ -1,14 +1,26 @@
-import { Geist, Geist_Mono } from "next/font/google"
+import type { Metadata } from "next"
+import localFont from "next/font/local"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils";
+import { TooltipProvider } from "@/components/ui/tooltip"
+import { page } from "@/lib/catalog"
+import { cn } from "@/lib/utils"
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'})
+export const metadata: Metadata = {
+  title: page.title,
+  description: page.dek,
+}
 
-const fontMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
+// Departure Mono is one weight. Body copy is 16.5px, which is 1.5 times
+// the 11px pixel grid the face is drawn on. The license sits beside the file.
+const departureMono = localFont({
+  src: "../fonts/DepartureMono-Regular.woff2",
+  weight: "400",
+  style: "normal",
+  variable: "--font-sans",
+  display: "swap",
+  adjustFontFallback: false,
 })
 
 export default function RootLayout({
@@ -20,10 +32,12 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", geist.variable)}
+      className={cn("font-sans", departureMono.variable)}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider forcedTheme="light">
+          <TooltipProvider>{children}</TooltipProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

@@ -1,21 +1,14 @@
-# Next.js template
+# Beth
 
-This is a Next.js template with shadcn/ui.
+One page. Six questions, a lock, and the roles that match. Skip shows every role.
 
-## Adding components
+Same stack as Holt: Next.js, shadcn/ui (`base-nova`), Tailwind. No second component library.
 
-To add components to your app, run the following command:
+## Run it
 
 ```bash
-npx shadcn@latest add button
+npm install
+npm run dev
 ```
 
-This will place the ui components in the `components` directory.
-
-## Using components
-
-To use the components in your app, import them as follows:
-
-```tsx
-import { Button } from "@/components/ui/button";
-```
+Open [http://localhost:3000](http://localhost:3000).

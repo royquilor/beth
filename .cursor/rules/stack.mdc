@@ -1,0 +1,12 @@
+---
+description: Locked stack. shadcn/ui only.
+alwaysApply: true
+---
+
+# Stack
+
+Allowlist: Next.js App Router, shadcn/ui, Tailwind.
+
+Never add MUI, Chakra, or a second UI kit.
+
+New vendor requires a human yes.

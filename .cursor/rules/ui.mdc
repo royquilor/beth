@@ -1,0 +1,12 @@
+---
+description: Reuse shadcn primitives. No custom CSS or arbitrary Tailwind.
+globs: **/*.{ts,tsx}
+alwaysApply: true
+---
+
+# UI
+
+- Search `components/ui` before writing markup.
+- Use semantic tokens (`bg-background`, `text-muted-foreground`). No raw palettes.
+- Layout with `flex` / `grid` and `gap-*`. Do not use `space-y-*`.
+- Do not add `.css` files. Tokens live in `app/globals.css` and `design.md`.
