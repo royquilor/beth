@@ -56,6 +56,8 @@ Left off. Cogram, because the title is three jobs. Lovable’s Design Engineer, 
 
 ## Next
 
+The next build is the wait. The list and the questions both arrive in the same frame as the click, so the step feels missing. Next and Lock show a loader on the button while the page moves. The mark in `components/mark.tsx` moves for that same beat. Use [Dot Matrix](https://dotmatrix.zzzzshawn.cloud/) for the motion, and try to replicate the 24px dithered tile. The library is React, TypeScript, Tailwind, and shadcn. One install shape is `npx shadcn@latest add @dotmatrix/dotm-square-3`. The wait is the feel. Do not add a server to slow the list.
+
 Each Friday, run the five sources above, then `grok-roles-prompt.md`. Check every hit on the company careers page. A closed role moves to `lib/archive.ts`. A new open role goes in `lib/lists/YYYY-Www.ts` and shows on the table under that week. The list is still tagged by hand. A model does not write the band. The same rule as the parked Jev box: sort the posting into the closed values, and if the sort is unsure, leave it off.
 
 Week 40 is filed. Checked 2 Oct 2026, including the fund pass the same day.
@@ -115,6 +117,5 @@ The personal agent is the last product, not this one. Later, one agent is how yo
 Unranked, and not next. The quadrant cells are named. The grid is not on the result. Do not treat the order below as priority.
 
 - Look at the ask screen in the browser against the [Beth](https://www.figma.com/design/qyO4FMguMfbsb5Bb8iU2Ut/Beth) frames and note only what the questionnaire’s own layout still misses. Do not rebuild a custom form to close that gap. Placement does not move. The band is still `lockFrom` in `lib/place.ts`.
-- Use [Dot Matrix](https://dotmatrix.zzzzshawn.cloud/) for the loader animations, and try to replicate the logo mark. The mark today is the 24px dithered dot tile in `components/mark.tsx`. The library is React, TypeScript, Tailwind, and shadcn. One install shape is `npx shadcn@latest add @dotmatrix/dotm-square-3`.
 - A row already opens the posting sentence, the craft, the seat, salary, and place. Richer detail, the design team, their X profile, the head, and leadership, waits until someone is paying for the fit. It makes the board better, and the board is not the first product.
 - More product-designer seats, for a person who owns the look while an engineer still holds backend and data. The 2 Oct fund pass filed Sequence, Edra, Circle, Lovable, voize, Hera, telli, and Mirelo beside Granola and ElevenLabs. The next pass uses the same five sources.
