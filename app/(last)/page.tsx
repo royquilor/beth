@@ -31,7 +31,15 @@ function hrefFor(answers: Answers, extra?: Record<string, string>) {
   const params = new URLSearchParams()
 
   for (const question of questions) {
-    params.set(question.id, answers[question.id])
+    const value = answers[question.id]
+
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        params.append(question.id, item)
+      }
+    } else {
+      params.set(question.id, value)
+    }
   }
 
   for (const [key, value] of Object.entries(extra ?? {})) {

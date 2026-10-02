@@ -19,7 +19,7 @@ import {
   QuestionnaireTitle,
 } from "@/components/ui/questionnaire"
 import { page, questions } from "@/lib/catalog"
-import { handsProof, showProof } from "@/lib/place"
+import { handsProof, prongProof, showProof } from "@/lib/place"
 
 type QuestionId = (typeof questions)[number]["id"]
 
@@ -103,7 +103,19 @@ export function Questions() {
       const values = formData
         .getAll(question.id)
         .filter((value): value is string => typeof value === "string")
-      // Hands and show may carry two proofs. Store the strongest.
+      // Hands and show store the strongest proof. Craft stores every selection.
+      if (question.id === "prong") {
+        const crafts = prongProof(values)
+
+        if (!crafts) return
+
+        for (const craft of crafts) {
+          params.append(question.id, craft)
+        }
+
+        continue
+      }
+
       const value =
         question.id === "hands"
           ? handsProof(values)

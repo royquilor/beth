@@ -12,19 +12,19 @@ export const page = {
   dek: "Beth names the kind of design engineer you can prove, and the one piece that would change that.",
   questions: "? Questions",
   skipLead:
-    "No lock. Every role is listed. The band, the prong, and the seat are on the card.",
+    "No lock. Every role is listed. The band, the craft, and the seat are on the card.",
   nothingInRange: "Nothing in range",
   nothingAbove: "Nothing above",
   emptyRange:
-    "No posting on this list assumes this band, this prong, and this seat.",
-  emptyStretch: "Nothing above this band, in this prong and this seat.",
+    "No posting on this list assumes this band, this craft, and this seat.",
+  emptyStretch: "Nothing above this band, in this craft and this seat.",
   emptyAll:
     "The list is empty. A dead role comes off, and nothing has replaced it.",
-  emptySeat: "No role here grades this prong in this seat.",
+  emptySeat: "No role here grades this craft in this seat.",
   stretchLead:
     "Above the band. Still listed. Hiding them would lie about the title.",
   rangeLead:
-    "At or below the band you can prove, in this prong, for this seat.",
+    "At or below the band you can prove, in this craft, for this seat.",
   nextProof: "Next proof",
   aim: "Aim it at",
   thisWeek: "One piece, this week.",
@@ -69,7 +69,7 @@ export const workedExample: Answers = {
   ships: "prototype",
   show: "prototype",
   seat: "team",
-  prong: "systems",
+  prong: ["systems"],
   origin: "design",
 }
 
@@ -171,17 +171,30 @@ export const questions = [
     id: "seat",
     prompt: "Which seat do you want?",
     options: [
-      { value: "team", label: "Engineers beside you" },
-      { value: "solo", label: "You are the only person on the UI" },
+      {
+        value: "team",
+        label:
+          "An engineer beside you holds backend and data. You hold spacing, text, colors, and a11y",
+      },
+      {
+        value: "solo",
+        label: "You are the only person on the interface",
+      },
     ],
   },
   {
     id: "prong",
-    prompt: "Which prong is the work you can show?",
+    prompt: "Which craft can you show?",
+    note: "Pick any that are true.",
+    multiple: true,
     options: [
       { value: "systems", label: "Systems" },
       { value: "motion", label: "Motion and brand" },
-      { value: "judgment", label: "Product judgment" },
+      { value: "judgment", label: "What to build, and the flow" },
+      {
+        value: "css",
+        label: "HTML and CSS, in a pull request a developer reviews",
+      },
       { value: "frontend", label: "Production frontend" },
     ],
   },
@@ -194,3 +207,37 @@ export const questions = [
     ],
   },
 ] as const
+
+/**
+ * The quadrant. Two axes, four cells.
+ * Left to right is where the work started. Top to bottom is what you can show.
+ * Taste and Prototype are a file. Ship and Spike are a diff.
+ * Seat and prong stay on the sentence. They do not move a cell.
+ * Design and a file has two names people hire under.
+ * Engineering and a file has no title people use.
+ */
+export const quadrant = {
+  file: "A file",
+  diff: "A diff",
+  design: "Design",
+  engineering: "Engineering",
+  you: "You",
+  cells: {
+    "design-file": {
+      names: ["Product designer", "UI designer"],
+      people: ["Jenny Wen"],
+    },
+    "engineering-file": {
+      names: [],
+      people: [],
+    },
+    "design-diff": {
+      names: ["Design engineer"],
+      people: ["Rauno Freiberg", "Emil Kowalski", "Paco Coursey"],
+    },
+    "engineering-diff": {
+      names: ["Frontend engineer"],
+      people: ["Lee Robinson"],
+    },
+  },
+} as const

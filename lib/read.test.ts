@@ -9,7 +9,7 @@ const roy: Answers = {
   ships: "prototype",
   show: "prototype",
   seat: "team",
-  prong: "systems",
+  prong: ["systems"],
   origin: "design",
 }
 
@@ -27,10 +27,17 @@ test("a solo engineering origin stays in the same sentence shape", () => {
         ...roy,
         seat: "solo",
         origin: "engineering",
-        prong: "frontend",
+        prong: ["frontend"],
       })
     ),
     "You can prove Prototype, in production frontend, as the only person on the UI. The work started in engineering."
+  )
+})
+
+test("two crafts stay separate in the sentence", () => {
+  assert.equal(
+    lockSentence(lockFrom({ ...roy, prong: ["css", "frontend"] })),
+    "You can prove Prototype, in HTML and CSS, and production frontend, with engineers beside you. The work started in design."
   )
 })
 

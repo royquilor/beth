@@ -38,7 +38,7 @@ The ask screen uses the shadcn Questionnaire (`components/ui/questionnaire.tsx`)
 - `parseAnswers` in `lib/place.ts` reads that string. A partial or invalid query is treated as no answers.
 - The face is Open Runde through `--font-sans`. The title uses `font-heading`, which points at the same token. Do not set a second face on the questionnaire.
 - Beth’s Skip is a plain text link to `/?skip=1`. It is not a button, and it is not `QuestionnaireSkip`. That control is for an optional item left blank, and every question here is required. Back, Next, and Lock are the questionnaire actions at `size="lg"`.
-- Hands and show use `multiple`. Seat, prong, origin, and what you ship most stay one choice.
+- Hands, show, and craft use `multiple`. Seat, origin, and what you ship most stay one choice. Craft is the question. The five crafts are systems, motion, what to build and the flow, HTML and CSS in a reviewed pull request, and production frontend. Every selected craft counts. None of them raise the band.
 
 ## Done this session
 
@@ -51,11 +51,22 @@ Shipped in `aec6a7f`.
 
 ## Next
 
-A quadrant, on paper. This is the thing to do next. Do not draw it yet.
+Get actual roles into `lib/roles.ts`. This is the thing to do next. The list is still tagged by hand. A closed role comes off. A model does not write the band. The same rule as the parked Jev box: sort the posting into the closed values, and if the sort is unsure, leave it off.
 
-The picture is a graph with four cells. A few well-known design engineers sit in the cells. The person who just answered sits there too, from the lock they already have. `lockFrom` still sets the band. The graph shows that lock. It does not invent a score.
+The list is design-engineer heavy. Granola has a product designer role, and it is not on the list. ElevenLabs is on it once, Design Engineer, Creative & Studio. They have other roles. Product designer belongs when the posting is that seat: design origin, the proof is a file or a prototype, an engineer still holds backend and data. Do not file it as the ship-plus-frontend grade.
 
-The work is to name the four cells. A quadrant is two axes. The axes have to come from the model already here: four prongs (systems, motion, judgment, frontend), two seats (engineers beside you, or you are the only person on the UI), two origins (the work started in design, or in engineering), and four bands of proof (taste, prototype, ship, spike). Pick two. Name the four cells in Beth’s voice. Then place a few known people, and say which cell the lock drops the person into.
+A pass on X, with Grok, on a week or a month. It finds postings and people hiring. Roy still tags the band, the craft, and the seat, and copies salary and place only when the company published them. The pass does not scrape this page, and it does not add a server.
+
+A newsletter is how someone comes back for that pass. It can ask for an address. This page still has no auth and no database, so the address does not live here yet. Do not put a signup form on the ask screen. The letter is the list, not a second product.
+
+The quadrant is on the result, under the lock sentence. `components/quadrant.tsx`. The ask screen is the six questions. You sits in the cell after those answers. It is a grid. No chart library. shadcn charts are Recharts, and this picture is four named cells.
+
+Axes come from the lock. Left to right is origin: design, then engineering. Top to bottom is the proof: a file, then a diff. Taste and Prototype are a file. Ship and Spike are a diff. `cellKey` in `lib/quadrant.ts` places the person. Seat and prong stay on the sentence. They do not move the cell. `lockFrom` still sets the band.
+
+- Design and a file: Product designer, UI designer. Jenny Wen. The worked example lands here.
+- Design and a diff: Design engineer. Rauno Freiberg, Emil Kowalski, Paco Coursey.
+- Engineering and a file: no title people hire under. You can still land here.
+- Engineering and a diff: Frontend engineer. Lee Robinson.
 
 No free text, no server, no model. The six questions stay closed.
 
@@ -75,7 +86,7 @@ The result now leads with the lock and the one proof. A company name on that pro
 
 The board is the weakest first product. A design-engineer title is real at Vercel, Linear, and small studios. A board is two-sided. Candidates and paying employers have to exist before a listing matters, and sponsors do not show up for a new jobs site. The useful bit is the fit. Sell that. Add listings only after people are already paying to be assessed. The roles in `lib/roles.ts` can stay as proof the bands are real. They are not the thing someone pays for.
 
-What people misunderstand is the job, not the application form. Beth’s first job is to say what a design engineer is, name the kinds, and say which kind this person is. The kinds are already the model: four prongs (systems, motion, judgment, frontend), two seats (engineers beside you, or you are the only person on the UI), two origins (the work started in design, or in engineering), and four bands of proof (taste, prototype, ship, spike). Founders and early teams collapse that into one hire.
+What people misunderstand is the job, not the application form. Beth’s first job is to say what a design engineer is, name the kinds, and say which kind this person is. The kinds are already the model: five crafts (systems, motion, what to build and the flow, HTML and CSS, production frontend), two seats (engineers beside you, or you are the only person on the UI), two origins (the work started in design, or in engineering), and four bands of proof (taste, prototype, ship, spike). Founders and early teams collapse that into one hire.
 
 Two people use the same lock.
 
@@ -90,9 +101,9 @@ The personal agent is the last product, not this one. Later, one agent is how yo
 
 ## Open
 
-Unranked, and not next. Next is the quadrant: name the four cells. Do not treat the order below as priority.
+Unranked, and not next. The quadrant cells are named, and the grid is on the result. Do not treat the order below as priority.
 
 - Look at the ask screen in the browser against the [Beth](https://www.figma.com/design/qyO4FMguMfbsb5Bb8iU2Ut/Beth) frames and note only what the questionnaire’s own layout still misses. Do not rebuild a custom form to close that gap. Placement does not move. The band is still `lockFrom` in `lib/place.ts`.
 - Use [Dot Matrix](https://dotmatrix.zzzzshawn.cloud/) for the loader animations, and try to replicate the logo mark. The mark today is the 24px dithered dot tile in `components/mark.tsx`. The library is React, TypeScript, Tailwind, and shadcn. One install shape is `npx shadcn@latest add @dotmatrix/dotm-square-3`.
 - A click on a job card should open more detail: the design team, their X profile, the head, and possibly leadership. This is richer data on each role in `lib/roles.ts`. Leave it until someone is paying for the fit. It makes the board better, and the board is not the first product.
-- Explore product design roles for people who cannot take a design-engineer role. This is the founder case in Direction: they may need a person who owns the look and opens a PR, with an engineer still on the feature.
+- Explore product design roles for people who cannot take a design-engineer role. This is the founder case in Direction: they may need a person who owns the look and opens a PR, with an engineer still on the feature. The first pass is Next: Granola, the other ElevenLabs roles, then the X pass.

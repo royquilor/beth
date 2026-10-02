@@ -6,7 +6,7 @@ import type { Lock } from "@/lib/place"
 import {
   bandLabel,
   countSentence,
-  prongLabel,
+  craftPhrase,
   proofFor,
   seatLabel,
 } from "@/lib/read"
@@ -46,7 +46,7 @@ export function LockCard({
       </p>
       <Dash />
       <p>
-        {prongLabel[lock.prong]} · {seatLabel[lock.seat]}
+        {craftPhrase(lock.prong)} · {seatLabel[lock.seat]}
       </p>
       <Dash />
       <p>{proof.line}</p>

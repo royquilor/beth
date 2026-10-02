@@ -4,16 +4,17 @@
  *
  * The first three answers set the band, and the lowest of them wins.
  * Hands and show can name more than one proof. The strongest of those counts.
+ * Craft can name more than one kind of work. Every selected craft counts.
  * Spike is the one exception: a system other people use, a merged diff that left
  * their hands, and production components as what they ship most.
- * Seat, prong, and origin never raise the band.
+ * Seat, craft, and origin never raise the band.
  * Origin only picks the practice.
  */
 
 export const bands = ["taste", "prototype", "ship", "spike"] as const
 export type Band = (typeof bands)[number]
 
-export const prongs = ["systems", "motion", "judgment", "frontend"] as const
+export const prongs = ["systems", "motion", "judgment", "css", "frontend"] as const
 export type Prong = (typeof prongs)[number]
 
 export const seats = ["team", "solo"] as const
@@ -36,13 +37,13 @@ export type Answers = {
   ships: Ships
   show: Show
   seat: Seat
-  prong: Prong
+  prong: Prong[]
   origin: Origin
 }
 
 export type Lock = {
   band: Band
-  prong: Prong
+  prong: Prong[]
   seat: Seat
   origin: Origin
 }
@@ -113,14 +114,16 @@ type Tagged = {
 }
 
 /**
- * In range: same prong, same seat, assumed band at or below the lock.
- * Stretch: same prong and seat, posting assumes a higher band.
- * A second prong counts only when the posting names it.
+ * In range: a selected craft, same seat, assumed band at or below the lock.
+ * Stretch: a selected craft and the same seat, posting assumes a higher band.
+ * A second craft on the posting counts only when the posting names it.
  * Prototype is enough beside engineers.
  * It is not enough if they would be the only person on the UI.
  */
 export function fitOf(lock: Lock, role: Tagged): Fit {
-  const prongOk = role.prong === lock.prong || role.also === lock.prong
+  const prongOk =
+    lock.prong.includes(role.prong) ||
+    (role.also !== undefined && lock.prong.includes(role.also))
 
   if (!prongOk || role.seat !== lock.seat) {
     return "out"
@@ -173,6 +176,16 @@ export function showProof(value: SearchValue) {
   return strongestProof(value, showValues, showRank, "used")
 }
 
+/** Every selected craft, in catalog order. A second tick does not drop the first. */
+export function prongProof(value: SearchValue): Prong[] | null {
+  const picked = list(value).filter((item): item is Prong =>
+    (prongs as readonly string[]).includes(item)
+  )
+  const crafts = prongs.filter((item) => picked.includes(item))
+
+  return crafts.length > 0 ? crafts : null
+}
+
 function oneOf<T extends string>(
   value: SearchValue,
   allowed: readonly T[]
@@ -188,7 +201,7 @@ export function parseAnswers(
   const ships = oneOf(params.ships, shipsValues)
   const show = showProof(params.show)
   const seat = oneOf(params.seat, seats)
-  const prong = oneOf(params.prong, prongs)
+  const prong = prongProof(params.prong)
   const origin = oneOf(params.origin, origins)
 
   if (!hands || !ships || !show || !seat || !prong || !origin) {

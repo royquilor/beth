@@ -7,6 +7,7 @@ import {
   handsProof,
   lockFrom,
   parseAnswers,
+  prongProof,
   showProof,
   type Answers,
 } from "./place.ts"
@@ -16,14 +17,14 @@ const roy: Answers = {
   ships: "prototype",
   show: "prototype",
   seat: "team",
-  prong: "systems",
+  prong: ["systems"],
   origin: "design",
 }
 
 test("worked example stays at Prototype", () => {
   const lock = lockFrom(roy)
   assert.equal(lock.band, "prototype")
-  assert.equal(lock.prong, "systems")
+  assert.deepEqual(lock.prong, ["systems"])
   assert.equal(lock.seat, "team")
   assert.equal(lock.origin, "design")
 })
@@ -63,7 +64,7 @@ test("spike needs a merged diff and production components", () => {
 })
 
 test("prototype is not enough to be the only person on the UI", () => {
-  const lock = lockFrom({ ...roy, seat: "solo", prong: "frontend" })
+  const lock = lockFrom({ ...roy, seat: "solo", prong: ["frontend"] })
   assert.equal(
     fitOf(lock, {
       band: "prototype",
@@ -73,7 +74,7 @@ test("prototype is not enough to be the only person on the UI", () => {
     "stretch"
   )
   assert.equal(
-    fitOf(lockFrom({ ...roy, prong: "frontend" }), {
+    fitOf(lockFrom({ ...roy, prong: ["frontend"] }), {
       band: "ship",
       prong: "frontend",
       seat: "team",
@@ -81,7 +82,7 @@ test("prototype is not enough to be the only person on the UI", () => {
     "stretch"
   )
   assert.equal(
-    fitOf(lockFrom({ ...roy, hands: "merged", ships: "production", show: "merged", prong: "frontend" }), {
+    fitOf(lockFrom({ ...roy, hands: "merged", ships: "production", show: "merged", prong: ["frontend"] }), {
       band: "ship",
       prong: "frontend",
       seat: "team",
@@ -107,6 +108,35 @@ test("a prototype and a merged diff count as the merged diff", () => {
   assert.equal(answers?.hands, "merged")
   assert.equal(answers?.show, "merged")
   assert.equal(answers ? bandFrom(answers) : null, "prototype")
+})
+
+test("every selected craft counts, in catalog order", () => {
+  assert.deepEqual(prongProof(["frontend", "css"]), ["css", "frontend"])
+
+  const answers = parseAnswers({
+    hands: "prototype",
+    ships: "prototype",
+    show: "prototype",
+    seat: "team",
+    prong: ["frontend", "css"],
+    origin: "design",
+  })
+
+  assert.deepEqual(answers?.prong, ["css", "frontend"])
+
+  const both = lockFrom({ ...roy, prong: ["css", "frontend"] })
+  assert.equal(
+    fitOf(both, { band: "prototype", prong: "frontend", seat: "team" }),
+    "in"
+  )
+  assert.equal(
+    fitOf(lockFrom({ ...roy, prong: ["css"] }), {
+      band: "prototype",
+      prong: "frontend",
+      seat: "team",
+    }),
+    "out"
+  )
 })
 
 test("a named second prong counts, a different seat does not", () => {

@@ -19,7 +19,8 @@ export const bandLabel: Record<Band, string> = {
 export const prongLabel: Record<Prong, string> = {
   systems: "systems",
   motion: "motion and brand",
-  judgment: "product judgment",
+  judgment: "what to build and the flow",
+  css: "HTML and CSS",
   frontend: "production frontend",
 }
 
@@ -31,8 +32,19 @@ export const seatLabel: Record<Seat, string> = {
 export const prongBadge: Record<Prong, string> = {
   systems: "Systems",
   motion: "Motion",
-  judgment: "Judgment",
+  judgment: "Product",
+  css: "CSS",
   frontend: "Frontend",
+}
+
+/** Catalog order. Two crafts stay distinct when one label already contains "and". */
+export function craftPhrase(crafts: Prong[]) {
+  const labels = crafts.map((craft) => prongLabel[craft])
+
+  if (labels.length <= 1) return labels[0] ?? ""
+  if (labels.length === 2) return `${labels[0]}, and ${labels[1]}`
+
+  return `${labels.slice(0, -1).join(", ")}, and ${labels[labels.length - 1]}`
 }
 
 export const seatBadge: Record<Seat, string> = {
@@ -60,7 +72,7 @@ export function lockSentence(lock: Lock) {
       ? "The work started in design."
       : "The work started in engineering."
 
-  return `You can prove ${bandLabel[lock.band]}, in ${prongLabel[lock.prong]}, ${seat}. ${origin}`
+  return `You can prove ${bandLabel[lock.band]}, in ${craftPhrase(lock.prong)}, ${seat}. ${origin}`
 }
 
 /**
@@ -92,7 +104,7 @@ function subject(lock: Lock) {
       ? "a team that already has engineers"
       : "the only person on the UI"
 
-  return `${bandLabel[lock.band]}, ${prongLabel[lock.prong]}, and ${seat}`
+  return `${bandLabel[lock.band]}, ${craftPhrase(lock.prong)}, and ${seat}`
 }
 
 export function countSentence(lock: Lock, inRange: number, stretch: number) {
