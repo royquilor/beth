@@ -12,7 +12,7 @@ export const page = {
   dek: "Beth names the kind of design engineer you can prove, and the one piece that would change that.",
   questions: "? Questions",
   skipLead:
-    "No lock. Every role is listed. The band, the craft, and the seat are on the card.",
+    "No lock. Every role is listed. The band, the craft, and the seat open with the role.",
   nothingInRange: "Nothing in range",
   nothingAbove: "Nothing above",
   emptyRange:
@@ -28,7 +28,6 @@ export const page = {
   nextProof: "Next proof",
   aim: "Aim it at",
   thisWeek: "One piece, this week.",
-  seeRoles: "See the roles",
   workedExample: "Worked example",
   skip: "Skip. See every role.",
   seeAll: "See all roles",

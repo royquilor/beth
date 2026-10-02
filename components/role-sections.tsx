@@ -4,7 +4,7 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from "@/components/ui/empty"
-import { RoleCard } from "@/components/role-card"
+import { RoleTable } from "@/components/role-table"
 import { page } from "@/lib/catalog"
 import type { Role } from "@/lib/roles"
 
@@ -22,18 +22,14 @@ export function InRange({ roles }: { roles: Role[] }) {
   return (
     <section className="flex flex-col gap-10">
       <Heading title={page.inRange} lead={page.rangeLead} />
-      <div className="flex flex-col gap-3">
-        {roles.map((role, index) => (
-          <RoleCard key={role.id} role={role} index={index} />
-        ))}
-      </div>
+      <RoleTable roles={roles} />
     </section>
   )
 }
 
 /**
  * Roles above the band. The proof already sits above this list,
- * so the cards do not link to a separate gap.
+ * so the rows do not link to a separate gap.
  */
 export function StretchList({ roles }: { roles: Role[] }) {
   return (
@@ -51,9 +47,7 @@ export function StretchList({ roles }: { roles: Role[] }) {
           </EmptyHeader>
         </Empty>
       ) : (
-        roles.map((role, index) => (
-          <RoleCard key={role.id} role={role} index={index} />
-        ))
+        <RoleTable roles={roles} />
       )}
     </section>
   )
@@ -73,11 +67,5 @@ export function EveryRole({ roles }: { roles: Role[] }) {
     )
   }
 
-  return (
-    <div className="flex flex-col gap-3">
-      {roles.map((role, index) => (
-        <RoleCard key={role.id} role={role} index={index} />
-      ))}
-    </div>
-  )
+  return <RoleTable roles={roles} />
 }

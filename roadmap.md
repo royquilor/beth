@@ -6,7 +6,7 @@ Handoff for the next session. Product lives in this repo (`last/`). One public p
 
 Commit `aec6a7f` on `main`. Dev server: `npm run dev` → http://localhost:3000.
 
-The [Beth](https://www.figma.com/design/qyO4FMguMfbsb5Bb8iU2Ut/Beth) frames are the layout reference. Type and the column have moved on purpose since those frames: face is Open Runde (regular and medium) through `--font-sans`, body is `text-base` at 1rem, column is `max-w-md`. Do not put Departure Mono or the 16.5px size back. The mark is the 24px dithered dot tile in `components/mark.tsx`. The name is not set beside it. Page background is stone 50. Cards stay white.
+The [Beth](https://www.figma.com/design/qyO4FMguMfbsb5Bb8iU2Ut/Beth) frames are the layout reference. Type and the column have moved on purpose since those frames: face is Open Runde (regular and medium) through `--font-sans`, body is `text-base` at 1rem, column is `max-w-lg`. Do not put Departure Mono or the 16.5px size back. The mark is the 24px dithered dot tile in `components/mark.tsx`. The name is not set beside it. Page background is stone 50. Cards stay white.
 
 Taste: `design.md`. Voice: `lib/catalog.ts`. Placement: `lib/place.ts`. Roles: `lib/roles.ts`.
 
@@ -15,14 +15,12 @@ Taste: `design.md`. Voice: `lib/catalog.ts`. Placement: `lib/place.ts`. Roles: `
 | State | URL | What shows |
 | --- | --- | --- |
 | Ask | `/` | Mark, dek, `***`, six questions, `***`, footer |
-| Result | `/?hands=…` | Lock sentence, then the one next proof. Roles are a link under that. The dek is hidden here. |
-| In range | same URL plus `roles=1` | The sentence and the proof, then the in-range list. Apply only |
-| Above | same URL plus `view=all` | The sentence and the proof, then the stretch list. Used when nothing is in range |
+| Result | `/?hands=…` | Lock sentence, then the one next proof, then the matching table. In range when any role fits. Stretch when none do. The dek is hidden here. |
 | Skip | `/?skip=1` | Every role, no lock. The lead is the skip line. `? QUESTIONS` returns to `/` |
 
 Skip is a mode, not “skip this question.” It lists every role with no band lock.
 
-Shade marks on cards (`░` `▒` `▓`) step down the list. They are not a score.
+The role list is two columns: company and title. A row opens a sheet with the band, the posting sentence, the craft, the seat, and salary and place when the company published them. Shade marks (`░` `▒` `▓`) step down the rows. They are not a score. Rows are grouped by the week they entered. Week 40 is the first list.
 
 The worked-example card (`components/lock-card.tsx`) matches the all-screens frame and is not mounted. The ask frame does not include it.
 
@@ -51,15 +49,17 @@ Shipped in `aec6a7f`.
 
 ## Next
 
-Get actual roles into `lib/roles.ts`. This is the thing to do next. The list is still tagged by hand. A closed role comes off. A model does not write the band. The same rule as the parked Jev box: sort the posting into the closed values, and if the sort is unsure, leave it off.
+Each Friday, run `grok-roles-prompt.md`, then check every hit on the company careers page. A closed role moves to `lib/archive.ts`. A new open role goes in `lib/lists/YYYY-Www.ts` and shows on the table under that week. The list is still tagged by hand. A model does not write the band. The same rule as the parked Jev box: sort the posting into the closed values, and if the sort is unsure, leave it off.
 
-The list is design-engineer heavy. Granola has a product designer role, and it is not on the list. ElevenLabs is on it once, Design Engineer, Creative & Studio. They have other roles. Product designer belongs when the posting is that seat: design origin, the proof is a file or a prototype, an engineer still holds backend and data. Do not file it as the ship-plus-frontend grade.
+Week 40 is filed. Checked 2 Oct 2026.
+
+The list is still design-engineer heavy. Week 40 added Granola’s product designer and design engineer, ElevenLabs’ product designer, RevenueCat, Figma Roundtripping, and Boski. ElevenLabs Creative & Studio left: that posting is now a frontend engineer. Product designer belongs when the posting is that seat: design origin, the proof is a file or a prototype, an engineer still holds backend and data. Do not file it as the ship-plus-frontend grade.
 
 A pass on X, with Grok, on a week or a month. It finds postings and people hiring. Roy still tags the band, the craft, and the seat, and copies salary and place only when the company published them. The pass does not scrape this page, and it does not add a server.
 
 A newsletter is how someone comes back for that pass. It can ask for an address. This page still has no auth and no database, so the address does not live here yet. Do not put a signup form on the ask screen. The letter is the list, not a second product.
 
-The quadrant is on the result, under the lock sentence. `components/quadrant.tsx`. The ask screen is the six questions. You sits in the cell after those answers. It is a grid. No chart library. shadcn charts are Recharts, and this picture is four named cells.
+The quadrant component is `components/quadrant.tsx`. It is not mounted. The result is the lock sentence, then the one proof, then the matching table. Bring the grid back by rendering `Quadrant` in `components/placement.tsx`. It is a grid. No chart library. shadcn charts are Recharts, and this picture is four named cells.
 
 Axes come from the lock. Left to right is origin: design, then engineering. Top to bottom is the proof: a file, then a diff. Taste and Prototype are a file. Ship and Spike are a diff. `cellKey` in `lib/quadrant.ts` places the person. Seat and prong stay on the sentence. They do not move the cell. `lockFrom` still sets the band.
 
@@ -101,9 +101,9 @@ The personal agent is the last product, not this one. Later, one agent is how yo
 
 ## Open
 
-Unranked, and not next. The quadrant cells are named, and the grid is on the result. Do not treat the order below as priority.
+Unranked, and not next. The quadrant cells are named. The grid is not on the result. Do not treat the order below as priority.
 
 - Look at the ask screen in the browser against the [Beth](https://www.figma.com/design/qyO4FMguMfbsb5Bb8iU2Ut/Beth) frames and note only what the questionnaire’s own layout still misses. Do not rebuild a custom form to close that gap. Placement does not move. The band is still `lockFrom` in `lib/place.ts`.
 - Use [Dot Matrix](https://dotmatrix.zzzzshawn.cloud/) for the loader animations, and try to replicate the logo mark. The mark today is the 24px dithered dot tile in `components/mark.tsx`. The library is React, TypeScript, Tailwind, and shadcn. One install shape is `npx shadcn@latest add @dotmatrix/dotm-square-3`.
-- A click on a job card should open more detail: the design team, their X profile, the head, and possibly leadership. This is richer data on each role in `lib/roles.ts`. Leave it until someone is paying for the fit. It makes the board better, and the board is not the first product.
-- Explore product design roles for people who cannot take a design-engineer role. This is the founder case in Direction: they may need a person who owns the look and opens a PR, with an engineer still on the feature. The first pass is Next: Granola, the other ElevenLabs roles, then the X pass.
+- A row already opens the posting sentence, the craft, the seat, salary, and place. Richer detail, the design team, their X profile, the head, and leadership, waits until someone is paying for the fit. It makes the board better, and the board is not the first product.
+- Explore more product design roles for people who cannot take a design-engineer role. This is the founder case in Direction: they may need a person who owns the look and opens a PR, with an engineer still on the feature. Granola and the ElevenLabs product designer are on the week 40 list.

@@ -2,7 +2,14 @@ import assert from "node:assert/strict"
 import test from "node:test"
 
 import { lockFrom, type Answers } from "./place.ts"
-import { aimCompany, lockSentence, practiceLine } from "./read.ts"
+import { archive, roles } from "./roles.ts"
+import {
+  aimCompany,
+  groupByWeek,
+  lockSentence,
+  practiceLine,
+  weekLabel,
+} from "./read.ts"
 
 const roy: Answers = {
   hands: "prototype",
@@ -48,6 +55,29 @@ test("the piece aims at the stretch company first", () => {
   )
   assert.equal(aimCompany([], [{ company: "Ashby" }]), "Ashby")
   assert.equal(aimCompany([], []), undefined)
+})
+
+test("weeks group newest first, and a closed role stays off the list", () => {
+  assert.equal(weekLabel("2026-W40"), "Week 40")
+
+  const groups = groupByWeek([
+    { ...roles[0], id: "older", week: "2026-W39", company: "Older" },
+    { ...roles[0], id: "newer", week: "2026-W40", company: "Newer" },
+  ])
+
+  assert.deepEqual(
+    groups.map((group) => group.week),
+    ["2026-W40", "2026-W39"]
+  )
+
+  const live = new Set(roles.map((role) => role.id))
+  for (const role of archive) {
+    assert.equal(live.has(role.id), false)
+  }
+  assert.equal(
+    roles.every((role) => role.week === "2026-W40"),
+    true
+  )
 })
 
 test("a named company points the practice and does not replace it", () => {

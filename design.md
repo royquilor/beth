@@ -21,7 +21,7 @@ House taste for Last. Read this before changing UI. Same lock as Holt: shadcn pr
 ## Space
 
 - Prefer `gap-*` on flex and grid.
-- Article column: `max-w-md`, `px-6`, `py-10`.
+- Article column: `max-w-lg`, `px-6`, `py-10`.
 - No arbitrary values.
 
 ## Components

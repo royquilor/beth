@@ -131,6 +131,33 @@ function byBand(a: Role, b: Role) {
   )
 }
 
+/** "2026-W40" renders as Week 40. Newer weeks sit above older ones. */
+export function weekLabel(week: string) {
+  const match = /^(\d{4})-W(\d{2})$/.exec(week)
+  if (!match) return week
+  return `Week ${Number(match[2])}`
+}
+
+export function groupByWeek(list: Role[]) {
+  const sorted = [...list].sort((a, b) => {
+    if (a.week !== b.week) return b.week.localeCompare(a.week)
+    return byBand(a, b)
+  })
+  const groups: { week: string; roles: Role[] }[] = []
+
+  for (const role of sorted) {
+    const last = groups.at(-1)
+
+    if (last && last.week === role.week) {
+      last.roles.push(role)
+    } else {
+      groups.push({ week: role.week, roles: [role] })
+    }
+  }
+
+  return groups
+}
+
 export function splitRoles(lock: Lock) {
   const inRange: Role[] = []
   const stretch: Role[] = []
