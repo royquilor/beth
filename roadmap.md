@@ -51,15 +51,21 @@ Shipped in `aec6a7f`.
 
 ## Next
 
-Question 3, one sentence, for the NDA case. This is the thing to build next. The Open list waits.
+A quadrant, on paper. This is the thing to do next. Do not draw it yet.
+
+The picture is a graph with four cells. A few well-known design engineers sit in the cells. The person who just answered sits there too, from the lock they already have. `lockFrom` still sets the band. The graph shows that lock. It does not invent a score.
+
+The work is to name the four cells. A quadrant is two axes. The axes have to come from the model already here: four prongs (systems, motion, judgment, frontend), two seats (engineers beside you, or you are the only person on the UI), two origins (the work started in design, or in engineering), and four bands of proof (taste, prototype, ship, spike). Pick two. Name the four cells in Beth’s voice. Then place a few known people, and say which cell the lock drops the person into.
+
+No free text, no server, no model. The six questions stay closed.
+
+## Parked
+
+Question 3, one sentence, for the NDA case. Parked 2 Oct 2026. The text field and Jev are parked with it.
 
 Roy can show a design file, a prototype, or a merged diff. He also has a system other people use, and an NDA means he cannot show it to a stranger this week. Option D stays unchecked. The question is what he can show.
 
-Add one text field on that question. The sentence says the system exists and is closed. A server sorts it into the closed show values: a design file, a prototype, or a merged diff. If the sort is unsure, show those choices. The sentence does not become D, and it does not become Spike. `lockFrom` still sets the band.
-
-Jev is the right shape, because it picks from the list already published. An OpenAI call can do that same job if the output is one of those four values, or unsure. A chat that writes a band will disagree with `lockFrom`. Ten people, one short sentence each, is well under a dollar on a small model. The new cost is the server. This page has none today.
-
-## Parked
+Two jobs got mixed in that box. One job sorts a sentence into the closed show values: a design file, a prototype, or a merged diff. If the sort is unsure, show those choices. The sentence does not become D, and it does not become Spike. The other job takes the person’s own answer, and that answer may be a kind of work the list does not have. That second job needs the missing answers named before any model. A chat that writes a band will disagree with `lockFrom`. Jev only does the first job. Until the box is one of those two, do not wire it.
 
 A public URL is the same park. Portfolio, LinkedIn, or an X profile can confirm a closed answer. It cannot invent a band. Reading a bio, pinned posts, or a case study needs a server, and this page has none. When it is unparked, the same rule holds: sort the page into the closed values, and if the sort is unsure, show the choices.
 
@@ -84,7 +90,7 @@ The personal agent is the last product, not this one. Later, one agent is how yo
 
 ## Open
 
-Unranked, and not next. Next is the question 3 sentence. Do not treat the order below as priority.
+Unranked, and not next. Next is the quadrant: name the four cells. Do not treat the order below as priority.
 
 - Look at the ask screen in the browser against the [Beth](https://www.figma.com/design/qyO4FMguMfbsb5Bb8iU2Ut/Beth) frames and note only what the questionnaire’s own layout still misses. Do not rebuild a custom form to close that gap. Placement does not move. The band is still `lockFrom` in `lib/place.ts`.
 - Use [Dot Matrix](https://dotmatrix.zzzzshawn.cloud/) for the loader animations, and try to replicate the logo mark. The mark today is the 24px dithered dot tile in `components/mark.tsx`. The library is React, TypeScript, Tailwind, and shadcn. One install shape is `npx shadcn@latest add @dotmatrix/dotm-square-3`.
