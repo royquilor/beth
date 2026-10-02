@@ -9,6 +9,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { page } from "@/lib/catalog"
+import type { Lock } from "@/lib/place"
 import type { Role } from "@/lib/roles"
 import {
   bandLabel,
@@ -16,14 +17,9 @@ import {
   metaLine,
   prongBadge,
   seatBadge,
+  shadeOf,
   weekLabel,
 } from "@/lib/read"
-
-/**
- * Shade steps down the list: light, mid, dark, then repeat.
- * It is a rhythm, not a score and not the band.
- */
-const shades = ["░", "▒", "▓"] as const
 
 const chip =
   "h-auto rounded-none bg-muted px-1 py-1 text-xs leading-3 font-normal uppercase"
@@ -37,9 +33,14 @@ const applyLink = buttonVariants({
  * Two facts on the row: company and title.
  * The band, the posting sentence, craft, seat, salary, and place open in the sheet.
  */
-export function RoleTable({ roles }: { roles: Role[] }) {
+export function RoleTable({
+  roles,
+  lock,
+}: {
+  roles: Role[]
+  lock?: Lock
+}) {
   const groups = groupByWeek(roles)
-  let index = 0
 
   return (
     <div className="flex flex-col gap-8">
@@ -47,11 +48,13 @@ export function RoleTable({ roles }: { roles: Role[] }) {
         <section key={group.week} className="flex flex-col gap-1">
           <h3 className="text-base uppercase">{weekLabel(group.week)}</h3>
           <div className="flex flex-col">
-            {group.roles.map((role) => {
-              const shade = shades[index % shades.length]
-              index += 1
-              return <RoleRow key={role.id} role={role} shade={shade} />
-            })}
+            {group.roles.map((role) => (
+              <RoleRow
+                key={role.id}
+                role={role}
+                shade={lock ? shadeOf(lock, role) : null}
+              />
+            ))}
           </div>
         </section>
       ))}
@@ -59,7 +62,7 @@ export function RoleTable({ roles }: { roles: Role[] }) {
   )
 }
 
-function RoleRow({ role, shade }: { role: Role; shade: string }) {
+function RoleRow({ role, shade }: { role: Role; shade: string | null }) {
   return (
     <Sheet>
       <SheetTrigger
@@ -71,7 +74,7 @@ function RoleRow({ role, shade }: { role: Role; shade: string }) {
         }
       >
         <span className="flex min-w-0 items-baseline gap-2">
-          <span aria-hidden="true">{shade}</span>
+          {shade ? <span aria-hidden="true">{shade}</span> : null}
           <span>{role.company}</span>
         </span>
         <span className="min-w-0 text-muted-foreground">{role.title}</span>

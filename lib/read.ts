@@ -3,6 +3,7 @@ import {
   bandRank,
   fitOf,
   type Band,
+  type Fit,
   type Lock,
   type Prong,
   type Seat,
@@ -123,6 +124,20 @@ export function countSentence(lock: Lock, inRange: number, stretch: number) {
       : ""
 
   return `${match}${above} ${proofFor(lock).closer}`
+}
+
+/**
+ * Darker is closer to the lock.
+ * ▓ is in range. ▒ is the next band. ░ does not match this craft or this seat.
+ */
+export const shadeForFit: Record<Fit, string> = {
+  in: "▓",
+  stretch: "▒",
+  out: "░",
+}
+
+export function shadeOf(lock: Lock, role: Role) {
+  return shadeForFit[fitOf(lock, role)]
 }
 
 function byBand(a: Role, b: Role) {

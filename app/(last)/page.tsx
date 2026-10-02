@@ -6,7 +6,7 @@ import { Questions } from "@/components/questions"
 import { EveryRole, InRange, StretchList } from "@/components/role-sections"
 import { Rule } from "@/components/rule"
 import { page } from "@/lib/catalog"
-import { lockFrom, parseAnswers, type Answers } from "@/lib/place"
+import { lockFrom, parseAnswers, type Answers, type Lock } from "@/lib/place"
 import { checkedOn, type Role } from "@/lib/roles"
 import { aimCompany, everyRole, splitRoles } from "@/lib/read"
 
@@ -67,6 +67,7 @@ function Locked({ answers }: { answers: Answers }) {
       <Placement lock={lock} company={company} />
       <OpenedRoles
         viewAll={showStretch}
+        lock={lock}
         inRange={split.inRange}
         stretch={split.stretch}
       />
@@ -77,16 +78,18 @@ function Locked({ answers }: { answers: Answers }) {
 /** The list sits under the sentence. It is not the result. */
 function OpenedRoles({
   viewAll,
+  lock,
   inRange,
   stretch,
 }: {
   viewAll: boolean
+  lock: Lock
   inRange: Role[]
   stretch: Role[]
 }) {
   if (viewAll) {
-    return <StretchList roles={stretch} />
+    return <StretchList roles={stretch} lock={lock} />
   }
 
-  return <InRange roles={inRange} />
+  return <InRange roles={inRange} lock={lock} />
 }

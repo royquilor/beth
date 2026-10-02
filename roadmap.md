@@ -4,7 +4,7 @@ Handoff for the next session. Product lives in this repo (`last/`). One public p
 
 ## Where we are
 
-Commit `aec6a7f` on `main`. Dev server: `npm run dev` → http://localhost:3000.
+On `main`, after the fund pass of 2 Oct 2026. Dev server: `npm run dev` → http://localhost:3000.
 
 The [Beth](https://www.figma.com/design/qyO4FMguMfbsb5Bb8iU2Ut/Beth) frames are the layout reference. Type and the column have moved on purpose since those frames: face is Open Runde (regular and medium) through `--font-sans`, body is `text-base` at 1rem, column is `max-w-lg`. Do not put Departure Mono or the 16.5px size back. The mark is the 24px dithered dot tile in `components/mark.tsx`. The name is not set beside it. Page background is stone 50. Cards stay white.
 
@@ -20,7 +20,7 @@ Taste: `design.md`. Voice: `lib/catalog.ts`. Placement: `lib/place.ts`. Roles: `
 
 Skip is a mode, not “skip this question.” It lists every role with no band lock.
 
-The role list is two columns: company and title. A row opens a sheet with the band, the posting sentence, the craft, the seat, and salary and place when the company published them. Shade marks (`░` `▒` `▓`) step down the rows. They are not a score. Rows are grouped by the week they entered. Week 40 is the first list.
+The role list is two columns: company and title. A row opens a sheet with the band, the posting sentence, the craft, the seat, and salary and place when the company published them. Shade marks follow the lock. `▓` is in range, `▒` is stretch, `░` is a role that does not match. Skip has no lock, so the mark is not shown. Rows are grouped by the week they entered. Week 40 is the first list.
 
 The worked-example card (`components/lock-card.tsx`) matches the all-screens frame and is not mounted. The ask frame does not include it.
 
@@ -40,22 +40,31 @@ The ask screen uses the shadcn Questionnaire (`components/ui/questionnaire.tsx`)
 
 ## Done this session
 
-Shipped in `aec6a7f`.
+Fund pass, 2 Oct 2026. Each hit was checked on the company careers page. The band is the proof the posting names. A role stayed off when that sort was unsure. `shadeOf` in `lib/read.ts` sets the mark from `fitOf`. `grok-roles-prompt.md` lists the new roles so the next X pass does not bring them back.
 
-- Replaced the custom ask form with the shadcn Questionnaire. `@shadcn/react` is the dependency. `components/ui/questionnaire.tsx` is the installed component. `components/questions.tsx` only wires the catalog, the URL, and Skip.
-- Back, Next, and Lock use the large button size. Skip is a plain text link.
-- Column widened from `max-w-sm` to `max-w-md`.
-- Face switched from Departure Mono to Open Runde. The 16.5px `text-base` override is gone, so body type is 1rem again. Pixel-font antialiasing overrides are gone.
+Five sources, in this order:
+
+1. Designer Fund, `jobs.designerfund.com`. The company page wins when the board is stale. Chromatic’s Designer Fund row said closed. Ashby was open.
+2. Y Combinator, Work at a Startup.
+3. Festina, `festina.vc`. No jobs board. The logo wall links to the company site. Open that site’s careers page. Polar is not on the wall. Jorn van Dijk and Koen Bok are named on `polar.sh/careers`.
+4. The a16z jobs letter, filtered to product designer or design engineer, and to London, Europe, or remote that includes Europe.
+5. Seedcamp, `talent.seedcamp.com`, then the company careers page.
+
+Filed on week 40: Sequence, Linear’s principal product designer, Chromatic, Edra, tldraw, Cal.com, Circle’s lead product designer and the marketplace seat, Lemni, Paper, Lovable’s product designer, voize, Hera, telli, Mercura, Mirelo.
+
+Left off. Cogram, because the title is three jobs. Lovable’s Design Engineer, Brand, because a brand designer owns the taste and the posting says you do not need to be a designer. Polar, Bounti, and Monumental, because the seat is product engineer. Cursor, Visual Electric, and Superpower, because the place is the United States. Seedcamp had no open product designer or design engineer. Orbital Witness has a Head of Design, and that is a leadership seat.
 
 ## Next
 
-Each Friday, run `grok-roles-prompt.md`, then check every hit on the company careers page. A closed role moves to `lib/archive.ts`. A new open role goes in `lib/lists/YYYY-Www.ts` and shows on the table under that week. The list is still tagged by hand. A model does not write the band. The same rule as the parked Jev box: sort the posting into the closed values, and if the sort is unsure, leave it off.
+Each Friday, run the five sources above, then `grok-roles-prompt.md`. Check every hit on the company careers page. A closed role moves to `lib/archive.ts`. A new open role goes in `lib/lists/YYYY-Www.ts` and shows on the table under that week. The list is still tagged by hand. A model does not write the band. The same rule as the parked Jev box: sort the posting into the closed values, and if the sort is unsure, leave it off.
 
-Week 40 is filed. Checked 2 Oct 2026.
+Week 40 is filed. Checked 2 Oct 2026, including the fund pass the same day.
 
-The list is still design-engineer heavy. Week 40 added Granola’s product designer and design engineer, ElevenLabs’ product designer, RevenueCat, Figma Roundtripping, and Boski. ElevenLabs Creative & Studio left: that posting is now a frontend engineer. Product designer belongs when the posting is that seat: design origin, the proof is a file or a prototype, an engineer still holds backend and data. Do not file it as the ship-plus-frontend grade.
+The place cut for Roy is London in the room, or remote that includes Europe. Sequence, Edra, tldraw, and Granola want London. Cal.com, Circle, Chromatic, and Linear’s principal product designer are remote and include Europe. voize is Berlin or remote inside Germany. Mercura is Munich, five days, and German is required. These posts are employment. A freelance start was not what they listed.
 
-A pass on X, with Grok, on a week or a month. It finds postings and people hiring. Roy still tags the band, the craft, and the seat, and copies salary and place only when the company published them. The pass does not scrape this page, and it does not add a server.
+Product designer belongs when the posting is that seat: design origin, the proof is a file or a prototype, an engineer still holds backend and data. Do not file it as the ship-plus-frontend grade. ElevenLabs Creative & Studio already left: that posting is now a frontend engineer.
+
+A pass on X, with Grok, on a week or a month. It finds postings and people hiring. Roy still tags the band, the craft, and the seat, and copies salary and place only when the company published them. The pass does not scrape this page, and it does not add a server. Cal.com came from an X post Roy found. The posting is on `cal.com/jobs/senior-product-designer`. The heading says Senior Product Design Engineer.
 
 A newsletter is how someone comes back for that pass. It can ask for an address. This page still has no auth and no database, so the address does not live here yet. Do not put a signup form on the ask screen. The letter is the list, not a second product.
 
@@ -84,7 +93,9 @@ A public URL is the same park. Portfolio, LinkedIn, or an X profile can confirm 
 
 The result now leads with the lock and the one proof. A company name on that proof is the first stretch role, or the first in-range role if nothing sits above. The rest of this section is still not built. The page does not read a URL, and it does not speak to a founder who is hiring.
 
-The board is the weakest first product. A design-engineer title is real at Vercel, Linear, and small studios. A board is two-sided. Candidates and paying employers have to exist before a listing matters, and sponsors do not show up for a new jobs site. The useful bit is the fit. Sell that. Add listings only after people are already paying to be assessed. The roles in `lib/roles.ts` can stay as proof the bands are real. They are not the thing someone pays for.
+The board is the weakest first product if it is two-sided. Candidates and paying employers have to exist before a listing matters, and sponsors do not show up for a new jobs site. The useful bit is the fit. Sell that. The roles in `lib/lists/2026-w40.ts` are the shortlist and the proof the bands are real. They are not a jobs site someone pays to post on.
+
+Roy wants that shortlist for himself, and it can be useful to someone else, if the cut stays funded companies and a place he can take. The five sources in Done this session are that cut. Quality is the company page, not a longer feed.
 
 What people misunderstand is the job, not the application form. Beth’s first job is to say what a design engineer is, name the kinds, and say which kind this person is. The kinds are already the model: five crafts (systems, motion, what to build and the flow, HTML and CSS, production frontend), two seats (engineers beside you, or you are the only person on the UI), two origins (the work started in design, or in engineering), and four bands of proof (taste, prototype, ship, spike). Founders and early teams collapse that into one hire.
 
@@ -106,4 +117,4 @@ Unranked, and not next. The quadrant cells are named. The grid is not on the res
 - Look at the ask screen in the browser against the [Beth](https://www.figma.com/design/qyO4FMguMfbsb5Bb8iU2Ut/Beth) frames and note only what the questionnaire’s own layout still misses. Do not rebuild a custom form to close that gap. Placement does not move. The band is still `lockFrom` in `lib/place.ts`.
 - Use [Dot Matrix](https://dotmatrix.zzzzshawn.cloud/) for the loader animations, and try to replicate the logo mark. The mark today is the 24px dithered dot tile in `components/mark.tsx`. The library is React, TypeScript, Tailwind, and shadcn. One install shape is `npx shadcn@latest add @dotmatrix/dotm-square-3`.
 - A row already opens the posting sentence, the craft, the seat, salary, and place. Richer detail, the design team, their X profile, the head, and leadership, waits until someone is paying for the fit. It makes the board better, and the board is not the first product.
-- Explore more product design roles for people who cannot take a design-engineer role. This is the founder case in Direction: they may need a person who owns the look and opens a PR, with an engineer still on the feature. Granola and the ElevenLabs product designer are on the week 40 list.
+- More product-designer seats, for a person who owns the look while an engineer still holds backend and data. The 2 Oct fund pass filed Sequence, Edra, Circle, Lovable, voize, Hera, telli, and Mirelo beside Granola and ElevenLabs. The next pass uses the same five sources.

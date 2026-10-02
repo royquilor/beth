@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/empty"
 import { RoleTable } from "@/components/role-table"
 import { page } from "@/lib/catalog"
+import type { Lock } from "@/lib/place"
 import type { Role } from "@/lib/roles"
 
 function Heading({ title, lead }: { title: string; lead: string }) {
@@ -18,11 +19,11 @@ function Heading({ title, lead }: { title: string; lead: string }) {
 }
 
 /** In range. Apply only. The section title carries the fit. */
-export function InRange({ roles }: { roles: Role[] }) {
+export function InRange({ roles, lock }: { roles: Role[]; lock: Lock }) {
   return (
     <section className="flex flex-col gap-10">
       <Heading title={page.inRange} lead={page.rangeLead} />
-      <RoleTable roles={roles} />
+      <RoleTable roles={roles} lock={lock} />
     </section>
   )
 }
@@ -31,7 +32,7 @@ export function InRange({ roles }: { roles: Role[] }) {
  * Roles above the band. The proof already sits above this list,
  * so the rows do not link to a separate gap.
  */
-export function StretchList({ roles }: { roles: Role[] }) {
+export function StretchList({ roles, lock }: { roles: Role[]; lock: Lock }) {
   return (
     <section className="flex flex-col gap-3">
       <Heading title={page.stretch} lead={page.stretchLead} />
@@ -47,7 +48,7 @@ export function StretchList({ roles }: { roles: Role[] }) {
           </EmptyHeader>
         </Empty>
       ) : (
-        <RoleTable roles={roles} />
+        <RoleTable roles={roles} lock={lock} />
       )}
     </section>
   )

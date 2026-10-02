@@ -8,6 +8,7 @@ import {
   groupByWeek,
   lockSentence,
   practiceLine,
+  shadeOf,
   weekLabel,
 } from "./read.ts"
 
@@ -86,4 +87,51 @@ test("a named company points the practice and does not replace it", () => {
 
   assert.equal(aimed.startsWith(plain), true)
   assert.match(aimed, /Aim it at Ramp\. One piece, this week\.$/)
+})
+
+test("the shade follows the fit", () => {
+  const lock = lockFrom(roy)
+
+  assert.equal(
+    shadeOf(lock, {
+      id: "in",
+      company: "In",
+      title: "Product Designer",
+      band: "prototype",
+      prong: "systems",
+      seat: "team",
+      href: "https://example.com",
+      why: "In range.",
+      week: "2026-W40",
+    }),
+    "▓"
+  )
+  assert.equal(
+    shadeOf(lock, {
+      id: "stretch",
+      company: "Stretch",
+      title: "Design Engineer",
+      band: "ship",
+      prong: "systems",
+      seat: "team",
+      href: "https://example.com",
+      why: "Above the band.",
+      week: "2026-W40",
+    }),
+    "▒"
+  )
+  assert.equal(
+    shadeOf(lock, {
+      id: "out",
+      company: "Out",
+      title: "Design Engineer",
+      band: "prototype",
+      prong: "systems",
+      seat: "solo",
+      href: "https://example.com",
+      why: "A different seat.",
+      week: "2026-W40",
+    }),
+    "░"
+  )
 })
