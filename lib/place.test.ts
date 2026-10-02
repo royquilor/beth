@@ -1,7 +1,15 @@
 import assert from "node:assert/strict"
 import test from "node:test"
 
-import { bandFrom, fitOf, lockFrom, type Answers } from "./place.ts"
+import {
+  bandFrom,
+  fitOf,
+  handsProof,
+  lockFrom,
+  parseAnswers,
+  showProof,
+  type Answers,
+} from "./place.ts"
 
 const roy: Answers = {
   hands: "prototype",
@@ -80,6 +88,25 @@ test("prototype is not enough to be the only person on the UI", () => {
     }),
     "in"
   )
+})
+
+test("a prototype and a merged diff count as the merged diff", () => {
+  assert.equal(handsProof(["prototype", "merged"]), "merged")
+  assert.equal(showProof(["file", "prototype"]), "prototype")
+  assert.equal(showProof(["merged", "used"]), "used")
+
+  const answers = parseAnswers({
+    hands: ["prototype", "merged"],
+    ships: "prototype",
+    show: ["prototype", "merged"],
+    seat: "team",
+    prong: "systems",
+    origin: "design",
+  })
+
+  assert.equal(answers?.hands, "merged")
+  assert.equal(answers?.show, "merged")
+  assert.equal(answers ? bandFrom(answers) : null, "prototype")
 })
 
 test("a named second prong counts, a different seat does not", () => {

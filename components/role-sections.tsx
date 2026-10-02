@@ -1,7 +1,5 @@
-import { buttonVariants } from "@/components/ui/button"
 import {
   Empty,
-  EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyTitle,
@@ -9,11 +7,6 @@ import {
 import { RoleCard } from "@/components/role-card"
 import { page } from "@/lib/catalog"
 import type { Role } from "@/lib/roles"
-
-const quiet = buttonVariants({
-  variant: "outline",
-  className: "shadow-sm",
-})
 
 function Heading({ title, lead }: { title: string; lead: string }) {
   return (
@@ -38,14 +31,11 @@ export function InRange({ roles }: { roles: Role[] }) {
   )
 }
 
-/** Stretch list from "See all roles". Each card can open the one gap. */
-export function StretchList({
-  roles,
-  gapsHref,
-}: {
-  roles: Role[]
-  gapsHref: string
-}) {
+/**
+ * Roles above the band. The proof already sits above this list,
+ * so the cards do not link to a separate gap.
+ */
+export function StretchList({ roles }: { roles: Role[] }) {
   return (
     <section className="flex flex-col gap-3">
       <Heading title={page.stretch} lead={page.stretchLead} />
@@ -62,48 +52,10 @@ export function StretchList({
         </Empty>
       ) : (
         roles.map((role, index) => (
-          <RoleCard
-            key={role.id}
-            role={role}
-            index={index}
-            gapsHref={gapsHref}
-          />
+          <RoleCard key={role.id} role={role} index={index} />
         ))
       )}
     </section>
-  )
-}
-
-/** No posting matched. See the stretch list, or the one gap. */
-export function NothingInRange({
-  allHref,
-  gapsHref,
-}: {
-  allHref: string
-  gapsHref: string
-}) {
-  return (
-    <Empty className="flex-none gap-4 border border-dashed p-10">
-      <EmptyHeader className="max-w-none gap-4">
-        <EmptyTitle className="text-base font-normal tracking-normal uppercase">
-          {page.nothingInRange}
-        </EmptyTitle>
-        <EmptyDescription className="text-base">
-          {page.emptyRange}
-        </EmptyDescription>
-      </EmptyHeader>
-      <p className="text-base" aria-hidden="true">
-        □
-      </p>
-      <EmptyContent className="gap-2">
-        <a href={allHref} className={quiet}>
-          {page.seeAll}
-        </a>
-        <a href={gapsHref} className={quiet}>
-          {page.checkGaps}
-        </a>
-      </EmptyContent>
-    </Empty>
   )
 }
 

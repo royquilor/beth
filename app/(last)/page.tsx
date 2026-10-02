@@ -1,19 +1,20 @@
 import type { Metadata } from "next"
 
 import { Lockup } from "@/components/lockup"
-import { NextProof } from "@/components/next-proof"
+import { Placement } from "@/components/placement"
 import { Questions } from "@/components/questions"
-import {
-  EveryRole,
-  InRange,
-  NothingInRange,
-  StretchList,
-} from "@/components/role-sections"
+import { EveryRole, InRange, StretchList } from "@/components/role-sections"
 import { Rule } from "@/components/rule"
+import { buttonVariants } from "@/components/ui/button"
 import { page, questions } from "@/lib/catalog"
 import { lockFrom, parseAnswers, type Answers } from "@/lib/place"
-import { checkedOn } from "@/lib/roles"
-import { everyRole, splitRoles } from "@/lib/read"
+import { checkedOn, type Role } from "@/lib/roles"
+import { aimCompany, everyRole, splitRoles } from "@/lib/read"
+
+const rolesLink = buttonVariants({
+  variant: "outline",
+  size: "lg",
+})
 
 export const metadata: Metadata = {
   title: page.title,
@@ -49,20 +50,22 @@ export default async function HomePage({
   const answers = parseAnswers(params)
   const skip = !answers && first(params.skip) === "1"
   const viewAll = first(params.view) === "all"
-  const gaps = first(params.gaps) === "1"
+  const showRoles = first(params.roles) === "1"
 
   return (
     <main className="mx-auto flex w-full max-w-md flex-col gap-10 px-6 py-10">
-      <Lockup showQuestions={Boolean(answers || skip)} />
+      <Lockup
+        showQuestions={Boolean(answers || skip)}
+        dek={answers ? null : skip ? page.skipLead : page.dek}
+      />
       <Rule />
       {answers ? (
-        <Locked answers={answers} viewAll={viewAll} />
+        <Locked answers={answers} viewAll={viewAll} showRoles={showRoles} />
       ) : skip ? (
         <EveryRole roles={everyRole()} />
       ) : (
         <Questions />
       )}
-      {answers && gaps ? <NextProof lock={lockFrom(answers)} /> : null}
       <Rule />
       <footer className="text-base text-muted-foreground">
         <p>
@@ -77,26 +80,54 @@ export default async function HomePage({
 function Locked({
   answers,
   viewAll,
+  showRoles,
 }: {
   answers: Answers
   viewAll: boolean
+  showRoles: boolean
 }) {
   const lock = lockFrom(answers)
   const split = splitRoles(lock)
-  const gapsHref = `${hrefFor(answers, viewAll ? { view: "all", gaps: "1" } : { gaps: "1" })}#gap`
+  const company = aimCompany(split.stretch, split.inRange)
+  const hasRoles = split.inRange.length > 0 || split.stretch.length > 0
+  // In-range roles are the ones this band can take. Otherwise show the stretch list.
+  const rolesHref =
+    split.inRange.length > 0
+      ? hrefFor(answers, { roles: "1" })
+      : hrefFor(answers, { view: "all" })
+  const listOpen = viewAll || showRoles
 
+  return (
+    <div className="flex flex-col gap-10">
+      <Placement lock={lock} company={company} />
+      {listOpen ? (
+        <OpenedRoles
+          viewAll={viewAll || split.inRange.length === 0}
+          inRange={split.inRange}
+          stretch={split.stretch}
+        />
+      ) : hasRoles ? (
+        <a href={rolesHref} className={rolesLink}>
+          {page.seeRoles}
+        </a>
+      ) : null}
+    </div>
+  )
+}
+
+/** The list sits under the sentence. It is not the result. */
+function OpenedRoles({
+  viewAll,
+  inRange,
+  stretch,
+}: {
+  viewAll: boolean
+  inRange: Role[]
+  stretch: Role[]
+}) {
   if (viewAll) {
-    return <StretchList roles={split.stretch} gapsHref={gapsHref} />
+    return <StretchList roles={stretch} />
   }
 
-  if (split.inRange.length === 0) {
-    return (
-      <NothingInRange
-        allHref={hrefFor(answers, { view: "all" })}
-        gapsHref={gapsHref}
-      />
-    )
-  }
-
-  return <InRange roles={split.inRange} />
+  return <InRange roles={inRange} />
 }

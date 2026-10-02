@@ -19,15 +19,7 @@ const applyLink = buttonVariants({
   className: "h-auto px-2.5 py-1.5 shadow-none",
 })
 
-export function RoleCard({
-  role,
-  index,
-  gapsHref,
-}: {
-  role: Role
-  index: number
-  gapsHref?: string
-}) {
+export function RoleCard({ role, index }: { role: Role; index: number }) {
   const meta = metaLine(role)
   const shade = shades[index % shades.length]
 
@@ -67,11 +59,6 @@ export function RoleCard({
         >
           {page.apply}
         </a>
-        {gapsHref ? (
-          <a href={gapsHref} className={applyLink}>
-            {page.gaps}
-          </a>
-        ) : null}
       </div>
     </article>
   )

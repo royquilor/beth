@@ -2,8 +2,8 @@
  * Placement rules for Beth.
  * Bands are proof someone can open. Not junior, mid, or senior.
  *
- * The first three answers set the band.
- * The band is the lowest of those three proofs, so a higher claim cannot float it.
+ * The first three answers set the band, and the lowest of them wins.
+ * Hands and show can name more than one proof. The strongest of those counts.
  * Spike is the one exception: a system other people use, a merged diff that left
  * their hands, and production components as what they ship most.
  * Seat, prong, and origin never raise the band.
@@ -137,8 +137,40 @@ export function fitOf(lock: Lock, role: Tagged): Fit {
   return "in"
 }
 
+function list(value: SearchValue) {
+  return Array.isArray(value) ? value : value ? [value] : []
+}
+
 function first(value: SearchValue) {
-  return Array.isArray(value) ? value[0] : value
+  return list(value)[0]
+}
+
+/** Strongest selected proof. Ticking a lower one does not pull the band down. A tie prefers `used`. */
+export function strongestProof<T extends string>(
+  value: SearchValue,
+  allowed: readonly T[],
+  rank: Record<T, number>,
+  prefer?: T
+): T | null {
+  const picked = list(value).filter((item): item is T =>
+    (allowed as readonly string[]).includes(item)
+  )
+
+  if (picked.length === 0) return null
+
+  return picked.reduce((best, item) =>
+    rank[item] > rank[best] || (item === prefer && rank[item] === rank[best])
+      ? item
+      : best
+  )
+}
+
+export function handsProof(value: SearchValue) {
+  return strongestProof(value, handsValues, handsRank)
+}
+
+export function showProof(value: SearchValue) {
+  return strongestProof(value, showValues, showRank, "used")
 }
 
 function oneOf<T extends string>(
@@ -146,20 +178,15 @@ function oneOf<T extends string>(
   allowed: readonly T[]
 ): T | null {
   const raw = first(value)
-
-  if (!raw) {
-    return null
-  }
-
-  return (allowed as readonly string[]).includes(raw) ? (raw as T) : null
+  return raw && (allowed as readonly string[]).includes(raw) ? (raw as T) : null
 }
 
 export function parseAnswers(
   params: Record<string, SearchValue>
 ): Answers | null {
-  const hands = oneOf(params.hands, handsValues)
+  const hands = handsProof(params.hands)
   const ships = oneOf(params.ships, shipsValues)
-  const show = oneOf(params.show, showValues)
+  const show = showProof(params.show)
   const seat = oneOf(params.seat, seats)
   const prong = oneOf(params.prong, prongs)
   const origin = oneOf(params.origin, origins)

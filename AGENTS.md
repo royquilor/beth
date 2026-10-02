@@ -14,7 +14,7 @@ Beth. One public page. Prefer the lock, the list, and the tokens already here.
 
 ## Product
 
-A designer answers six questions. Beth names the band they can prove, the live roles that match, and the one practice that opens the next band. Skip is a real mode: no lock, full list, tags on every card.
+A designer answers six questions. Beth names the kind they can prove, and the one practice that opens the next band. The roles that match sit one click under that sentence. Skip is a real mode: no lock, full list, tags on every card.
 
 Placement rules live in `lib/place.ts`. Roles Roy edits live in `lib/roles.ts`. Voice lives in `lib/catalog.ts`. Taste lives in `design.md`.
 

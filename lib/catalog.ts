@@ -9,7 +9,7 @@ import type { Answers, Band, Origin } from "@/lib/place"
 
 export const page = {
   title: "Beth",
-  dek: "Beth tells you which design-engineer jobs you can take, and the one gap that would change that.",
+  dek: "Beth names the kind of design engineer you can prove, and the one piece that would change that.",
   questions: "? Questions",
   skipLead:
     "No lock. Every role is listed. The band, the prong, and the seat are on the card.",
@@ -23,8 +23,12 @@ export const page = {
   emptySeat: "No role here grades this prong in this seat.",
   stretchLead:
     "Above the band. Still listed. Hiding them would lie about the title.",
-  rangeLead: "At or below the band you can prove, in this prong, for this seat.",
+  rangeLead:
+    "At or below the band you can prove, in this prong, for this seat.",
   nextProof: "Next proof",
+  aim: "Aim it at",
+  thisWeek: "One piece, this week.",
+  seeRoles: "See the roles",
   workedExample: "Worked example",
   skip: "Skip. See every role.",
   seeAll: "See all roles",
@@ -134,8 +138,10 @@ export const questions = [
   {
     id: "hands",
     prompt: "Of the last five things you made, what left your hands?",
+    note: "Pick any that are true.",
+    multiple: true,
     options: [
-      { value: "files", label: "Files" },
+      { value: "files", label: "A design file, such as Figma" },
       { value: "prototype", label: "A prototype" },
       { value: "merged", label: "A merged diff" },
     ],
@@ -152,8 +158,10 @@ export const questions = [
   {
     id: "show",
     prompt: "What can you show a stranger this week?",
+    note: "Pick any that are true.",
+    multiple: true,
     options: [
-      { value: "file", label: "A file" },
+      { value: "file", label: "A design file, such as Figma" },
       { value: "prototype", label: "A prototype" },
       { value: "merged", label: "A merged diff" },
       { value: "used", label: "A system other people use" },

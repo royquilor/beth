@@ -44,6 +44,48 @@ export function proofFor(lock: Lock) {
   return proofs[lock.band][lock.origin]
 }
 
+/**
+ * First line of a finished result.
+ * Band, prong, seat, and origin. It does not name a job.
+ * The band is still the one lockFrom already set.
+ */
+export function lockSentence(lock: Lock) {
+  const seat =
+    lock.seat === "team"
+      ? "with engineers beside you"
+      : "as the only person on the UI"
+
+  const origin =
+    lock.origin === "design"
+      ? "The work started in design."
+      : "The work started in engineering."
+
+  return `You can prove ${bandLabel[lock.band]}, in ${prongLabel[lock.prong]}, ${seat}. ${origin}`
+}
+
+/**
+ * Prefer a stretch role. That posting is the next band, so the piece aims there.
+ * If nothing sits above, use the first in-range company, a place the piece can land.
+ * No company leaves the catalog practice unchanged.
+ */
+export function aimCompany(
+  stretch: { company: string }[],
+  inRange: { company: string }[]
+) {
+  return stretch[0]?.company ?? inRange[0]?.company
+}
+
+/** One proof. A company name points it. It does not raise the band. */
+export function practiceLine(lock: Lock, company?: string) {
+  const practice = proofFor(lock).practice
+
+  if (!company) {
+    return practice
+  }
+
+  return `${practice} ${page.aim} ${company}. ${page.thisWeek}`
+}
+
 function subject(lock: Lock) {
   const seat =
     lock.seat === "team"
@@ -72,7 +114,9 @@ export function countSentence(lock: Lock, inRange: number, stretch: number) {
 }
 
 function byBand(a: Role, b: Role) {
-  return bandRank(a.band) - bandRank(b.band) || a.company.localeCompare(b.company)
+  return (
+    bandRank(a.band) - bandRank(b.band) || a.company.localeCompare(b.company)
+  )
 }
 
 export function splitRoles(lock: Lock) {

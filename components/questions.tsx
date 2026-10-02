@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import type { QuestionnaireItemStatus } from "@shadcn/react/questionnaire"
 
@@ -9,6 +9,7 @@ import {
   QuestionnaireActions,
   QuestionnaireChoice,
   QuestionnaireChoices,
+  QuestionnaireDescription,
   QuestionnaireError,
   QuestionnaireItem,
   QuestionnaireNext,
@@ -18,6 +19,7 @@ import {
   QuestionnaireTitle,
 } from "@/components/ui/questionnaire"
 import { page, questions } from "@/lib/catalog"
+import { handsProof, showProof } from "@/lib/place"
 
 type QuestionId = (typeof questions)[number]["id"]
 
@@ -32,6 +34,10 @@ const items = questions.map((question) => ({
 /**
  * Six closed questions, composed from the shadcn Questionnaire.
  * Every item is required, so the component's Skip stays unused.
+ * shortcuts="letters" binds A, B, C to the choices in order.
+ * The component owns the keys, and it only hears them on the form.
+ * A letter pressed on the page is forwarded onto the form.
+ * A letter selects. It does not advance.
  * Beth's Skip is a mode: it leaves this form and opens every role.
  * Answers stay in the URL. Nothing is stored.
  * The face comes from --font-sans (Open Runde).
@@ -45,6 +51,48 @@ export function Questions() {
   // Next and Lock stay off until the current question has an answer.
   const unanswered = statuses[item] !== "answered"
 
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      // The questionnaire's own listener is on the form.
+      // A key pressed on the page, with focus outside, never reaches it.
+      if (
+        event.defaultPrevented ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.altKey ||
+        event.repeat
+      ) {
+        return
+      }
+
+      if (!/^[a-z]$/i.test(event.key)) {
+        return
+      }
+
+      const form = document.querySelector("[data-slot=questionnaire]")
+      const target = event.target
+
+      if (!(form instanceof HTMLElement) || !(target instanceof Node)) {
+        return
+      }
+
+      if (form.contains(target)) {
+        return
+      }
+
+      form.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: event.key,
+          bubbles: true,
+          cancelable: true,
+        })
+      )
+    }
+
+    window.addEventListener("keydown", onKeyDown)
+    return () => window.removeEventListener("keydown", onKeyDown)
+  }, [])
+
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
@@ -52,9 +100,18 @@ export function Questions() {
     const params = new URLSearchParams()
 
     for (const question of questions) {
-      const value = formData.get(question.id)
+      const values = formData
+        .getAll(question.id)
+        .filter((value): value is string => typeof value === "string")
+      // Hands and show may carry two proofs. Store the strongest.
+      const value =
+        question.id === "hands"
+          ? handsProof(values)
+          : question.id === "show"
+            ? showProof(values)
+            : (values[0] ?? null)
 
-      if (typeof value !== "string" || value.length === 0) {
+      if (!value) {
         return
       }
 
@@ -69,6 +126,7 @@ export function Questions() {
       <Questionnaire
         item={item}
         items={items}
+        shortcuts="letters"
         onItemChange={(next) => setItem(next as QuestionId)}
         onSubmit={handleSubmit}
       >
@@ -78,6 +136,7 @@ export function Questions() {
             key={question.id}
             name={question.id}
             required
+            multiple={"multiple" in question && question.multiple}
             onStatusChange={(status) =>
               setStatuses((current) => ({
                 ...current,
@@ -86,6 +145,9 @@ export function Questions() {
             }
           >
             <QuestionnaireTitle>{question.prompt}</QuestionnaireTitle>
+            {"note" in question ? (
+              <QuestionnaireDescription>{question.note}</QuestionnaireDescription>
+            ) : null}
             <QuestionnaireChoices>
               {question.options.map((option) => (
                 <QuestionnaireChoice key={option.value} value={option.value}>
