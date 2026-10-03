@@ -446,4 +446,18 @@ export const week40: Role[] = [
     where: "Hybrid, Germany",
     week: "2026-W40",
   },
+  {
+    id: "marker-product-designer",
+    company: "Marker",
+    title: "Product Designer",
+    band: "taste",
+    prong: "systems",
+    also: "judgment",
+    seat: "team",
+    href: "https://marker.page/jobs/product-designer",
+    why: "They grade a portfolio and the design system. You are not expected to be the engineer.",
+    salary: "£60,000–£80,000, up to £100,000, plus equity",
+    where: "London hub",
+    week: "2026-W40",
+  },
 ]

@@ -29,22 +29,32 @@ export type CompanyGroup = {
   companies: Company[]
 }
 
+/** A to Z by name. Case does not split tldraw from the T names. */
+function byName(a: Company, b: Company) {
+  return a.name.localeCompare(b.name, undefined, { sensitivity: "base" })
+}
+
 /**
  * Pre-seed, then seed, then later.
  * A company with no public round stays on the list, after the staged ones.
+ * Names inside a stage are alphabetical. The file keeps the order they were filed.
  */
 export function groupCompanies(companies: Company[]): CompanyGroup[] {
   const groups: CompanyGroup[] = []
 
   for (const stage of stages) {
-    const rows = companies.filter((company) => company.stage === stage)
+    const rows = companies
+      .filter((company) => company.stage === stage)
+      .sort(byName)
 
     if (rows.length > 0) {
       groups.push({ stage, companies: rows })
     }
   }
 
-  const open = companies.filter((company) => company.stage === undefined)
+  const open = companies
+    .filter((company) => company.stage === undefined)
+    .sort(byName)
 
   if (open.length > 0) {
     groups.push({ stage: null, companies: open })

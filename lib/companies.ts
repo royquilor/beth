@@ -8,6 +8,10 @@ import type { Company } from "@/lib/company"
  * Place and how they work are copied only when a posting or a round already said them.
  * Pre-seed is empty until a public pre-seed round is in hand.
  * The AI names left off are recorded in roadmap.md.
+ * Recraft was filed the same day, from the company site and their Series B post.
+ * The AI designer seat stayed off the role list. The place is four countries, and the seat grades taste on the model.
+ * Marker and Meticulous were filed the same evening.
+ * Marker’s seed is in the press, not on their site, so the stage stays off.
  */
 export const companies: Company[] = [
   {
@@ -189,10 +193,35 @@ export const companies: Company[] = [
     where: "Israel",
   },
   {
+    id: "recraft",
+    name: "Recraft",
+    href: "https://www.recraft.ai",
+    why: "Vectors and a brand style, from a prompt. The first AI designer seat on the list.",
+    stage: "later",
+    round: "Series B, May 2025",
+    where: "London",
+  },
+  {
+    id: "meticulous",
+    name: "Meticulous",
+    href: "https://www.meticulous.ai",
+    why: "A pixel-level preview of a change, before it merges.",
+    stage: "later",
+    round: "Series A, July 2026",
+    where: "London",
+  },
+  {
     id: "screen-studio",
     name: "Screen Studio",
     href: "https://screen.studio",
     why: "A small team in Poland. No public round. The recorder designers already use.",
     where: "Poland",
+  },
+  {
+    id: "marker",
+    name: "Marker",
+    href: "https://marker.page",
+    why: "A writing space that stays with the writer. The product designer seat is the London hub.",
+    where: "London",
   },
 ]

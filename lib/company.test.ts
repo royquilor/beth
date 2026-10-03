@@ -37,6 +37,45 @@ test("seed sits above later, and a missing stage stays on the list", () => {
   assert.equal(groups.at(-1)?.companies[0]?.id, "open")
 })
 
+test("names sit in alphabetical order inside a stage", () => {
+  const groups = groupCompanies([
+    {
+      id: "tldraw",
+      name: "tldraw",
+      href: "https://tldraw.example",
+      why: "A later company.",
+      stage: "later",
+    },
+    {
+      id: "vercel",
+      name: "Vercel",
+      href: "https://vercel.example",
+      why: "A later company.",
+      stage: "later",
+    },
+    {
+      id: "screen",
+      name: "Screen Studio",
+      href: "https://screen.example",
+      why: "No public round.",
+    },
+    {
+      id: "marker",
+      name: "Marker",
+      href: "https://marker.example",
+      why: "No public round.",
+    },
+  ])
+
+  assert.deepEqual(
+    groups.map((group) => group.companies.map((company) => company.name)),
+    [
+      ["tldraw", "Vercel"],
+      ["Marker", "Screen Studio"],
+    ]
+  )
+})
+
 test("every filed company has a site and a reason", () => {
   assert.ok(companies.length > 0)
 
