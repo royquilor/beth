@@ -67,7 +67,6 @@ export function CompanyTable() {
           <TabsTrigger
             key={groupValue(group.stage)}
             value={groupValue(group.stage)}
-            className="uppercase"
           >
             {groupTitle(group.stage)}
           </TabsTrigger>
