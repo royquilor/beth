@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 
+import { CompanyTable } from "@/components/company-table"
 import { Lockup } from "@/components/lockup"
 import { Placement } from "@/components/placement"
 import { Questions } from "@/components/questions"
@@ -28,16 +29,29 @@ export default async function HomePage({
 }) {
   const params = await searchParams
   const answers = parseAnswers(params)
-  const skip = !answers && first(params.skip) === "1"
+  const companies = first(params.companies) === "1"
+  const skip = !answers && !companies && first(params.skip) === "1"
+  const questionsLink = { href: "/", label: page.questions }
+  const companiesLink = { href: "/?companies=1", label: page.companies }
 
   return (
     <main className="mx-auto flex w-full max-w-lg flex-col gap-10 px-6 py-10">
       <Lockup
-        showQuestions={Boolean(answers || skip)}
-        dek={answers ? null : skip ? page.skipLead : page.dek}
+        links={[questionsLink, companiesLink]}
+        dek={
+          answers
+            ? null
+            : companies
+              ? page.companiesLead
+              : skip
+                ? page.skipLead
+                : page.dek
+        }
       />
       <Rule />
-      {answers ? (
+      {companies ? (
+        <CompanyTable />
+      ) : answers ? (
         <Locked answers={answers} />
       ) : skip ? (
         <EveryRole roles={everyRole()} />
@@ -47,8 +61,9 @@ export default async function HomePage({
       <Rule />
       <footer className="text-base text-muted-foreground">
         <p>
-          Checked {checkedOn} against the company pages. A closed role comes
-          off.
+          {companies
+            ? page.companiesFoot
+            : `Checked ${checkedOn} against the company pages. A closed role comes off.`}
         </p>
       </footer>
     </main>

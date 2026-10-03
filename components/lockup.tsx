@@ -3,28 +3,33 @@ import { page } from "@/lib/catalog"
 
 /**
  * Header. The name is not set in type. The mark is the lockup.
- * Result screens put "? Questions" on the right and drop the dek.
- * The lock sentence below is the result. The ask screen keeps the dek.
- * Pass null to hide the line. Skip passes its own lead.
+ * Questions and Companies stay in the top right on every screen.
+ * The ask screen keeps the dek. Pass null to hide the line.
+ * Skip and Companies pass their own lead.
  */
 export function Lockup({
-  showQuestions = false,
+  links = [],
   dek = page.dek,
 }: {
-  showQuestions?: boolean
+  links?: { href: string; label: string }[]
   dek?: string | null
 }) {
   return (
     <header className="flex flex-col gap-10">
       <div className="flex items-center justify-between gap-3">
         <Mark />
-        {showQuestions ? (
-          <a
-            href="/"
-            className="text-base text-muted-foreground uppercase hover:text-foreground"
-          >
-            {page.questions}
-          </a>
+        {links.length > 0 ? (
+          <nav className="flex items-center gap-4">
+            {links.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-sm text-muted-foreground hover:text-foreground"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
         ) : null}
       </div>
       {dek ? <p className="text-base">{dek}</p> : null}

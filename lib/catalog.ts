@@ -10,7 +10,14 @@ import type { Answers, Band, Origin } from "@/lib/place"
 export const page = {
   title: "Beth",
   dek: "Beth names the kind of design engineer you can prove, and the one piece that would change that.",
-  questions: "? Questions",
+  questions: "Questions",
+  companies: "Companies",
+  companiesLead:
+    "Companies worth the work. A posting is optional. Pre-seed and seed stay, because a small team can take freelance.",
+  companiesFoot:
+    "Stage is the last public round. A company with no round stays on the list.",
+  noRound: "No public round",
+  site: "Site",
   skipLead:
     "No lock. Every role is listed. The band, the craft, and the seat open with the role.",
   nothingInRange: "Nothing in range",
