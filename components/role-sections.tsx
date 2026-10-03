@@ -68,5 +68,5 @@ export function EveryRole({ roles }: { roles: Role[] }) {
     )
   }
 
-  return <RoleTable roles={roles} />
+  return <RoleTable roles={roles} level={2} />
 }

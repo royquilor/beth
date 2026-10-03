@@ -33,21 +33,26 @@ const applyLink = buttonVariants({
  * Two facts on the row: company and title.
  * The company name is underlined so the row reads as the control that opens the sheet.
  * The band, the posting sentence, craft, seat, salary, and place open in the sheet.
+ * Under In range or Stretch the week stays an h3, because those sections already have an h2.
+ * Skip has no section title, so the week is the h2. Otherwise the outline skips from h1 to h3.
  */
 export function RoleTable({
   roles,
   lock,
+  level = 3,
 }: {
   roles: Role[]
   lock?: Lock
+  level?: 2 | 3
 }) {
   const groups = groupByWeek(roles)
+  const Week = level === 2 ? "h2" : "h3"
 
   return (
     <div className="flex flex-col gap-8">
       {groups.map((group) => (
         <section key={group.week} className="flex flex-col gap-1">
-          <h3 className="text-base uppercase">{weekLabel(group.week)}</h3>
+          <Week className="text-base uppercase">{weekLabel(group.week)}</Week>
           <div className="flex flex-col">
             {group.roles.map((role) => (
               <RoleRow

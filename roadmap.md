@@ -50,12 +50,12 @@ Interface pass, 3 Oct 2026. A review of the ask, the lock, skip, companies, and 
 - The header has a visually hidden `h1`, “Beth”. The name is still not set beside the mark. On a lock the outline is h1, Next proof, In range, Week 40.
 - Sheet links name the place. “Onlook site” and “Apply to Edra”. The strings are `siteFor` and `applyTo` in `lib/catalog.ts`.
 - The A/B/C caps are `text-xs` (12px). `body` is `antialiased`. Button and choice labels can be selected. Buttons transition color, background, border, shadow, and the press shift.
+- On skip, Week 40 is an `h2`. The page heading is the only level above it. Under In range or Stretch the week stays an `h3`. Lock reads h1, Next proof, In range, Week 40. Companies is the h1 only.
+- Tabs transition color, background, border, and shadow. The underline still fades on its own. `transition-all` is gone.
+- Tab through an open sheet stays on the link and Close, both ways. Escape and the close button return focus to that row. Checked on ElevenLabs and on Onlook. The page is `aria-hidden` while the sheet is open. It is not `inert`. The focus guards hold Tab inside, so inert was left off.
 
 Left from that review, and not done:
 
-- On skip, the first section heading is still an `h3` (“Week 40”). The new `h1` sits above it, so the outline skips `h2`. Lock and companies do not skip.
-- Tabs still use `transition-all`. Buttons do not.
-- A real Tab through an open sheet was not walked, including focus returning to the row on close. Base UI hides the page with `aria-hidden` and focus guards. It does not set `inert`.
 - The button loader, and Lock holding the mark, were already next. They are still next. This pass did not add them.
 
 Mark, 3 Oct 2026. The tile stays the 24px dither, 21 dots, four corners empty. The paths are recreated from [Dot Matrix](https://dotmatrix.zzzzshawn.cloud/). The registry was not installed. The library’s rest opacity is about 8%, and at 24px that erases the tile, so the floor stays high. Hover is Core Spiral: one path, clockwise, inward. That is the lock, several proofs into one place. Flux Columns and a scan were the other trials. They read as a meter and a search, so they are not the mark. Next runs Prism Sweep, a diagonal pass with no scale, so it does not read as the hover. The question stays until that pass ends. `MarkPhaseProvider` in `app/(last)/page.tsx` carries the beat from the questions to the tile. The hold is `components/use-hold-next.ts`. A pointer that cannot hover, and reduced motion, leave the tile still.
