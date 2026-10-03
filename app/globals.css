@@ -65,8 +65,10 @@
     --accent: oklch(0.97 0.001 106.424);
     --accent-foreground: oklch(0.216 0.006 56.043);
     --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.923 0.003 48.717);
-    --input: oklch(0.923 0.003 48.717);
+    /* Dark enough for the choice edge and the empty checkbox.
+       0.65 clears 3:1 on the page. Hue and chroma stay stone. */
+    --border: oklch(0.65 0.003 48.717);
+    --input: oklch(0.65 0.003 48.717);
     --ring: oklch(0.709 0.01 56.259);
     --chart-1: oklch(0.869 0.005 56.366);
     --chart-2: oklch(0.553 0.013 58.071);
@@ -182,9 +184,26 @@
   }
 }
 
+/* The choice input covers the card and is fully transparent,
+   so a browser outline on the input never paints.
+   The card draws that outline when the input is focused from the keyboard. */
+[data-slot="questionnaire-choice"]:has(> input:focus-visible) {
+  outline: auto;
+  outline-offset: 2px;
+}
+
+/* The sheet fades in. It does not travel when motion is reduced. */
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="sheet-content"] {
+    transition-property: opacity;
+    translate: none;
+    transform: none;
+  }
+}
+
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
     }
   body {
     @apply bg-background text-foreground;

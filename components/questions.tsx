@@ -51,7 +51,8 @@ export function Questions() {
   const [statuses, setStatuses] = useState<
     Partial<Record<QuestionId, QuestionnaireItemStatus>>
   >({})
-  // Next and Lock stay off until the current question has an answer.
+  // An empty question stays pressable, so Next can show its error.
+  // An answer holds the step for one sweep of the mark.
   const unanswered = statuses[item] !== "answered"
 
   useEffect(() => {
@@ -179,14 +180,15 @@ export function Questions() {
           <QuestionnairePrevious size="lg">{page.back}</QuestionnairePrevious>
           <QuestionnaireNext
             size="lg"
-            disabled={unanswered}
-            onClick={handleNext}
+            onClick={(event) => {
+              // Let the questionnaire validate and name the fix.
+              if (unanswered) return
+              handleNext(event)
+            }}
           >
             {page.next}
           </QuestionnaireNext>
-          <QuestionnaireSubmit size="lg" disabled={unanswered}>
-            {page.lock}
-          </QuestionnaireSubmit>
+          <QuestionnaireSubmit size="lg">{page.lock}</QuestionnaireSubmit>
         </QuestionnaireActions>
       </Questionnaire>
       <a

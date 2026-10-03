@@ -50,6 +50,7 @@ function groupTitle(stage: Stage | null) {
  * Same row and sheet as the roles.
  * The groups are horizontal tabs. Seed opens first.
  * The row is the company and the one reason.
+ * The company name is underlined so the row reads as the control that opens the sheet.
  * The sheet holds the tags and the official site.
  * No shade yet. The values questions are not written.
  */
@@ -100,7 +101,7 @@ function CompanyRow({ company }: { company: Company }) {
           />
         }
       >
-        <span className="min-w-0">{company.name}</span>
+        <span className="min-w-0 underline underline-offset-4">{company.name}</span>
         <span className="min-w-0 text-muted-foreground">{company.why}</span>
       </SheetTrigger>
       <SheetContent
@@ -144,7 +145,7 @@ function CompanySheet({ company }: { company: Company }) {
         target="_blank"
         rel="noopener noreferrer"
       >
-        {page.site}
+        {page.siteFor(company.name)}
       </a>
     </div>
   )

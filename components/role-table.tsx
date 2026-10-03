@@ -31,6 +31,7 @@ const applyLink = buttonVariants({
 
 /**
  * Two facts on the row: company and title.
+ * The company name is underlined so the row reads as the control that opens the sheet.
  * The band, the posting sentence, craft, seat, salary, and place open in the sheet.
  */
 export function RoleTable({
@@ -75,7 +76,7 @@ function RoleRow({ role, shade }: { role: Role; shade: string | null }) {
       >
         <span className="flex min-w-0 items-baseline gap-2">
           {shade ? <span aria-hidden="true">{shade}</span> : null}
-          <span>{role.company}</span>
+          <span className="underline underline-offset-4">{role.company}</span>
         </span>
         <span className="min-w-0 text-muted-foreground">{role.title}</span>
       </SheetTrigger>
@@ -122,7 +123,7 @@ function RoleSheet({ role }: { role: Role }) {
         target="_blank"
         rel="noopener noreferrer"
       >
-        {page.apply}
+        {page.applyTo(role.company)}
       </a>
     </div>
   )

@@ -18,6 +18,9 @@ export const page = {
     "Stage is the last public round. A company with no round stays on the list.",
   noRound: "No public round",
   site: "Site",
+  siteFor(name: string) {
+    return `${name} site`
+  },
   skipLead:
     "No lock. Every role is listed. The band, the craft, and the seat open with the role.",
   nothingInRange: "Nothing in range",
@@ -50,6 +53,9 @@ export const page = {
   stretch: "Stretch",
   assumes: "Assumes",
   apply: "Apply",
+  applyTo(company: string) {
+    return `Apply to ${company}`
+  },
 }
 
 /**

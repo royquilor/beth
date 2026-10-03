@@ -3,6 +3,7 @@ import { page } from "@/lib/catalog"
 
 /**
  * Header. The name is not set in type. The mark is the lockup.
+ * The page heading is read out and kept off the mark.
  * It sits still. Hover runs the inward spiral.
  * Next holds the step and runs a diagonal sweep on this tile.
  * Questions and Companies stay in the top right on every screen.
@@ -18,6 +19,7 @@ export function Lockup({
 }) {
   return (
     <header className="flex flex-col gap-10">
+      <h1 className="sr-only">{page.title}</h1>
       <div className="flex items-center justify-between gap-3">
         <Mark />
         {links.length > 0 ? (

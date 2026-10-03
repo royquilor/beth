@@ -41,7 +41,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn("font-sans", openRunde.variable)}
     >
-      <body>
+      <body className="antialiased">
         <ThemeProvider forcedTheme="light">
           <TooltipProvider>{children}</TooltipProvider>
         </ThemeProvider>
