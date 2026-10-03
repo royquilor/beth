@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 
 import { CompanyTable } from "@/components/company-table"
 import { Lockup } from "@/components/lockup"
+import { MarkPhaseProvider } from "@/components/mark"
 import { Placement } from "@/components/placement"
 import { Questions } from "@/components/questions"
 import { EveryRole, InRange, StretchList } from "@/components/role-sections"
@@ -35,38 +36,40 @@ export default async function HomePage({
   const companiesLink = { href: "/?companies=1", label: page.companies }
 
   return (
-    <main className="mx-auto flex w-full max-w-lg flex-col gap-10 px-6 py-10">
-      <Lockup
-        links={[questionsLink, companiesLink]}
-        dek={
-          answers
-            ? null
-            : companies
-              ? page.companiesLead
-              : skip
-                ? page.skipLead
-                : page.dek
-        }
-      />
-      <Rule />
-      {companies ? (
-        <CompanyTable />
-      ) : answers ? (
-        <Locked answers={answers} />
-      ) : skip ? (
-        <EveryRole roles={everyRole()} />
-      ) : (
-        <Questions />
-      )}
-      <Rule />
-      <footer className="text-base text-muted-foreground">
-        <p>
-          {companies
-            ? page.companiesFoot
-            : `Checked ${checkedOn} against the company pages. A closed role comes off.`}
-        </p>
-      </footer>
-    </main>
+    <MarkPhaseProvider>
+      <main className="mx-auto flex w-full max-w-lg flex-col gap-10 px-6 py-10">
+        <Lockup
+          links={[questionsLink, companiesLink]}
+          dek={
+            answers
+              ? null
+              : companies
+                ? page.companiesLead
+                : skip
+                  ? page.skipLead
+                  : page.dek
+          }
+        />
+        <Rule />
+        {companies ? (
+          <CompanyTable />
+        ) : answers ? (
+          <Locked answers={answers} />
+        ) : skip ? (
+          <EveryRole roles={everyRole()} />
+        ) : (
+          <Questions />
+        )}
+        <Rule />
+        <footer className="text-base text-muted-foreground">
+          <p>
+            {companies
+              ? page.companiesFoot
+              : `Checked ${checkedOn} against the company pages. A closed role comes off.`}
+          </p>
+        </footer>
+      </main>
+    </MarkPhaseProvider>
   )
 }
 

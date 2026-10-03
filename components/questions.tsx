@@ -18,6 +18,7 @@ import {
   QuestionnaireSubmit,
   QuestionnaireTitle,
 } from "@/components/ui/questionnaire"
+import { useHoldNext } from "@/components/use-hold-next"
 import { page, questions } from "@/lib/catalog"
 import { handsProof, prongProof, showProof } from "@/lib/place"
 
@@ -38,6 +39,7 @@ const items = questions.map((question) => ({
  * The component owns the keys, and it only hears them on the form.
  * A letter pressed on the page is forwarded onto the form.
  * A letter selects. It does not advance.
+ * Next holds the question for one sweep of the mark, then moves.
  * Beth's Skip is a mode: it leaves this form and opens every role.
  * Answers stay in the URL. Nothing is stored.
  * The face comes from --font-sans (Open Runde).
@@ -45,6 +47,7 @@ const items = questions.map((question) => ({
 export function Questions() {
   const router = useRouter()
   const [item, setItem] = useState<QuestionId>(questions[0].id)
+  const handleNext = useHoldNext(item, setItem)
   const [statuses, setStatuses] = useState<
     Partial<Record<QuestionId, QuestionnaireItemStatus>>
   >({})
@@ -158,7 +161,9 @@ export function Questions() {
           >
             <QuestionnaireTitle>{question.prompt}</QuestionnaireTitle>
             {"note" in question ? (
-              <QuestionnaireDescription>{question.note}</QuestionnaireDescription>
+              <QuestionnaireDescription>
+                {question.note}
+              </QuestionnaireDescription>
             ) : null}
             <QuestionnaireChoices>
               {question.options.map((option) => (
@@ -172,7 +177,11 @@ export function Questions() {
         ))}
         <QuestionnaireActions>
           <QuestionnairePrevious size="lg">{page.back}</QuestionnairePrevious>
-          <QuestionnaireNext size="lg" disabled={unanswered}>
+          <QuestionnaireNext
+            size="lg"
+            disabled={unanswered}
+            onClick={handleNext}
+          >
             {page.next}
           </QuestionnaireNext>
           <QuestionnaireSubmit size="lg" disabled={unanswered}>

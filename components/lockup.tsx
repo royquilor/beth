@@ -3,6 +3,8 @@ import { page } from "@/lib/catalog"
 
 /**
  * Header. The name is not set in type. The mark is the lockup.
+ * It sits still. Hover runs the inward spiral.
+ * Next holds the step and runs a diagonal sweep on this tile.
  * Questions and Companies stay in the top right on every screen.
  * The ask screen keeps the dek. Pass null to hide the line.
  * Skip and Companies pass their own lead.

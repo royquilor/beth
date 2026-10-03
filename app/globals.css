@@ -118,6 +118,70 @@
     --sidebar-ring: oklch(0.553 0.013 58.071);
 }
 
+/* The mark rests as the dithered tile.
+   Hover runs one inward spiral, on a 1.5s loop.
+   Next runs a diagonal sweep, once, for --mark-step.
+   The sweep has no scale, so it does not read as the hover.
+   A pointer that cannot hover, and reduced motion, leave it still. */
+.mark-live circle {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .mark-live:hover:not([data-phase="step"]) circle {
+    animation-name: mark-snake;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-delay: calc(var(--mark-spiral) * 0.04 * 1.5s);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mark-live[data-phase="step"] circle {
+    animation-name: mark-sweep;
+    animation-duration: var(--mark-step);
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+    animation-delay: calc(var(--mark-sweep) * 0.04 * var(--mark-step));
+  }
+}
+
+@keyframes mark-sweep {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+
+  40% {
+    opacity: 1;
+  }
+}
+
+@keyframes mark-snake {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: scale(1);
+  }
+
+  8% {
+    opacity: 1;
+    transform: scale(1.35);
+  }
+
+  16% {
+    opacity: 0.9;
+    transform: scale(1.12);
+  }
+
+  32% {
+    opacity: 0.78;
+    transform: scale(1);
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
