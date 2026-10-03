@@ -4,8 +4,8 @@ import type { Company } from "@/lib/company"
  * Company list, 3 Oct 2026.
  * The tools on the machine, early teams in the same corner,
  * then the Fast Company 2026 AI pass.
- * Stage is the last public round. Place and how they work are copied
- * only when a posting or a round already said them.
+ * Stage is the last public round. The check is stage-check.md.
+ * Place and how they work are copied only when a posting or a round already said them.
  * Pre-seed is empty until a public pre-seed round is in hand.
  * The AI names left off are recorded in roadmap.md.
  */
@@ -33,8 +33,8 @@ export const companies: Company[] = [
     name: "tldraw",
     href: "https://tldraw.com",
     why: "The infinite canvas. The design engineer seat is London, hybrid.",
-    stage: "seed",
-    round: "Seed, 2022",
+    stage: "later",
+    round: "Series A, Apr 2025",
     work: "hybrid",
     where: "London, hybrid",
   },
@@ -50,9 +50,9 @@ export const companies: Company[] = [
     id: "opal",
     name: "Opal",
     href: "https://www.opal.so",
-    why: "The screen-time app on the machine. The public round is still the seed.",
+    why: "The screen-time app on the machine.",
     stage: "seed",
-    round: "Seed, 2021",
+    round: "$10M, May 2026",
   },
   {
     id: "figma",
@@ -88,6 +88,7 @@ export const companies: Company[] = [
     href: "https://cursor.com",
     why: "The editor on the machine. The US seat left the role list. The company stays.",
     stage: "later",
+    round: "Series D, Nov 2025",
   },
   {
     id: "vercel",
@@ -95,6 +96,7 @@ export const companies: Company[] = [
     href: "https://vercel.com",
     why: "The place the work gets deployed.",
     stage: "later",
+    round: "Series F, Sep 2025",
   },
   {
     id: "cosmos",
@@ -121,6 +123,7 @@ export const companies: Company[] = [
     href: "https://elevenlabs.io",
     why: "The voice product. The product designer seat can close. The company stays.",
     stage: "later",
+    round: "Series C, Jan 2025",
     work: "remote",
     where: "Remote",
   },
@@ -130,7 +133,7 @@ export const companies: Company[] = [
     href: "https://paper.design",
     why: "A design tool for software that has to stand out.",
     stage: "later",
-    round: "Series A, 2026",
+    round: "Series A, Jul 2026",
     work: "remote",
     where: "Remote, Americas, Europe, and Australia",
   },
@@ -164,7 +167,7 @@ export const companies: Company[] = [
     href: "https://factory.ai",
     why: "Agents that plan and ship software, in the terminal and in Slack.",
     stage: "later",
-    round: "Series C, Sep 2026",
+    round: "$200M, Sep 2026",
     where: "San Francisco",
   },
   {
@@ -173,7 +176,7 @@ export const companies: Company[] = [
     href: "https://www.hume.ai",
     why: "A voice that carries emotion. The same corner as ElevenLabs.",
     stage: "later",
-    round: "About $80M",
+    round: "Series B, Mar 2024",
     where: "New York",
   },
   {
