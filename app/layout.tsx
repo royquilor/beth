@@ -42,7 +42,7 @@ export default function RootLayout({
       className={cn("font-sans", openRunde.variable)}
     >
       <body className="antialiased">
-        <ThemeProvider forcedTheme="light">
+        <ThemeProvider>
           <TooltipProvider>{children}</TooltipProvider>
         </ThemeProvider>
       </body>

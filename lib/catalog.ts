@@ -12,6 +12,10 @@ export const page = {
   dek: "Beth names the kind of design engineer you can prove, and the one piece that would change that.",
   questions: "Questions",
   companies: "Companies",
+  theme: "Theme",
+  light: "Light",
+  dark: "Dark",
+  system: "System",
   companiesLead:
     "Companies worth the work. A posting is optional. Pre-seed and seed stay, because a small team can take freelance.",
   companiesFoot:

@@ -15,6 +15,7 @@ House taste for Last. Read this before changing UI. Same lock as Holt: shadcn pr
 ## Colour
 
 - The default theme. Primary stays near-black. No second accent.
+- Light, dark, and system. Light is stone 50 with white cards. Dark uses the stone dark tokens. System follows the machine. The control is in the header.
 - Grays are stone, the warm default. Not neutral, not zinc.
 - Surfaces: `background`, `card`, `sidebar`, `muted`.
 - Text: `foreground`, `muted-foreground`.

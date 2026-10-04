@@ -34,8 +34,10 @@ function isTypingTarget(target: EventTarget | null) {
   )
 }
 
+const modes = ["light", "dark", "system"] as const
+
 function ThemeHotkey() {
-  const { resolvedTheme, setTheme } = useTheme()
+  const { theme, setTheme } = useTheme()
 
   React.useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -55,7 +57,18 @@ function ThemeHotkey() {
         return
       }
 
-      setTheme(resolvedTheme === "dark" ? "light" : "dark")
+      // D inside the theme menu is typeahead for Dark. Leave that to the menu.
+      const target = event.target
+      if (
+        target instanceof Element &&
+        target.closest("[data-slot=dropdown-menu-content]")
+      ) {
+        return
+      }
+
+      const current = modes.find((mode) => mode === theme) ?? "system"
+      const next = modes[(modes.indexOf(current) + 1) % modes.length]
+      setTheme(next)
     }
 
     window.addEventListener("keydown", onKeyDown)
@@ -63,7 +76,7 @@ function ThemeHotkey() {
     return () => {
       window.removeEventListener("keydown", onKeyDown)
     }
-  }, [resolvedTheme, setTheme])
+  }, [theme, setTheme])
 
   return null
 }
