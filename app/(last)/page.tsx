@@ -61,7 +61,7 @@ export default async function HomePage({
           <Questions />
         )}
         <Rule />
-        <footer className="text-base text-muted-foreground">
+        <footer className="text-pretty text-base text-muted-foreground">
           <p>
             {companies
               ? page.companiesFoot

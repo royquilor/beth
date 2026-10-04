@@ -36,7 +36,7 @@ export function Lockup({
           </nav>
         ) : null}
       </div>
-      {dek ? <p className="text-base">{dek}</p> : null}
+      {dek ? <p className="text-pretty text-base">{dek}</p> : null}
     </header>
   )
 }

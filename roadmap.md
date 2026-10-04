@@ -4,9 +4,9 @@ Handoff for the next session. Product lives in this repo (`last/`). One public p
 
 ## Where we are
 
-On `main`, after the Wise pass of 4 Oct 2026. Dev server: `npm run dev` → http://localhost:3000.
+On `main`, after the type pass of 4 Oct 2026. Dev server: `npm run dev` → http://localhost:3000.
 
-The [Beth](https://www.figma.com/design/qyO4FMguMfbsb5Bb8iU2Ut/Beth) frames are the layout reference. Type and the column have moved on purpose since those frames: face is Open Runde (regular and medium) through `--font-sans`, body is `text-base` at 1rem, column is `max-w-lg`. Do not put Departure Mono or the 16.5px size back. The mark is the 24px dithered dot tile in `components/mark.tsx`. It sits still. Hover runs an inward spiral. Next holds the step and runs a diagonal sweep on that same tile. The name is not set beside it. Page background is stone 50. Cards stay white.
+The [Beth](https://www.figma.com/design/qyO4FMguMfbsb5Bb8iU2Ut/Beth) frames are the layout reference. Type and the column have moved on purpose since those frames: face is Open Runde (regular and medium) through `--font-sans`, body is `text-base` at 1rem, column is `max-w-lg`. Section titles are uppercase, regular, tracked, at a 1.1 line-height, and the lines balance. A week under a section is `text-sm`. On skip the week is the section, so it stays `text-base`. Descriptions wrap pretty. Rows that wrap use a 1.5 line-height. The step count is `text-sm` with tabular figures. The A/B/C caps stay `text-xs` on the same face. Do not put Departure Mono, a second face, or the 16.5px size back. The mark is the 24px dithered dot tile in `components/mark.tsx`. It sits still. Hover runs an inward spiral. Next holds the step and runs a diagonal sweep on that same tile. The name is not set beside it. Page background is stone 50. Cards stay white.
 
 Taste: `design.md`. Voice: `lib/catalog.ts`. Placement: `lib/place.ts`. Roles: `lib/roles.ts`.
 
@@ -20,7 +20,7 @@ Taste: `design.md`. Voice: `lib/catalog.ts`. Placement: `lib/place.ts`. Roles: `
 
 Skip is a mode, not “skip this question.” It lists every role with no band lock.
 
-The role list is two columns: company and title. The company name is underlined, so the row reads as the control that opens the sheet. A row opens a sheet with the band, the posting sentence, the craft, the seat, and salary and place when the company published them. Shade marks follow the lock. `▓` is in range, `▒` is stretch, `░` is a role that does not match. Skip has no lock, so the mark is not shown. Rows are grouped by the week they entered. Week 40 is the first list.
+The role list is two columns: company and title. The company name is underlined from the font, so the row reads as the control that opens the sheet. The line clears the descenders. A row opens a sheet with the band, the posting sentence, the craft, the seat, and salary and place when the company published them. Shade marks follow the lock. `▓` is in range, `▒` is stretch, `░` is a role that does not match. Skip has no lock, so the mark is not shown. Rows are grouped by the week they entered. Week 40 is the first list.
 
 The worked-example card (`components/lock-card.tsx`) matches the all-screens frame and is not mounted. The ask frame does not include it.
 
@@ -39,6 +39,8 @@ The ask screen uses the shadcn Questionnaire (`components/ui/questionnaire.tsx`)
 - Hands, show, and craft use `multiple`. Seat, origin, and what you ship most stay one choice. Craft is the question. The five crafts are systems, motion, what to build and the flow, HTML and CSS in a reviewed pull request, and production frontend. Every selected craft counts. None of them raise the band.
 
 ## Done this session
+
+Type pass, 4 Oct 2026. Section titles stay uppercase at `text-base`, regular weight, with tracking, a 1.1 line-height, and balanced lines. A week under In range or Stretch is `text-sm`, so it does not match the heading above it. On skip the week is that heading, so it stays `text-base`. Descriptions use pretty wrapping. Rows that wrap use a 1.5 line-height. A name that opens a sheet takes its underline from the font. The step count is `text-sm` with tabular figures. The A/B/C caps stay `text-xs` on Open Runde. No second face.
 
 Company descriptions, 4 Oct 2026. The row had been a personal reason. A stranger cannot use that. Each description is copied from the company site, from the meta description. Granola publishes none, so the line is the homepage. Semiotic’s homepage publishes none, so the line is the Lighthouse page. xAI’s site now describes SpaceXAI.
 

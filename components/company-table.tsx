@@ -19,7 +19,7 @@ import {
 import { page } from "@/lib/catalog"
 
 const chip =
-  "h-auto rounded-none bg-muted px-1 py-1 text-xs leading-3 font-normal uppercase"
+  "h-auto rounded-none bg-muted px-1 py-1 text-xs leading-tight font-normal tracking-wide whitespace-nowrap uppercase"
 
 const siteLink = buttonVariants({
   variant: "outline",
@@ -96,12 +96,14 @@ function CompanyRow({ company }: { company: Company }) {
         render={
           <Button
             variant="ghost"
-            className="grid h-auto w-full grid-cols-2 items-baseline justify-start gap-3 px-0 py-3 text-left whitespace-normal"
+            className="grid h-auto w-full grid-cols-2 items-baseline justify-start gap-3 px-0 py-3 text-left leading-normal whitespace-normal"
           />
         }
       >
-        <span className="min-w-0 underline underline-offset-4">{company.name}</span>
-        <span className="min-w-0 text-muted-foreground">{company.why}</span>
+        <span className="underline-name min-w-0">{company.name}</span>
+        <span className="min-w-0 text-pretty text-muted-foreground">
+          {company.why}
+        </span>
       </SheetTrigger>
       <SheetContent
         side="bottom"
@@ -116,10 +118,10 @@ function CompanyRow({ company }: { company: Company }) {
 function CompanySheet({ company }: { company: Company }) {
   return (
     <div className="mx-auto flex w-full max-w-lg flex-col gap-4 px-6 py-10">
-      <SheetTitle className="pr-8 text-base font-normal">
+      <SheetTitle className="pr-8 text-balance text-base leading-heading font-normal">
         {company.name}
       </SheetTitle>
-      <p>{company.why}</p>
+      <p className="text-pretty">{company.why}</p>
       <div className="flex flex-wrap gap-2">
         {company.stage ? (
           <Badge variant="secondary" className={chip}>

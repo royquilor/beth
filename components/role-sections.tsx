@@ -12,8 +12,10 @@ import type { Role } from "@/lib/roles"
 function Heading({ title, lead }: { title: string; lead: string }) {
   return (
     <div className="flex flex-col gap-2">
-      <h2 className="text-base uppercase">{title}</h2>
-      <p className="text-base text-muted-foreground">{lead}</p>
+      <h2 className="text-balance text-base leading-heading font-normal tracking-wide uppercase">
+        {title}
+      </h2>
+      <p className="text-pretty text-base text-muted-foreground">{lead}</p>
     </div>
   )
 }
@@ -39,10 +41,10 @@ export function StretchList({ roles, lock }: { roles: Role[]; lock: Lock }) {
       {roles.length === 0 ? (
         <Empty className="flex-none border border-dashed p-10">
           <EmptyHeader>
-            <EmptyTitle className="text-base font-normal tracking-normal uppercase">
+            <EmptyTitle className="text-balance text-base font-normal tracking-wide uppercase">
               {page.nothingAbove}
             </EmptyTitle>
-            <EmptyDescription className="text-base">
+            <EmptyDescription className="text-pretty text-base">
               {page.emptyStretch}
             </EmptyDescription>
           </EmptyHeader>
@@ -60,7 +62,7 @@ export function EveryRole({ roles }: { roles: Role[] }) {
     return (
       <Empty className="flex-none border border-dashed p-10">
         <EmptyHeader>
-          <EmptyTitle className="text-base font-normal tracking-normal uppercase">
+          <EmptyTitle className="text-balance text-base font-normal tracking-wide uppercase">
             {page.emptyAll}
           </EmptyTitle>
         </EmptyHeader>

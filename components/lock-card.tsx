@@ -12,7 +12,7 @@ import {
 } from "@/lib/read"
 
 const chip =
-  "h-auto rounded-none bg-muted px-1 py-1 text-xs leading-3 font-normal uppercase"
+  "h-auto rounded-none bg-muted px-1 py-1 text-xs leading-tight font-normal tracking-wide whitespace-nowrap uppercase"
 
 /**
  * Worked example. The ask screen does not mount this.

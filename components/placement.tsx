@@ -11,13 +11,15 @@ import { lockSentence, practiceLine } from "@/lib/read"
 export function Placement({ lock, company }: { lock: Lock; company?: string }) {
   return (
     <section className="flex flex-col gap-4">
-      <p className="text-base">{lockSentence(lock)}</p>
+      <p className="text-pretty text-base">{lockSentence(lock)}</p>
       <div
         id="gap"
         className="flex flex-col gap-2 rounded-xl border bg-card p-4"
       >
-        <h2 className="text-base uppercase">{page.nextProof}</h2>
-        <p className="text-base">{practiceLine(lock, company)}</p>
+        <h2 className="text-balance text-base leading-heading font-normal tracking-wide uppercase">
+          {page.nextProof}
+        </h2>
+        <p className="text-pretty text-base">{practiceLine(lock, company)}</p>
       </div>
     </section>
   )
