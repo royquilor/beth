@@ -49,7 +49,7 @@ function groupTitle(stage: Stage | null) {
 /**
  * Same row and sheet as the roles.
  * The groups are horizontal tabs. Seed opens first.
- * The row is the company and the one reason.
+ * The row is the company and the description from its site.
  * The company name is underlined so the row reads as the control that opens the sheet.
  * The sheet holds the tags and the official site.
  * No shade yet. The values questions are not written.

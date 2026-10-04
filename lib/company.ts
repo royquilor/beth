@@ -16,6 +16,7 @@ export type Company = {
   id: string
   name: string
   href: string
+  /** Copied from the company's own site. Not a reason written for Roy. */
   why: string
   stage?: Stage
   /** Copied when a round is public. The year stops an old seed reading as a new one. */
