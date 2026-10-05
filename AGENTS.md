@@ -22,7 +22,7 @@ Placement rules live in `lib/place.ts`. Roles Roy edits live in `lib/roles.ts`. 
 
 - Next.js App Router + TypeScript
 - shadcn/ui + Tailwind only. Never add another component library or a raw HTML button
-- No scraper. The page reads companies and live roles from Supabase when env is set. A stranger still locks into the URL. Sign-in is written and not finished. The brief is the Next section of `roadmap.md`.
+- No scraper. The page reads companies and live roles from Supabase when env is set. A stranger still locks into the URL. Sign-in is checked. The next brief is the Next section of `roadmap.md`.
 
 ## How to work
 

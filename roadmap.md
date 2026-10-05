@@ -1,6 +1,6 @@
 # Beth roadmap
 
-Handoff for the next session. Product lives in this repo (`last/`). One public page. The catalogue and the answer row live in Supabase. The page reads companies and live roles from Beth when `.env.local` is set. A stranger still locks into the URL. Sign-in is written and not finished. The next task is to finish the browser check, fix only what that check finds, then mark this task done.
+Handoff for the next session. Product lives in this repo (`last/`). One public page. The catalogue and the answer row live in Supabase. The page reads companies and live roles from Beth when `.env.local` is set. A stranger still locks into the URL. Sign-in is checked. The next task is the company list, in Next.
 
 ## Where we are
 
@@ -40,6 +40,8 @@ The ask screen uses the shadcn Questionnaire (`components/ui/questionnaire.tsx`)
 
 ## Done this session
 
+Sign-in check, 5 Oct 2026. Wrong password stays on `/login` and says “That email and password do not match.” Create account uses the same two fields. No name, no second password, no strength meter. An unconfirmed email stays on `/login`, shows “Check your email to finish creating the account.”, and offers “Send the email again.” It does not enter `/app`. Creating the same email again says “This email already has an account.” and does not add a user. The sentence does not name GitHub, Google, or email, because the response does not. Email sign-in lands on `/app`. With no row, `/app` is the six questions. Lock writes `answers` for that person and routes to `/?hands=…`. `/app` then shows that lock. The band is still `lockFrom`. A different lock in the URL wins over the saved row. `/?skip=1` and `/?companies=1` still win while signed in. Sign out on Companies stays on `/?companies=1`. Sign out on `/app` goes to `/login`. `/` stays the six questions, with Sign in in the header. `/app` with no session is 307 to `/login`. `/signup` is 307 to `/login?account=1`. `/login?recovery=1` opens “Set a new password”. Forgot password posts `redirect_to=http://localhost:3000/auth/callback?type=recovery`. GitHub opens its sign-in for the app named Beth, with `redirect_to` `http://localhost:3000/auth/callback`. Google opens its sign-in to continue to the project host. Neither account password was entered. A publishable-key request with no session is refused on `answers` (`42501`). The built-in mailer returned `over_email_send_rate_limit` on the first letter to an address that is not on the team. The page said “Wait a moment, then try again.” The letter was not delivered. Custom SMTP is Authentication → Emails. No client id or secret was invented. The check user and the answer row were removed. Counts after that: 0 users, 0 answers. `npm test` (37) and `npm run typecheck` passed. Nothing was committed.
+
 Catalogue read, 5 Oct 2026. The server page reads companies and live roles from Beth when both public env vars are set. Live roles are `off` null. A blank column becomes a field left off. `created_at`, `updated_at`, and `off` never reach a component. The quoted `where` column is `where` on the row. Missing env uses the TypeScript files. Env set and a failed query throws, and does not fall back to the files. `splitRoles` and `everyRole` take the list. `CompanyTable` takes the companies. The tests still use the TypeScript arrays. Packages are pinned: `@supabase/supabase-js` 2.117.2 and `@supabase/ssr` 0.12.7. The lockfile is committed with this read. `.env.local` holds the URL and the `sb_publishable_` key. The server client is `lib/supabase/server.ts`. It follows the current `@supabase/ssr` guide. Cookie writes from a Server Component are ignored. There is no browser client, no `proxy.ts`, and no sign-in. Checked in the browser on `http://localhost:3000`: companies (Seed, Later, No public round), skip (40 live roles, Week 40, the archived seat stays off), and a stranger lock in the URL. The Wise sheet still shows salary and London. Marker, with no public round, opens on London. `npm test` and `npm run typecheck` passed. The dev server on port 3000 was restarted so it would load `.env.local`.
 
 Supabase, 5 Oct 2026. Beth is a live project, ref `opuoavkqfwrcknmhskma`, URL `https://opuoavkqfwrcknmhskma.supabase.co`. Region was chosen in the dashboard. Status was Healthy before the tables were created. The MCP server in `~/.cursor/mcp.json` points at `https://mcp.supabase.com/mcp?project_ref=opuoavkqfwrcknmhskma&features=docs%2Caccount%2Cdatabase%2Cdebugging%2Cdevelopment%2Cfunctions%2Cbranching`. Sign-in for that server is already done in Cursor. Automatic RLS was ticked at project creation. That installs `public.rls_auto_enable()`, an event trigger. Execute on that function was revoked from `public`, `anon`, and `authenticated` so the Data API cannot call it. The trigger itself stays.
@@ -74,7 +76,7 @@ Interface pass, 3 Oct 2026. A review of the ask, the lock, skip, companies, and 
 
 Left from that review, and not this task:
 
-- The button loader, and Lock holding the mark, stay under After this. They are not the sign-in task.
+- The button loader, and Lock holding the mark, stay under After the company list.
 
 Mark, 3 Oct 2026. The tile stays the 24px dither, 21 dots, four corners empty. The paths are recreated from [Dot Matrix](https://dotmatrix.zzzzshawn.cloud/). The registry was not installed. The library’s rest opacity is about 8%, and at 24px that erases the tile, so the floor stays high. Hover is Core Spiral: one path, clockwise, inward. That is the lock, several proofs into one place. Flux Columns and a scan were the other trials. They read as a meter and a search, so they are not the mark. Next runs Prism Sweep, a diagonal pass with no scale, so it does not read as the hover. The question stays until that pass ends. `MarkPhaseProvider` in `app/(last)/page.tsx` carries the beat from the questions to the tile. The hold is `components/use-hold-next.ts`. A pointer that cannot hover, and reduced motion, leave the tile still.
 
@@ -94,158 +96,73 @@ Left off. Cogram, because the title is three jobs. Lovable’s Design Engineer, 
 
 ## Next
 
-One task: finish the sign-in check from 5 Oct 2026. The code is already in the working tree. Do not rebuild `/login`, `proxy.ts`, or the saved lock. Do not commit unless Roy asks. The button loader, the 100 companies, and the Friday pass stay under After this.
+One task: file the next companies Roy would work with, toward 100. 26 are already in `lib/companies.ts`. Do not redo sign-in. Do not commit unless Roy asks. The button loader, the Friday role pass, and the quadrant stay under After the company list.
 
-GitHub and Google are on. Email and password is on. Email confirmation is still required (`mailer_autoconfirm` is false). A publishable-key request with no session was refused on `answers` (`42501`, permission denied for table answers). `npm test` (37) and `npm run typecheck` passed after the browser-client fix below. Nothing is committed.
+### Where the list lives
 
-### Already checked in the browser
+`/?companies=1` is the page. Seed opens first. Names inside a tab are alphabetical. tldraw stays with the T names. The file keeps the order they were filed. `groupCompanies` in `lib/company.ts` sorts.
 
-Dev server was already on http://localhost:3000 and was compiling `proxy.ts`. These returned 200: `/`, `/?skip=1` (Week 40, Sign in in the header), `/?companies=1` (Seed first), and a stranger lock `/?hands=prototype&ships=prototype&show=prototype&seat=team&prong=systems&origin=design`. `/app` returned 307 to `/login`. `/signup` returned 307 to `/login?account=1`. `/login` showed Continue with GitHub, Continue with Google, then email and password, then Sign in, then Create an account.
+With `.env.local` set, the page reads `companies` from Beth. A new object in the file does not show until that row is in the table. Insert only the new rows. Do not rebuild the table. Do not rewrite the 26 already there. Do not write a general Friday copy command. The TypeScript file stays the seed and the test fixture. Tests use that file. They do not assert a count of 26.
 
-### Stopped here
+Missing env uses the file. Env set and a failed query throws, and does not fall back to the file. Dev server: `npm run dev` → http://localhost:3000. Node for `npm test` is 22. The `node` on the default path is 20, and that version rejects `--experimental-strip-types`.
 
-The first Sign in click threw. `bethEnv()` reads `process.env` as one object. Next.js does not inline `NEXT_PUBLIC_` values that way in the browser, so both were empty and `lib/supabase/client.ts` threw. The fix passes each name in directly. Do not put `bethEnv()` with no argument back in that file. The server client can keep calling `bethEnv()` as it does.
+### The cut
 
-A second Sign in, with `not-a-person@example.com` and a wrong password, left the fields `invalid` and re-enabled the buttons. The mapped sentence was not read off the page before the session stopped. Confirm it says “That email and password do not match.” and that the URL stays `/login`. Then finish the rest of Done when.
+Hiring is not the gate. A closed role can be tagged later. Keep a company when the product is a tool Roy already uses, or when it sits on a published list such as [Fast Company’s Most Innovative Companies](https://www.fastcompany.com/most-innovative-companies/list) and the design or the use case is one he would join.
 
-### Still to check
+The tools on the machine are already filed: Figma, ChatGPT, Grok, X, Cursor, Vercel, Cosmos, Granola, Opal. Cursor and Vercel stay on this list. They left the week 40 roles because the place was the United States. Place is a column. It is not a reason to drop the company.
 
-- Create an account uses the same two fields. No name, no second password, no strength meter. An unconfirmed email stays on `/login`, shows `page.confirmSent`, and can send the letter again. It does not enter `/app`.
-- A real GitHub sign-in and a real Google sign-in land on `/app`. If the Google client or the GitHub app fails, stop and name the dashboard field. Do not invent a client id or a secret.
-- Authentication → URL configuration still needs a look: site URL `http://localhost:3000`, redirect allow list includes `http://localhost:3000/auth/callback`. Email confirmation, password reset, Google, and GitHub all return to `app/auth/callback/route.ts`. Forgot password sends the reset with `?type=recovery` so the callback can open the new-password field. That query was not tried.
-- An email that already exists does not create a second user. Auth hides the provider when `identities` is empty, so the sentence is `page.alreadyAccount`. Name GitHub, Google, or email and password only when the response actually names that provider.
-- A signed-in Lock upserts `answers` for `auth.uid()`, then routes to `/?hands=…`. A failed upsert stays on the questions and shows `page.saveFailed`. `/app` with a saved row shows that lock. `/app` with no row is the six questions. The band is still `lockFrom`.
-- `/?skip=1` and `/?companies=1` still win while signed in. Sign out stays on the current public URL. Sign out from `/app` goes to `/login`.
-- No env file means no Sign in control. Do not reinstall `@supabase/supabase-js` or `@supabase/ssr`. Do not overwrite `components/ui/button.tsx`. The login block’s overwrite would put the focus ring and the `text-sm` size back. The local button stays.
-- `shadcn` blocks `login-01` and `signup-01` are the cards. `field` and `label` were added. Signup is not its own screen. `app/signup/page.tsx` redirects to `/login?account=1`.
+A name that is not already a tool he uses still has to pass Roy’s chance cut: London, at pre-seed, seed, or Series A. Series A sits under Later.
 
-Files already touched: `proxy.ts`, `lib/supabase/proxy.ts`, `lib/supabase/client.ts`, `app/auth/callback/route.ts`, `app/login/page.tsx`, `app/signup/page.tsx`, `app/app/page.tsx`, `app/(last)/page.tsx`, `components/login-form.tsx`, `components/signup-form.tsx`, `components/frame.tsx`, `components/locked.tsx`, `components/lockup.tsx`, `components/questions.tsx`, `lib/catalog.ts`, `lib/auth-client.ts`, `lib/auth-error.ts`, `lib/answers.ts`, `lib/load-lock.ts`, `lib/save-lock.ts`, `lib/session.ts`, `lib/sign-out.ts`, plus `lib/auth-error.test.ts` and `lib/answers.test.ts` on the test script. `components/ui/field.tsx` and `components/ui/label.tsx` are new. `lib/supabase/server.ts` was left as it was.
+The people source is `w40/internet-friends.txt`, beside this repo. The 100 is a reading list of companies. The people list stays at ten to twenty. Do not follow that people list in one sitting. File a batch, write who stayed off and why, then stop.
 
-When the checks pass, write that here, move this task under Done this session, and stop.
+### Fields
 
-Roy replaced the magic link on 5 Oct 2026. Supabase Auth stores the password. Do not add a `passwords` table. Do not send a magic link.
+Each company is a hand-tagged record, in the same spirit as a role. The type is `Company` in `lib/company.ts`.
 
-### Spec
+- `id`, `name`, `href`, `why`. `why` is copied from the company site, from the meta description. Granola publishes none, so that line is the homepage. A personal note does not belong on the row. A stranger has to be able to read it.
+- `stage`, only when a round is public: `pre-seed`, `seed`, or `later`. Series A and anything after it is `later`. A value that is unsure stays off. The company remains on the full list, in the open tab.
+- `round`, the series and the date they published. `Series D, Nov 2025`. A dollar amount with no letter stays an amount. It does not become a series. Opal announced $10M in May 2026 and did not name a letter, so the amount is on the sheet and the stage stayed seed.
+- `work`, only when they said it: `remote`, `hybrid`, or `room`.
+- `where`, only when they published a place.
 
-- Providers, in this order: GitHub, then Google, then email and password. No magic link.
-- After success, go to `/app`. After failure, stay on `/login` and show the mapped error. Map the provider error to a sentence in `lib/catalog.ts`. Do not show the raw error.
-- An unconfirmed email cannot enter `/app`. `/login` offers to send the email again.
-- Unauthenticated people are sent away from `/app` to `/login`. On this Next.js that check is `proxy.ts`. `middleware.ts` is not called. Do not send a stranger away from `/`, skip, or companies.
-- Do not create a second user when the email already exists. Name the provider they already used, and leave the account as it is.
+Run `stage-check.md` for every name you file. Read the company’s own post first, then a press release they issued. A model does not write the stage. A database, a funding tracker, or a post that is not from the company does not move the stage. If two pages disagree, leave the filed round. Pre-seed is empty until a public pre-seed round is in hand.
 
-Do not create the tables again. Do not add companies. Do not install the packages again. Do not commit unless Roy asks. Read this section, then `AGENTS.md`, then `node_modules/next/dist/docs/` before writing a route or `proxy.ts`. Look up the current Next.js App Router client with the Supabase skill and the Supabase MCP `search_docs`. Do not trust a remembered snippet. This Next.js is 16.3.4. The session file is `proxy.ts` at the root of `last/`, and the export is `proxy`. It is not `middleware.ts`.
+The six questions still set the band. They do not filter this list. Values questions are not written. Do not add a free-text values field. A company that does not match stays on the list. Hiding it would pretend the company was never one he liked.
+
+The row is the company and `why`. The sheet holds the tags and a link to the official site. Companies uses the same row and sheet as the roles.
+
+### Already in, and left off
+
+Read Company list so far before adding a name. Those paragraphs are the record. Do not re-file a company that is already there. Do not bring back a name that paragraph left off.
 
 ### Done when
 
-- A stranger on `/` still sees the six questions, locks through the URL, and never has to make an account. Skip and Companies still work.
-- Sign in is `/login`. GitHub, then Google, then email and password. No magic link. The header word links there.
-- A successful sign-in lands on `/app`. A failed one stays on `/login` and shows the mapped error. An unconfirmed email stays out of `/app` and can resend the letter.
-- A visit to `/app` with no answers in the query shows that person’s lock. The band is still `lockFrom`. The database does not grade it. `/` stays public.
-- `/?skip=1` and `/?companies=1` still win while signed in. The saved row does not take over those screens.
-- A request with the publishable key and no session is refused on `answers` (`42501`). A signed-in person reads only their own row.
-- `npm test` and `npm run typecheck` pass. Check the four screens in the browser at http://localhost:3000.
+- The new companies are in `lib/companies.ts` and in the Beth `companies` table.
+- Each new `why` is from that company’s site. Stage, round, work, and place are copied only when the company published them.
+- `/?companies=1` shows the new names under the right tab. Seed still opens first.
+- Who stayed off, and why, is written under Company list so far.
+- `npm test` and `npm run typecheck` pass. Do not commit unless Roy asks.
 
-### What the page shows
+### Leave alone
 
-`app/(last)/page.tsx` is still the server page. It already calls `loadCatalogue`. Decide the screen in this order:
+Sign-in is checked. Do not rebuild `/login`, `proxy.ts`, or the saved lock. `lib/supabase/client.ts` passes each `NEXT_PUBLIC_` name in directly. Do not put `bethEnv()` with no argument back in that file. GitHub, Google, and email and password are on. Email confirmation is still required. The built-in mailer only sends to team addresses until Authentication → Emails has a custom SMTP server. Do not invent a client id or a secret. Do not send a magic link. Do not add a `passwords` table.
 
-1. `/?companies=1` is the company list, signed in or not.
-2. A query that `parseAnswers` accepts is that lock. A signed-in submit just wrote this query, so the URL wins over an older row.
-3. `/?skip=1`, when the query is not a lock, is every role.
-4. `/app` with a session and a saved row is that lock. `/app` with a session and no row is the six questions.
-5. `/` is the six questions for a stranger, and for a missing env file. It does not require a session.
+No env file means no Sign in control. Do not reinstall `@supabase/supabase-js` or `@supabase/ssr`. Do not overwrite `components/ui/button.tsx`. The login block’s overwrite would put the focus ring and the `text-sm` size back. The local button stays.
 
-### Sign-in
+### Company list so far
 
-GitHub is first, Google is second, and email and password sit below. The first visit on GitHub or Google creates the account only when that email is new. Look up the current Supabase Auth guide for email password, Google, and GitHub before writing the calls. Do not trust a remembered snippet.
-
-In the dashboard, Authentication → URL configuration: site URL `http://localhost:3000`, and the redirect allow list includes `http://localhost:3000/auth/callback`. Email confirmation and the password reset both return to that callback. Google and GitHub use the same callback. Enable both providers. If the Google client or the GitHub app is missing, stop and name the values Roy pastes into the provider settings. Do not invent a client id or a secret. Do not ship a button that cannot complete.
-
-`app/auth/callback/route.ts` exchanges the code for a session, then redirects to `/app`. A failure, or an email that is not confirmed yet, returns to `/login` with the mapped error. Cookie writes work in a route handler. They do not work in a Server Component. `lib/supabase/server.ts` already ignores that Server Component error.
-
-`proxy.ts` refreshes a session that already exists. Use `getClaims()`. Do not trust `getSession()` in server code. Return the response that carries the refreshed cookies. An unauthenticated request to `/app` redirects to `/login`. Leave `/`, skip, and companies open.
-
-`lib/supabase/client.ts` is `createBrowserClient`. It is not written yet. The sheet and the signed-in submit use it. The lists stay on the server client.
-
-The header is `components/lockup.tsx`. It is a server component and it only renders anchors for Questions and Companies. Do not turn it into a client component. Sign in is an anchor to `/login`, in the nav, after those links and before `ModeToggle`. Same size and colour as those links: `text-sm text-muted-foreground`. The word is `page.signIn` until there is a session, then `page.signOut`. Sign out ends the session and stays on the current URL.
-
-`/login` is the sign-in page. Build it from `components/ui/input.tsx` and Button. Do not restyle them. Do not put the form on the questionnaire. Do not add another icon set. Order on the page: Continue with GitHub, Continue with Google, then email and password. A text control switches between Sign in and Create account: `page.needAccount` and `page.haveAccount`. Create account uses the same two fields. Forgot password sits on Sign in only. It asks for the email and Supabase sends the reset. Use the password rules already set in the project. Do not add a strength meter.
-
-An unconfirmed email does not enter `/app`. `/login` shows `page.confirmSent` and a control to send the letter again. That letter finishes the account. It is not a magic-link sign-in. If the email already belongs to GitHub or Google, say so and do not create a second user.
-
-Words, added to `page` in `lib/catalog.ts`:
-
-- `signIn`: "Sign in"
-- `signOut`: "Sign out"
-- `email`: "Email"
-- `password`: "Password"
-- `createAccount`: "Create account"
-- `needAccount`: "Create an account"
-- `haveAccount`: "Already have an account"
-- `forgot`: "Forgot password"
-- `resetSent`: "Check your email. The link sets a new password."
-- `confirmSent`: "Check your email to finish creating the account."
-- `resend`: "Send the email again."
-- `continueGitHub`: "Continue with GitHub"
-- `continueGoogle`: "Continue with Google"
-- `saveFailed`: "The lock did not save. The questions are still here."
-
-No env file means no Sign in control. The TypeScript lists still render. Dev server: `npm run dev` → http://localhost:3000. Restart it after adding `proxy.ts` if the session cookie does not stick.
-
-### Saving the lock
-
-`components/questions.tsx` already writes the six answers into the query and routes to `/?hands=…`. Keep that for a stranger.
-
-A signed-in Lock upserts `answers` for `auth.uid()`, then routes to the same query. The primary key is `user_id`. Set `user_id` from the signed-in id. Row security rejects any other id. If the upsert fails, stay on the questions and show `page.saveFailed`. Do not route to a lock that did not save.
-
-Columns, same names as the query string. `prong` is a text array. `updated_at` has a default. The page does not read it.
-
-| Column | Closed values |
-| --- | --- |
-| `hands` | `files`, `prototype`, `merged` |
-| `ships` | `system`, `prototype`, `production` |
-| `show` | `file`, `prototype`, `merged`, `used` |
-| `seat` | `team`, `solo` |
-| `origin` | `design`, `engineering` |
-| `prong` | `systems`, `motion`, `judgment`, `css`, `frontend` |
-
-Load the row only after `getClaims()` says someone is signed in. Select `hands`, `ships`, `show`, `seat`, `origin`, and `prong`. Drop `user_id` and `updated_at` before the page uses the row. Run it through the same closed lists as `parseAnswers`. A value outside those lists throws. `anon` has no grant on `answers`. Querying it with no session returns `42501` and must not take down the ask screen, so do not run that query for a stranger.
-
-### Already in place
-
-- `.env.local` is set and ignored by `.env*`. `NEXT_PUBLIC_SUPABASE_URL` is `https://opuoavkqfwrcknmhskma.supabase.co`. `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` is the `sb_publishable_` key. Do not use the legacy anon JWT. Do not put the database password or the service role key in any file.
-- `@supabase/supabase-js` is `2.117.2`. `@supabase/ssr` is `0.12.7`. Both are pinned. The lockfile is committed with the catalogue read.
-- `lib/supabase/server.ts` is the server client. `cookies()` is async. `getAll` and `setAll` are the cookie methods.
-- `lib/beth-env.ts` chooses the files or Beth. `lib/rows.ts` maps a catalogue row. `lib/catalogue.ts` loads companies and live roles. `splitRoles` and `everyRole` take that list. `CompanyTable` takes the companies.
-- `answers` already exists. One row per person. Policies are already on. Do not write a new migration for this task.
-
-### Decisions already made
-
-Supabase, not Convex. One shared catalogue. One private answer row per person. No bookmarks table. The six questions do not filter companies. Row security is on. `anon` and `authenticated` may select companies and roles. Insert, update, and delete on those two require `app_metadata.role = 'owner'`. Do not read `user_metadata` for that. `answers` has select, insert, update, and delete for `authenticated` only, with `auth.uid() = user_id` on both `using` and `with check`. `anon` has no grant on `answers`. The publishable key may ship in the browser. The service role key may not. The TypeScript files stay in git as the Friday seed and the test fixture. A later Friday edits the files, then copies the change into Beth. This pass does not build that copy step.
-
-### Ruled out
-
-Convex. `localStorage`. A magic link. A second user for an email that already exists. A `passwords` table in `public` (Supabase Auth holds the password). A per-user copy of companies or roles. Hiding a company that does not match. Letting the database set the band. Rendering archived roles. Putting the direct connection string or the service role key in the app. Using the legacy anon JWT for the new client. Calling `rls_auto_enable` from the website. A sign-in form on the ask screen. A newsletter field. Requiring an account to see the lists or to lock on `/`. Docker and a local Supabase stack. `middleware.ts` on this Next.js. Redirecting a stranger away from `/`, skip, or companies. An account page. Showing the email address in the header. The old project ref `khuwcrrsdsiouzdnqpcx`, and the mistyped ref `opuouavkqfwrcnmhskma`. The `agent` CLI, which is not installed. `npx skills add supabase/agent-skills`, because the Supabase skill is already in use.
-
-### Files
-
-The TypeScript lists stay in git as the seed and the test fixture: `lib/companies.ts`, `lib/lists/2026-w40.ts`, `lib/archive.ts`, `lib/roles.ts`. The page no longer closes over them when env is set.
-
-This task may touch `components/questions.tsx`, `components/lockup.tsx`, `app/(last)/page.tsx`, `lib/catalog.ts`, and new files `app/login/page.tsx`, `app/app/page.tsx`, `lib/supabase/client.ts`, `lib/supabase/proxy.ts`, `proxy.ts`, and `app/auth/callback/route.ts`. `lib/supabase/server.ts` already exists. Change it only if the current guide disagrees with it. Do not add a `.css` file. Do not add a second component library.
-
-### After this, not this task
-
-The research task after the wire-up is a list of 100 companies Roy would work with. Hiring is not the gate. A closed role can still be tagged later. The cut is the product: a tool he already uses, or a company on a published list such as [Fast Company’s Most Innovative Companies](https://www.fastcompany.com/most-innovative-companies/list), kept when the design or the use case is one he would join. The seed is the tools on the machine: Figma, ChatGPT, Grok, X, Cursor, Vercel, Cosmos, Granola, Opal. Cursor and Vercel stay on this list. They left the week 40 roles because the place was the United States. Place is a column here, not a reason to drop the company.
-
-Companies is a link in the header, beside Questions. It uses the same row and sheet as the roles. The groups are horizontal tabs. Seed opens first. Names inside a tab are alphabetical. tldraw stays with the T names. The row is the company and the description copied from its site. The sheet holds the tags and a link to the official site. The list shows every company until the values questions are answered. Those answers stay in the URL, the same way the six do. A company that does not match stays on the list in the light shade. Hiding it would pretend the company was never one he liked.
-
-Each company is a hand-tagged record, in the same spirit as a role. The fields are the site, the description from that site, the place, how they work, and the stage. How they work is closed: remote, hybrid London, or in the room. Stage is closed: pre-seed, seed, or later. Pre-seed and seed stay on the list even with no posting, because a small team can take freelance. Stage is set only when a round is public. A value that is unsure stays on the full list and drops out of a question that asks for it. The wider values choices are not written yet. Do not add a free-text values field. The six questions still set the band. They do not filter this list. ElevenLabs is on the company list. The product designer seat can still close. The source for the scout is `w40/internet-friends.txt`. The 100 is a reading list of companies. The people list stays at ten to twenty. Do not follow that list in one sitting.
+Read this before adding a name. It is the record of who is already filed and who stayed off.
 
 The first list is on `/?companies=1`, filed 3 Oct 2026. A Fast Company 2026 AI pass the same day filed Anthropic, World Labs, Runway, Factory, Hume, and Decart. Left off that list: Google, Abridge, Cerebras, Alibaba, Darktrace, Mithril, Lila Sciences, FieldAI, OpenEvidence, GC AI, Turing, Cohere, Snorkel, and Reflection. Recraft was filed the same day, after that pass. The source is [recraft.ai](https://www.recraft.ai) and their [Series B post](https://www.recraft.ai/press-releases/series-b-announcement) of May 2025. A July 2025 note adds investors to that same series, so the stage stays later. The [AI designer](https://jobs.ashbyhq.com/recraft/64655615-7a15-4e41-bd92-d2c91201b7a8) posting is open on the [careers page](https://www.recraft.ai/careers). It stayed off the role list. That seat grades taste on the image model. The place is remote in Armenia, Georgia, Kazakhstan, and Serbia. Marker and Meticulous were filed the same evening. Marker is [marker.page](https://marker.page). The writing product is on their about page. The $13m seed is in the press, not on that page, so the stage stays off. The [product designer](https://marker.page/jobs/product-designer) posting is on the week 40 role list. They grade a portfolio and the design system, and they say you are not the engineer, so the band is taste, the craft is systems, and the seat is a team. Meticulous is their [Series A post](https://www.meticulous.ai/blog/series-a) of 14 July 2026. The product is a pixel-level preview before merge. Onlook and Semiotic are the recent seeds. Glue is a YC Winter 2026 seed, two people, and the site was down, so it stayed off. Amie stays under seed. The last round the company named is the 2022 seed. Opal stays under seed too. In May 2026 the company said it raised $10M and did not name a letter, so the amount is on the sheet and the stage did not move. tldraw sits under later. The company announced a $10M Series A on 9 April 2025, led by Lux Capital and Definition. The design engineer posting says the same. Screen Studio has no public round. A database row that calls it a seed was left off. The same pass copied rounds from company posts: Cursor Series D, Nov 2025; Vercel Series F, Sep 2025; ElevenLabs Series C, Jan 2025; Paper Series A, Jul 2026; Hume Series B, Mar 2024. Factory’s post names $200M in Sep 2026 and no letter. Figma, OpenAI, xAI, X, and Anthropic stay later with no round until their own post is the source. Pre-seed is empty until a public pre-seed round is in hand. The check for the next pass is `stage-check.md`. Values questions are still not written, so the list does not filter yet.
 
+### After the company list
+
+Not this task. The button loader, the Friday role pass, and the quadrant wait until the company batch is filed.
+
 The mark half of the wait is in. Next and Lock are pressable, and an empty Next names the fix, but the button still has no loader. Lock does not hold the mark. Do not add a server to slow the list. Do not install the Dot Matrix registry. The paths already live on the tile.
 
-Each Friday, run the five sources above, then `grok-roles-prompt.md`, then `stage-check.md` for every company still on pre-seed or seed and for any later company whose round is missing. Check every hit on the company careers page. A closed role moves to `lib/archive.ts`. A new open role goes in `lib/lists/YYYY-Www.ts` and shows on the table under that week. The list is still tagged by hand. A model does not write the band. The same rule as the parked Jev box: sort the posting into the closed values, and if the sort is unsure, leave it off.
+Each Friday, run the five sources in the fund pass under Done this session, then `grok-roles-prompt.md`, then `stage-check.md` for every company still on pre-seed or seed and for any later company whose round is missing. Check every hit on the company careers page. A closed role moves to `lib/archive.ts`. A new open role goes in `lib/lists/YYYY-Www.ts` and shows on the table under that week. The list is still tagged by hand. A model does not write the band. The same rule as the parked Jev box: sort the posting into the closed values, and if the sort is unsure, leave it off.
 
 Week 40 is filed. Checked 2 Oct 2026, including the fund pass the same day. Wise’s six product designer seats were added on 4 Oct, still inside this week.
 
