@@ -1,6 +1,6 @@
 # Beth roadmap
 
-Handoff for the next session. Product lives in this repo (`last/`). One public page. The catalogue and the answer row live in Supabase. The page reads companies and live roles from Beth when `.env.local` is set. A stranger still locks into the URL. The next task is magic-link sign-in and saving a signed-in lock.
+Handoff for the next session. Product lives in this repo (`last/`). One public page. The catalogue and the answer row live in Supabase. The page reads companies and live roles from Beth when `.env.local` is set. A stranger still locks into the URL. The next task is sign-in with email and password, or with Google or GitHub, then saving a signed-in lock.
 
 ## Where we are
 
@@ -94,15 +94,26 @@ Left off. Cogram, because the title is three jobs. Lovable’s Design Engineer, 
 
 ## Next
 
-One task: magic-link sign-in, then save that person’s lock. Finish it, verify it, mark it done here, and stop. The button loader, the 100 companies, and the Friday pass stay under After this.
+One task: sign in with email and password, or with Google or GitHub, then save that person’s lock. Finish it, verify it, mark it done here, and stop. The button loader, the 100 companies, and the Friday pass stay under After this.
+
+Roy replaced the magic link on 5 Oct 2026. Supabase Auth stores the password. Do not add a `passwords` table. Do not send a magic link.
+
+### Spec
+
+- Providers, in this order: GitHub, then Google, then email and password. No magic link.
+- After success, go to `/app`. After failure, stay on `/login` and show the mapped error. Map the provider error to a sentence in `lib/catalog.ts`. Do not show the raw error.
+- An unconfirmed email cannot enter `/app`. `/login` offers to send the email again.
+- Unauthenticated people are sent away from `/app` to `/login`. On this Next.js that check is `proxy.ts`. `middleware.ts` is not called. Do not send a stranger away from `/`, skip, or companies.
+- Do not create a second user when the email already exists. Name the provider they already used, and leave the account as it is.
 
 Do not create the tables again. Do not add companies. Do not install the packages again. Do not commit unless Roy asks. Read this section, then `AGENTS.md`, then `node_modules/next/dist/docs/` before writing a route or `proxy.ts`. Look up the current Next.js App Router client with the Supabase skill and the Supabase MCP `search_docs`. Do not trust a remembered snippet. This Next.js is 16.3.4. The session file is `proxy.ts` at the root of `last/`, and the export is `proxy`. It is not `middleware.ts`.
 
 ### Done when
 
 - A stranger on `/` still sees the six questions, locks through the URL, and never has to make an account. Skip and Companies still work.
-- The header has Sign in, after Companies and before the theme control. It opens a sheet. The sheet asks for an email and sends the link. No password. No second page.
-- After the email link, a visit to `/` with no answers in the query shows that person’s lock. The band is still `lockFrom`. The database does not grade it.
+- Sign in is `/login`. GitHub, then Google, then email and password. No magic link. The header word links there.
+- A successful sign-in lands on `/app`. A failed one stays on `/login` and shows the mapped error. An unconfirmed email stays out of `/app` and can resend the letter.
+- A visit to `/app` with no answers in the query shows that person’s lock. The band is still `lockFrom`. The database does not grade it. `/` stays public.
 - `/?skip=1` and `/?companies=1` still win while signed in. The saved row does not take over those screens.
 - A request with the publishable key and no session is refused on `answers` (`42501`). A signed-in person reads only their own row.
 - `npm test` and `npm run typecheck` pass. Check the four screens in the browser at http://localhost:3000.
@@ -114,28 +125,42 @@ Do not create the tables again. Do not add companies. Do not install the package
 1. `/?companies=1` is the company list, signed in or not.
 2. A query that `parseAnswers` accepts is that lock. A signed-in submit just wrote this query, so the URL wins over an older row.
 3. `/?skip=1`, when the query is not a lock, is every role.
-4. `/` with a session and a saved row is that lock.
-5. Anything else is the six questions. That includes a stranger, a signed-in person with no row, and a missing env file.
+4. `/app` with a session and a saved row is that lock. `/app` with a session and no row is the six questions.
+5. `/` is the six questions for a stranger, and for a missing env file. It does not require a session.
 
 ### Sign-in
 
-Supabase sends the email. In the dashboard, Authentication → URL configuration: site URL `http://localhost:3000`, and the redirect allow list includes `http://localhost:3000/auth/callback`. The magic link’s `emailRedirectTo` is that callback. If this session cannot change the dashboard, stop and name those two values. Do not guess another redirect.
+GitHub is first, Google is second, and email and password sit below. The first visit on GitHub or Google creates the account only when that email is new. Look up the current Supabase Auth guide for email password, Google, and GitHub before writing the calls. Do not trust a remembered snippet.
 
-`app/auth/callback/route.ts` exchanges the code for a session, then redirects to `/`. Cookie writes work in a route handler. They do not work in a Server Component. `lib/supabase/server.ts` already ignores that Server Component error.
+In the dashboard, Authentication → URL configuration: site URL `http://localhost:3000`, and the redirect allow list includes `http://localhost:3000/auth/callback`. Email confirmation and the password reset both return to that callback. Google and GitHub use the same callback. Enable both providers. If the Google client or the GitHub app is missing, stop and name the values Roy pastes into the provider settings. Do not invent a client id or a secret. Do not ship a button that cannot complete.
 
-`proxy.ts` refreshes a session that already exists. Use `getClaims()`. Do not trust `getSession()` in server code. Return the response that carries the refreshed cookies. The guide’s sample redirects a stranger to `/login`. Leave that redirect out.
+`app/auth/callback/route.ts` exchanges the code for a session, then redirects to `/app`. A failure, or an email that is not confirmed yet, returns to `/login` with the mapped error. Cookie writes work in a route handler. They do not work in a Server Component. `lib/supabase/server.ts` already ignores that Server Component error.
+
+`proxy.ts` refreshes a session that already exists. Use `getClaims()`. Do not trust `getSession()` in server code. Return the response that carries the refreshed cookies. An unauthenticated request to `/app` redirects to `/login`. Leave `/`, skip, and companies open.
 
 `lib/supabase/client.ts` is `createBrowserClient`. It is not written yet. The sheet and the signed-in submit use it. The lists stay on the server client.
 
-The header is `components/lockup.tsx`. It is a server component and it only renders anchors for Questions and Companies. Do not turn it into a client component. Add a client control, in the nav, after those links and before `ModeToggle`. Same size and colour as those links: `text-sm text-muted-foreground`. The word is `page.signIn` until there is a session, then `page.signOut`. Sign out ends the session and stays on the current URL. The sheet is the installed `Sheet`, `side="bottom"`, plus `components/ui/input.tsx` and Button. Do not restyle them. Do not put the form on the questionnaire. If the sheet cannot hold the email step, stop and say so before adding a second page.
+The header is `components/lockup.tsx`. It is a server component and it only renders anchors for Questions and Companies. Do not turn it into a client component. Sign in is an anchor to `/login`, in the nav, after those links and before `ModeToggle`. Same size and colour as those links: `text-sm text-muted-foreground`. The word is `page.signIn` until there is a session, then `page.signOut`. Sign out ends the session and stays on the current URL.
+
+`/login` is the sign-in page. Build it from `components/ui/input.tsx` and Button. Do not restyle them. Do not put the form on the questionnaire. Do not add another icon set. Order on the page: Continue with GitHub, Continue with Google, then email and password. A text control switches between Sign in and Create account: `page.needAccount` and `page.haveAccount`. Create account uses the same two fields. Forgot password sits on Sign in only. It asks for the email and Supabase sends the reset. Use the password rules already set in the project. Do not add a strength meter.
+
+An unconfirmed email does not enter `/app`. `/login` shows `page.confirmSent` and a control to send the letter again. That letter finishes the account. It is not a magic-link sign-in. If the email already belongs to GitHub or Google, say so and do not create a second user.
 
 Words, added to `page` in `lib/catalog.ts`:
 
 - `signIn`: "Sign in"
 - `signOut`: "Sign out"
 - `email`: "Email"
-- `sendLink`: "Send the link"
-- `sent`: "Check your email. The link brings you back here."
+- `password`: "Password"
+- `createAccount`: "Create account"
+- `needAccount`: "Create an account"
+- `haveAccount`: "Already have an account"
+- `forgot`: "Forgot password"
+- `resetSent`: "Check your email. The link sets a new password."
+- `confirmSent`: "Check your email to finish creating the account."
+- `resend`: "Send the email again."
+- `continueGitHub`: "Continue with GitHub"
+- `continueGoogle`: "Continue with Google"
 - `saveFailed`: "The lock did not save. The questions are still here."
 
 No env file means no Sign in control. The TypeScript lists still render. Dev server: `npm run dev` → http://localhost:3000. Restart it after adding `proxy.ts` if the session cookie does not stick.
@@ -173,13 +198,13 @@ Supabase, not Convex. One shared catalogue. One private answer row per person. N
 
 ### Ruled out
 
-Convex. `localStorage`. A passwords table. A per-user copy of companies or roles. Hiding a company that does not match. Letting the database set the band. Rendering archived roles. Putting the direct connection string or the service role key in the app. Using the legacy anon JWT for the new client. Calling `rls_auto_enable` from the website. A sign-in form on the ask screen. A newsletter field. Requiring an account to see the lists or to lock. Docker and a local Supabase stack. `middleware.ts` on this Next.js. Copying the guide's redirect of a stranger to `/login`. An account page. Showing the email address in the header. The old project ref `khuwcrrsdsiouzdnqpcx`, and the mistyped ref `opuouavkqfwrcnmhskma`. The `agent` CLI, which is not installed. `npx skills add supabase/agent-skills`, because the Supabase skill is already in use.
+Convex. `localStorage`. A magic link. A second user for an email that already exists. A `passwords` table in `public` (Supabase Auth holds the password). A per-user copy of companies or roles. Hiding a company that does not match. Letting the database set the band. Rendering archived roles. Putting the direct connection string or the service role key in the app. Using the legacy anon JWT for the new client. Calling `rls_auto_enable` from the website. A sign-in form on the ask screen. A newsletter field. Requiring an account to see the lists or to lock on `/`. Docker and a local Supabase stack. `middleware.ts` on this Next.js. Redirecting a stranger away from `/`, skip, or companies. An account page. Showing the email address in the header. The old project ref `khuwcrrsdsiouzdnqpcx`, and the mistyped ref `opuouavkqfwrcnmhskma`. The `agent` CLI, which is not installed. `npx skills add supabase/agent-skills`, because the Supabase skill is already in use.
 
 ### Files
 
 The TypeScript lists stay in git as the seed and the test fixture: `lib/companies.ts`, `lib/lists/2026-w40.ts`, `lib/archive.ts`, `lib/roles.ts`. The page no longer closes over them when env is set.
 
-This task may touch `components/questions.tsx`, `components/lockup.tsx`, `app/(last)/page.tsx`, `lib/catalog.ts`, and new files `components/sign-in.tsx`, `lib/supabase/client.ts`, `lib/supabase/proxy.ts`, `proxy.ts`, and `app/auth/callback/route.ts`. `lib/supabase/server.ts` already exists. Change it only if the current guide disagrees with it. Do not add a `.css` file. Do not add a second component library.
+This task may touch `components/questions.tsx`, `components/lockup.tsx`, `app/(last)/page.tsx`, `lib/catalog.ts`, and new files `app/login/page.tsx`, `app/app/page.tsx`, `lib/supabase/client.ts`, `lib/supabase/proxy.ts`, `proxy.ts`, and `app/auth/callback/route.ts`. `lib/supabase/server.ts` already exists. Change it only if the current guide disagrees with it. Do not add a `.css` file. Do not add a second component library.
 
 ### After this, not this task
 
