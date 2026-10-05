@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "node --experimental-strip-types --import ./lib/register-test-hook.mjs --test lib/place.test.ts lib/read.test.ts lib/quadrant.test.ts lib/company.test.ts",
+    "test": "node --experimental-strip-types --import ./lib/register-test-hook.mjs --test lib/place.test.ts lib/read.test.ts lib/quadrant.test.ts lib/company.test.ts lib/rows.test.ts lib/beth-env.test.ts",
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit"
@@ -15,6 +15,8 @@
   "dependencies": {
     "@base-ui/react": "^1.8.0",
     "@shadcn/react": "^0.3.1",
+    "@supabase/ssr": "0.12.7",
+    "@supabase/supabase-js": "2.117.2",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.4.0",
     "lucide-react": "^1.48.0",

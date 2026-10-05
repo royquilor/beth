@@ -1,6 +1,6 @@
 # Beth roadmap
 
-Handoff for the next session. Product lives in this repo (`last/`). One public page. The catalogue and the answer row live in Supabase. The page still reads the TypeScript files and the URL. The next task is to connect them.
+Handoff for the next session. Product lives in this repo (`last/`). One public page. The catalogue and the answer row live in Supabase. The page reads companies and live roles from Beth when `.env.local` is set. A stranger still locks into the URL. The next task is magic-link sign-in and saving a signed-in lock.
 
 ## Where we are
 
@@ -40,9 +40,11 @@ The ask screen uses the shadcn Questionnaire (`components/ui/questionnaire.tsx`)
 
 ## Done this session
 
+Catalogue read, 5 Oct 2026. The server page reads companies and live roles from Beth when both public env vars are set. Live roles are `off` null. A blank column becomes a field left off. `created_at`, `updated_at`, and `off` never reach a component. The quoted `where` column is `where` on the row. Missing env uses the TypeScript files. Env set and a failed query throws, and does not fall back to the files. `splitRoles` and `everyRole` take the list. `CompanyTable` takes the companies. The tests still use the TypeScript arrays. Packages are pinned: `@supabase/supabase-js` 2.117.2 and `@supabase/ssr` 0.12.7. The lockfile is committed with this read. `.env.local` holds the URL and the `sb_publishable_` key. The server client is `lib/supabase/server.ts`. It follows the current `@supabase/ssr` guide. Cookie writes from a Server Component are ignored. There is no browser client, no `proxy.ts`, and no sign-in. Checked in the browser on `http://localhost:3000`: companies (Seed, Later, No public round), skip (40 live roles, Week 40, the archived seat stays off), and a stranger lock in the URL. The Wise sheet still shows salary and London. Marker, with no public round, opens on London. `npm test` and `npm run typecheck` passed. The dev server on port 3000 was restarted so it would load `.env.local`.
+
 Supabase, 5 Oct 2026. Beth is a live project, ref `opuoavkqfwrcknmhskma`, URL `https://opuoavkqfwrcknmhskma.supabase.co`. Region was chosen in the dashboard. Status was Healthy before the tables were created. The MCP server in `~/.cursor/mcp.json` points at `https://mcp.supabase.com/mcp?project_ref=opuoavkqfwrcknmhskma&features=docs%2Caccount%2Cdatabase%2Cdebugging%2Cdevelopment%2Cfunctions%2Cbranching`. Sign-in for that server is already done in Cursor. Automatic RLS was ticked at project creation. That installs `public.rls_auto_enable()`, an event trigger. Execute on that function was revoked from `public`, `anon`, and `authenticated` so the Data API cannot call it. The trigger itself stays.
 
-Two remote migrations: `beth_catalogue`, then `revoke_rls_auto_enable_execute`. There is no `supabase/` folder in this repo. The TypeScript files stayed the seed. They were copied once into the database. Counts checked after the copy: 26 companies, 40 live roles (`off` is null), 2 archived roles, 0 answers. Marker and Screen Studio are the two companies with no stage. Wise is in London. `elevenlabs-creative` carries the archive sentence. A request with the publishable key returned Wise and the 40 live roles. The same key was refused on `answers` (`42501`, no select grant for `anon`). Security advisors were clean after the revoke. Performance advisors were clean. No app file was changed. `.env.local` was not written. `@supabase/ssr` is not installed.
+Two remote migrations: `beth_catalogue`, then `revoke_rls_auto_enable_execute`. There is no `supabase/` folder in this repo. The TypeScript files stayed the seed. They were copied once into the database. Counts checked after the copy: 26 companies, 40 live roles (`off` is null), 2 archived roles, 0 answers. Marker and Screen Studio are the two companies with no stage. Wise is in London. `elevenlabs-creative` carries the archive sentence. A request with the publishable key returned Wise and the 40 live roles. The same key was refused on `answers` (`42501`, no select grant for `anon`). Security advisors were clean after the revoke. Performance advisors were clean. That session changed no app file and wrote no `.env.local`. The catalogue read above is the later state.
 
 Theme, 4 Oct 2026. Light, dark, and system. `next-themes` was already installed, and the provider was forced to light, so the class never changed. That force is gone. The default is system. The header control is `components/mode-toggle.tsx`: a ghost icon button, then a menu with Light, Dark, and System. The check marks the choice. The sun and moon follow the colour on the page, so system still looks like light or dark. D still cycles the three, and it stays off the menu so Dark can take that letter there. Words live in `lib/catalog.ts`. In the dark theme, `--border` and `--input` are `oklch(0.53 0.003 48.717)`. Same stone hue as the light edge. The 10% white line measured 1.48:1 on the page. 0.53 clears 3:1 on the page and on the choice fill. Do not put the translucent white back.
 
@@ -70,9 +72,9 @@ Interface pass, 3 Oct 2026. A review of the ask, the lock, skip, companies, and 
 - Tabs transition color, background, border, and shadow. The underline still fades on its own. `transition-all` is gone.
 - Tab through an open sheet stays on the link and Close, both ways. Escape and the close button return focus to that row. Checked on ElevenLabs and on Onlook. The page is `aria-hidden` while the sheet is open. It is not `inert`. The focus guards hold Tab inside, so inert was left off.
 
-Left from that review, and not done:
+Left from that review, and not this task:
 
-- The button loader, and Lock holding the mark, were already next. They are still next. This pass did not add them.
+- The button loader, and Lock holding the mark, stay under After this. They are not the sign-in task.
 
 Mark, 3 Oct 2026. The tile stays the 24px dither, 21 dots, four corners empty. The paths are recreated from [Dot Matrix](https://dotmatrix.zzzzshawn.cloud/). The registry was not installed. The library’s rest opacity is about 8%, and at 24px that erases the tile, so the floor stays high. Hover is Core Spiral: one path, clockwise, inward. That is the lock, several proofs into one place. Flux Columns and a scan were the other trials. They read as a meter and a search, so they are not the mark. Next runs Prism Sweep, a diagonal pass with no scale, so it does not read as the hover. The question stays until that pass ends. `MarkPhaseProvider` in `app/(last)/page.tsx` carries the beat from the questions to the tile. The hold is `components/use-hold-next.ts`. A pointer that cannot hover, and reduced motion, leave the tile still.
 
@@ -92,24 +94,78 @@ Left off. Cogram, because the title is three jobs. Lovable’s Design Engineer, 
 
 ## Next
 
-Wire the page to Beth. Start here. Do not create the tables again. Do not add companies. Read this section, then `AGENTS.md`, then `node_modules/next/dist/docs/` before writing a route or middleware. This Next.js is not the one in training data.
+One task: magic-link sign-in, then save that person’s lock. Finish it, verify it, mark it done here, and stop. The button loader, the 100 companies, and the Friday pass stay under After this.
 
-The page is still a server component in `app/(last)/page.tsx`. It imports the lists and reads the query string. Nothing is in `localStorage`.
+Do not create the tables again. Do not add companies. Do not install the packages again. Do not commit unless Roy asks. Read this section, then `AGENTS.md`, then `node_modules/next/dist/docs/` before writing a route or `proxy.ts`. Look up the current Next.js App Router client with the Supabase skill and the Supabase MCP `search_docs`. Do not trust a remembered snippet. This Next.js is 16.3.4. The session file is `proxy.ts` at the root of `last/`, and the export is `proxy`. It is not `middleware.ts`.
 
-- Companies. `components/company-table.tsx` imports `companies` from `lib/companies.ts` and groups them with `groupCompanies`.
-- Jobs. `lib/read.ts` closes over `roles` from `lib/roles.ts`. `splitRoles` and `everyRole` take no list. `app/(last)/page.tsx` calls them. Archived roles are not rendered. `lib/read.test.ts` imports `roles` and `archive` from the files.
-- Answers. `components/questions.tsx` writes the six answers into the query string on submit and routes to `/?hands=…`. `parseAnswers` in `lib/place.ts` reads that string. A partial or invalid query is no answers. The header is `components/lockup.tsx`: Questions, Companies, then the theme control. Words live in `lib/catalog.ts`.
+### Done when
 
-### Do this
+- A stranger on `/` still sees the six questions, locks through the URL, and never has to make an account. Skip and Companies still work.
+- The header has Sign in, after Companies and before the theme control. It opens a sheet. The sheet asks for an email and sends the link. No password. No second page.
+- After the email link, a visit to `/` with no answers in the query shows that person’s lock. The band is still `lockFrom`. The database does not grade it.
+- `/?skip=1` and `/?companies=1` still win while signed in. The saved row does not take over those screens.
+- A request with the publishable key and no session is refused on `answers` (`42501`). A signed-in person reads only their own row.
+- `npm test` and `npm run typecheck` pass. Check the four screens in the browser at http://localhost:3000.
 
-1. Add `.env.local` in `last/`. It is already ignored by `.env*` in `.gitignore`. `NEXT_PUBLIC_SUPABASE_URL` is `https://opuoavkqfwrcknmhskma.supabase.co`. `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` is the `sb_publishable_` key from the Supabase MCP `get_publishable_keys`. Do not use the legacy anon JWT. Do not put the database password or the service role key in any file.
-2. Install `@supabase/supabase-js` and `@supabase/ssr`. Pin the versions and commit the lockfile. Look up the current Next.js App Router server-client guide with the Supabase skill and the Supabase MCP `search_docs` before writing the clients. Do not trust a remembered snippet.
-3. Read companies and live roles in the server page. Live roles are `off` null. Map the quoted column `"where"` onto `where` on `Company` and `Role`. Drop `created_at`, `updated_at`, and `off` before the components see the row. Pass the rows into `CompanyTable`, and into `splitRoles` and `everyRole`. Those two functions take the list. The tests keep using the TypeScript arrays.
-4. Missing env uses the TypeScript files, so `npm run dev` still works before the env file exists. Env set and a failed query does not fall back to the files.
-5. Sign-in is a magic link. Supabase sends the email. No password field. In the Supabase dashboard, Authentication → URL configuration, set the site URL to `http://localhost:3000` and allow that redirect. The email needs `app/auth/callback/route.ts`. Session refresh follows the current `@supabase/ssr` guide. Read the Next docs before adding middleware. This version may not want `middleware.ts`.
-6. The ask screen stays the six questions. Sign-in is a header link, words in `lib/catalog.ts`, beside Questions and Companies. The form is a sheet, built from `components/ui/input.tsx` and Button. Do not restyle them. Do not put the form on the questionnaire. If a sheet cannot hold the email step, stop and say so before adding a second page.
-7. A stranger still locks into the URL only. A signed-in lock upserts `answers` for `auth.uid()`, then routes to the same query string. Coming back with no answers in the URL loads that row and shows the lock. The band is still `lockFrom`. The database does not grade it.
-8. Verify in the browser: companies and skip still list the same rows, a stranger can lock, a signed-in lock is still there after a new visit to `/`, and another account cannot read that row. Run `npm test` and `npm run typecheck`.
+### What the page shows
+
+`app/(last)/page.tsx` is still the server page. It already calls `loadCatalogue`. Decide the screen in this order:
+
+1. `/?companies=1` is the company list, signed in or not.
+2. A query that `parseAnswers` accepts is that lock. A signed-in submit just wrote this query, so the URL wins over an older row.
+3. `/?skip=1`, when the query is not a lock, is every role.
+4. `/` with a session and a saved row is that lock.
+5. Anything else is the six questions. That includes a stranger, a signed-in person with no row, and a missing env file.
+
+### Sign-in
+
+Supabase sends the email. In the dashboard, Authentication → URL configuration: site URL `http://localhost:3000`, and the redirect allow list includes `http://localhost:3000/auth/callback`. The magic link’s `emailRedirectTo` is that callback. If this session cannot change the dashboard, stop and name those two values. Do not guess another redirect.
+
+`app/auth/callback/route.ts` exchanges the code for a session, then redirects to `/`. Cookie writes work in a route handler. They do not work in a Server Component. `lib/supabase/server.ts` already ignores that Server Component error.
+
+`proxy.ts` refreshes a session that already exists. Use `getClaims()`. Do not trust `getSession()` in server code. Return the response that carries the refreshed cookies. The guide’s sample redirects a stranger to `/login`. Leave that redirect out.
+
+`lib/supabase/client.ts` is `createBrowserClient`. It is not written yet. The sheet and the signed-in submit use it. The lists stay on the server client.
+
+The header is `components/lockup.tsx`. It is a server component and it only renders anchors for Questions and Companies. Do not turn it into a client component. Add a client control, in the nav, after those links and before `ModeToggle`. Same size and colour as those links: `text-sm text-muted-foreground`. The word is `page.signIn` until there is a session, then `page.signOut`. Sign out ends the session and stays on the current URL. The sheet is the installed `Sheet`, `side="bottom"`, plus `components/ui/input.tsx` and Button. Do not restyle them. Do not put the form on the questionnaire. If the sheet cannot hold the email step, stop and say so before adding a second page.
+
+Words, added to `page` in `lib/catalog.ts`:
+
+- `signIn`: "Sign in"
+- `signOut`: "Sign out"
+- `email`: "Email"
+- `sendLink`: "Send the link"
+- `sent`: "Check your email. The link brings you back here."
+- `saveFailed`: "The lock did not save. The questions are still here."
+
+No env file means no Sign in control. The TypeScript lists still render. Dev server: `npm run dev` → http://localhost:3000. Restart it after adding `proxy.ts` if the session cookie does not stick.
+
+### Saving the lock
+
+`components/questions.tsx` already writes the six answers into the query and routes to `/?hands=…`. Keep that for a stranger.
+
+A signed-in Lock upserts `answers` for `auth.uid()`, then routes to the same query. The primary key is `user_id`. Set `user_id` from the signed-in id. Row security rejects any other id. If the upsert fails, stay on the questions and show `page.saveFailed`. Do not route to a lock that did not save.
+
+Columns, same names as the query string. `prong` is a text array. `updated_at` has a default. The page does not read it.
+
+| Column | Closed values |
+| --- | --- |
+| `hands` | `files`, `prototype`, `merged` |
+| `ships` | `system`, `prototype`, `production` |
+| `show` | `file`, `prototype`, `merged`, `used` |
+| `seat` | `team`, `solo` |
+| `origin` | `design`, `engineering` |
+| `prong` | `systems`, `motion`, `judgment`, `css`, `frontend` |
+
+Load the row only after `getClaims()` says someone is signed in. Select `hands`, `ships`, `show`, `seat`, `origin`, and `prong`. Drop `user_id` and `updated_at` before the page uses the row. Run it through the same closed lists as `parseAnswers`. A value outside those lists throws. `anon` has no grant on `answers`. Querying it with no session returns `42501` and must not take down the ask screen, so do not run that query for a stranger.
+
+### Already in place
+
+- `.env.local` is set and ignored by `.env*`. `NEXT_PUBLIC_SUPABASE_URL` is `https://opuoavkqfwrcknmhskma.supabase.co`. `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` is the `sb_publishable_` key. Do not use the legacy anon JWT. Do not put the database password or the service role key in any file.
+- `@supabase/supabase-js` is `2.117.2`. `@supabase/ssr` is `0.12.7`. Both are pinned. The lockfile is committed with the catalogue read.
+- `lib/supabase/server.ts` is the server client. `cookies()` is async. `getAll` and `setAll` are the cookie methods.
+- `lib/beth-env.ts` chooses the files or Beth. `lib/rows.ts` maps a catalogue row. `lib/catalogue.ts` loads companies and live roles. `splitRoles` and `everyRole` take that list. `CompanyTable` takes the companies.
+- `answers` already exists. One row per person. Policies are already on. Do not write a new migration for this task.
 
 ### Decisions already made
 
@@ -117,13 +173,13 @@ Supabase, not Convex. One shared catalogue. One private answer row per person. N
 
 ### Ruled out
 
-Convex. `localStorage`. A passwords table. A per-user copy of companies or roles. Hiding a company that does not match. Letting the database set the band. Rendering archived roles. Putting the direct connection string or the service role key in the app. Using the legacy anon JWT for the new client. Calling `rls_auto_enable` from the website. A sign-in form on the ask screen. A newsletter field. Requiring an account to see the lists or to lock. Docker and a local Supabase stack. The old project ref `khuwcrrsdsiouzdnqpcx`, and the mistyped ref `opuouavkqfwrcnmhskma`. The `agent` CLI, which is not installed. `npx skills add supabase/agent-skills`, because the Supabase skill is already in use.
+Convex. `localStorage`. A passwords table. A per-user copy of companies or roles. Hiding a company that does not match. Letting the database set the band. Rendering archived roles. Putting the direct connection string or the service role key in the app. Using the legacy anon JWT for the new client. Calling `rls_auto_enable` from the website. A sign-in form on the ask screen. A newsletter field. Requiring an account to see the lists or to lock. Docker and a local Supabase stack. `middleware.ts` on this Next.js. Copying the guide's redirect of a stranger to `/login`. An account page. Showing the email address in the header. The old project ref `khuwcrrsdsiouzdnqpcx`, and the mistyped ref `opuouavkqfwrcnmhskma`. The `agent` CLI, which is not installed. `npx skills add supabase/agent-skills`, because the Supabase skill is already in use.
 
 ### Files
 
-Already touched, outside the app: `roadmap.md`, `AGENTS.md`, and `~/.cursor/mcp.json`. Remote only: the two migrations above. Not touched, and still the source of the rows until this pass: `lib/companies.ts`, `lib/lists/2026-w40.ts`, `lib/archive.ts`, `lib/roles.ts`.
+The TypeScript lists stay in git as the seed and the test fixture: `lib/companies.ts`, `lib/lists/2026-w40.ts`, `lib/archive.ts`, `lib/roles.ts`. The page no longer closes over them when env is set.
 
-This pass may touch `app/(last)/page.tsx`, `components/company-table.tsx`, `components/questions.tsx`, `components/lockup.tsx`, `lib/read.ts`, `lib/read.test.ts`, `lib/catalog.ts`, `package.json`, `package-lock.json`, and new files `lib/supabase/client.ts`, `lib/supabase/server.ts`, and `app/auth/callback/route.ts`. Add a session helper only if the current Supabase guide still wants one. Do not add a `.css` file. Do not add a second component library.
+This task may touch `components/questions.tsx`, `components/lockup.tsx`, `app/(last)/page.tsx`, `lib/catalog.ts`, and new files `components/sign-in.tsx`, `lib/supabase/client.ts`, `lib/supabase/proxy.ts`, `proxy.ts`, and `app/auth/callback/route.ts`. `lib/supabase/server.ts` already exists. Change it only if the current guide disagrees with it. Do not add a `.css` file. Do not add a second component library.
 
 ### After this, not this task
 

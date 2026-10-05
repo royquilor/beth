@@ -7,6 +7,7 @@ import { Placement } from "@/components/placement"
 import { Questions } from "@/components/questions"
 import { EveryRole, InRange, StretchList } from "@/components/role-sections"
 import { Rule } from "@/components/rule"
+import { loadCatalogue } from "@/lib/catalogue"
 import { page } from "@/lib/catalog"
 import { lockFrom, parseAnswers, type Answers, type Lock } from "@/lib/place"
 import { checkedOn, type Role } from "@/lib/roles"
@@ -29,6 +30,7 @@ export default async function HomePage({
   searchParams: Promise<Search>
 }) {
   const params = await searchParams
+  const catalogue = await loadCatalogue()
   const answers = parseAnswers(params)
   const companies = first(params.companies) === "1"
   const skip = !answers && !companies && first(params.skip) === "1"
@@ -52,16 +54,16 @@ export default async function HomePage({
         />
         <Rule />
         {companies ? (
-          <CompanyTable />
+          <CompanyTable companies={catalogue.companies} />
         ) : answers ? (
-          <Locked answers={answers} />
+          <Locked answers={answers} roles={catalogue.roles} />
         ) : skip ? (
-          <EveryRole roles={everyRole()} />
+          <EveryRole roles={everyRole(catalogue.roles)} />
         ) : (
           <Questions />
         )}
         <Rule />
-        <footer className="text-pretty text-base text-muted-foreground">
+        <footer className="text-base text-pretty text-muted-foreground">
           <p>
             {companies
               ? page.companiesFoot
@@ -73,9 +75,9 @@ export default async function HomePage({
   )
 }
 
-function Locked({ answers }: { answers: Answers }) {
+function Locked({ answers, roles }: { answers: Answers; roles: Role[] }) {
   const lock = lockFrom(answers)
-  const split = splitRoles(lock)
+  const split = splitRoles(lock, roles)
   const company = aimCompany(split.stretch, split.inRange)
   // In range sits under the proof. Stretch replaces it when nothing is in range.
   const showStretch = split.inRange.length === 0

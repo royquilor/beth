@@ -36,6 +36,8 @@
     "lib/place.test.ts",
     "lib/read.test.ts",
     "lib/quadrant.test.ts",
-    "lib/company.test.ts"
+    "lib/company.test.ts",
+    "lib/rows.test.ts",
+    "lib/beth-env.test.ts"
   ]
 }

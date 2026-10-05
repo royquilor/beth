@@ -9,7 +9,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { companies } from "@/lib/companies"
 import {
   groupCompanies,
   type Company,
@@ -54,7 +53,7 @@ function groupTitle(stage: Stage | null) {
  * The sheet holds the tags and the official site.
  * No shade yet. The values questions are not written.
  */
-export function CompanyTable() {
+export function CompanyTable({ companies }: { companies: Company[] }) {
   const groups = groupCompanies(companies)
   const first = groups[0]
 
@@ -118,7 +117,7 @@ function CompanyRow({ company }: { company: Company }) {
 function CompanySheet({ company }: { company: Company }) {
   return (
     <div className="mx-auto flex w-full max-w-lg flex-col gap-4 px-6 py-10">
-      <SheetTitle className="pr-8 text-balance text-base leading-heading font-normal">
+      <SheetTitle className="pr-8 text-base leading-heading font-normal text-balance">
         {company.name}
       </SheetTitle>
       <p className="text-pretty">{company.why}</p>

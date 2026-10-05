@@ -5,10 +5,12 @@ import { lockFrom, type Answers } from "./place.ts"
 import { archive, roles } from "./roles.ts"
 import {
   aimCompany,
+  everyRole,
   groupByWeek,
   lockSentence,
   practiceLine,
   shadeOf,
+  splitRoles,
   weekLabel,
 } from "./read.ts"
 
@@ -56,6 +58,14 @@ test("the piece aims at the stretch company first", () => {
   )
   assert.equal(aimCompany([], [{ company: "Ashby" }]), "Ashby")
   assert.equal(aimCompany([], []), undefined)
+})
+
+test("splitRoles and everyRole read the list they are given", () => {
+  const lock = lockFrom(roy)
+
+  assert.deepEqual(splitRoles(lock, []), { inRange: [], stretch: [] })
+  assert.equal(everyRole([]).length, 0)
+  assert.equal(everyRole(roles).length, roles.length)
 })
 
 test("weeks group newest first, and a closed role stays off the list", () => {

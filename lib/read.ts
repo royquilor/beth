@@ -8,7 +8,7 @@ import {
   type Prong,
   type Seat,
 } from "@/lib/place"
-import { roles, type Role } from "@/lib/roles"
+import type { Role } from "@/lib/roles"
 
 export const bandLabel: Record<Band, string> = {
   taste: "Taste",
@@ -173,11 +173,12 @@ export function groupByWeek(list: Role[]) {
   return groups
 }
 
-export function splitRoles(lock: Lock) {
+/** The list is the live roles for this render. The function does not close over the file. */
+export function splitRoles(lock: Lock, list: Role[]) {
   const inRange: Role[] = []
   const stretch: Role[] = []
 
-  for (const role of roles) {
+  for (const role of list) {
     const fit = fitOf(lock, role)
 
     if (fit === "in") {
@@ -195,8 +196,9 @@ export function splitRoles(lock: Lock) {
   }
 }
 
-export function everyRole() {
-  return [...roles].sort(byBand)
+/** Same list contract as splitRoles. Archived roles are already out of the list. */
+export function everyRole(list: Role[]) {
+  return [...list].sort(byBand)
 }
 
 export function metaLine(role: Role) {
