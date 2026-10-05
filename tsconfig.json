@@ -38,6 +38,8 @@
     "lib/quadrant.test.ts",
     "lib/company.test.ts",
     "lib/rows.test.ts",
-    "lib/beth-env.test.ts"
+    "lib/beth-env.test.ts",
+    "lib/auth-error.test.ts",
+    "lib/answers.test.ts"
   ]
 }

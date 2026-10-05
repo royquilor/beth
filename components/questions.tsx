@@ -21,6 +21,7 @@ import {
 import { useHoldNext } from "@/components/use-hold-next"
 import { page, questions } from "@/lib/catalog"
 import { handsProof, prongProof, showProof } from "@/lib/place"
+import { saveLock } from "@/lib/save-lock"
 
 type QuestionId = (typeof questions)[number]["id"]
 
@@ -41,11 +42,13 @@ const items = questions.map((question) => ({
  * A letter selects. It does not advance.
  * Next holds the question for one sweep of the mark, then moves.
  * Beth's Skip is a mode: it leaves this form and opens every role.
- * Answers stay in the URL. Nothing is stored.
+ * A stranger keeps the answers in the URL.
+ * A signed-in Lock writes that person's row, then uses the same URL.
  * The face comes from --font-sans (Open Runde).
  */
-export function Questions() {
+export function Questions({ signedIn = false }: { signedIn?: boolean }) {
   const router = useRouter()
+  const [saveError, setSaveError] = useState(false)
   const [item, setItem] = useState<QuestionId>(questions[0].id)
   const handleNext = useHoldNext(item, setItem)
   const [statuses, setStatuses] = useState<
@@ -97,8 +100,9 @@ export function Questions() {
     return () => window.removeEventListener("keydown", onKeyDown)
   }, [])
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    setSaveError(false)
 
     const formData = new FormData(event.currentTarget)
     const params = new URLSearchParams()
@@ -134,11 +138,23 @@ export function Questions() {
       params.set(question.id, value)
     }
 
+    if (signedIn) {
+      const saved = await saveLock(params)
+
+      if (!saved) {
+        setSaveError(true)
+        return
+      }
+    }
+
     router.push(`/?${params.toString()}`)
   }
 
   return (
     <div className="flex flex-col gap-6">
+      {saveError ? (
+        <p className="text-base text-destructive">{page.saveFailed}</p>
+      ) : null}
       <Questionnaire
         item={item}
         items={items}

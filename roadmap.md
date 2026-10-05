@@ -1,6 +1,6 @@
 # Beth roadmap
 
-Handoff for the next session. Product lives in this repo (`last/`). One public page. The catalogue and the answer row live in Supabase. The page reads companies and live roles from Beth when `.env.local` is set. A stranger still locks into the URL. The next task is sign-in with email and password, or with Google or GitHub, then saving a signed-in lock.
+Handoff for the next session. Product lives in this repo (`last/`). One public page. The catalogue and the answer row live in Supabase. The page reads companies and live roles from Beth when `.env.local` is set. A stranger still locks into the URL. Sign-in is written and not finished. The next task is to finish the browser check, fix only what that check finds, then mark this task done.
 
 ## Where we are
 
@@ -94,7 +94,34 @@ Left off. Cogram, because the title is three jobs. Lovable’s Design Engineer, 
 
 ## Next
 
-One task: sign in with email and password, or with Google or GitHub, then save that person’s lock. Finish it, verify it, mark it done here, and stop. The button loader, the 100 companies, and the Friday pass stay under After this.
+One task: finish the sign-in check from 5 Oct 2026. The code is already in the working tree. Do not rebuild `/login`, `proxy.ts`, or the saved lock. Do not commit unless Roy asks. The button loader, the 100 companies, and the Friday pass stay under After this.
+
+GitHub and Google are on. Email and password is on. Email confirmation is still required (`mailer_autoconfirm` is false). A publishable-key request with no session was refused on `answers` (`42501`, permission denied for table answers). `npm test` (37) and `npm run typecheck` passed after the browser-client fix below. Nothing is committed.
+
+### Already checked in the browser
+
+Dev server was already on http://localhost:3000 and was compiling `proxy.ts`. These returned 200: `/`, `/?skip=1` (Week 40, Sign in in the header), `/?companies=1` (Seed first), and a stranger lock `/?hands=prototype&ships=prototype&show=prototype&seat=team&prong=systems&origin=design`. `/app` returned 307 to `/login`. `/signup` returned 307 to `/login?account=1`. `/login` showed Continue with GitHub, Continue with Google, then email and password, then Sign in, then Create an account.
+
+### Stopped here
+
+The first Sign in click threw. `bethEnv()` reads `process.env` as one object. Next.js does not inline `NEXT_PUBLIC_` values that way in the browser, so both were empty and `lib/supabase/client.ts` threw. The fix passes each name in directly. Do not put `bethEnv()` with no argument back in that file. The server client can keep calling `bethEnv()` as it does.
+
+A second Sign in, with `not-a-person@example.com` and a wrong password, left the fields `invalid` and re-enabled the buttons. The mapped sentence was not read off the page before the session stopped. Confirm it says “That email and password do not match.” and that the URL stays `/login`. Then finish the rest of Done when.
+
+### Still to check
+
+- Create an account uses the same two fields. No name, no second password, no strength meter. An unconfirmed email stays on `/login`, shows `page.confirmSent`, and can send the letter again. It does not enter `/app`.
+- A real GitHub sign-in and a real Google sign-in land on `/app`. If the Google client or the GitHub app fails, stop and name the dashboard field. Do not invent a client id or a secret.
+- Authentication → URL configuration still needs a look: site URL `http://localhost:3000`, redirect allow list includes `http://localhost:3000/auth/callback`. Email confirmation, password reset, Google, and GitHub all return to `app/auth/callback/route.ts`. Forgot password sends the reset with `?type=recovery` so the callback can open the new-password field. That query was not tried.
+- An email that already exists does not create a second user. Auth hides the provider when `identities` is empty, so the sentence is `page.alreadyAccount`. Name GitHub, Google, or email and password only when the response actually names that provider.
+- A signed-in Lock upserts `answers` for `auth.uid()`, then routes to `/?hands=…`. A failed upsert stays on the questions and shows `page.saveFailed`. `/app` with a saved row shows that lock. `/app` with no row is the six questions. The band is still `lockFrom`.
+- `/?skip=1` and `/?companies=1` still win while signed in. Sign out stays on the current public URL. Sign out from `/app` goes to `/login`.
+- No env file means no Sign in control. Do not reinstall `@supabase/supabase-js` or `@supabase/ssr`. Do not overwrite `components/ui/button.tsx`. The login block’s overwrite would put the focus ring and the `text-sm` size back. The local button stays.
+- `shadcn` blocks `login-01` and `signup-01` are the cards. `field` and `label` were added. Signup is not its own screen. `app/signup/page.tsx` redirects to `/login?account=1`.
+
+Files already touched: `proxy.ts`, `lib/supabase/proxy.ts`, `lib/supabase/client.ts`, `app/auth/callback/route.ts`, `app/login/page.tsx`, `app/signup/page.tsx`, `app/app/page.tsx`, `app/(last)/page.tsx`, `components/login-form.tsx`, `components/signup-form.tsx`, `components/frame.tsx`, `components/locked.tsx`, `components/lockup.tsx`, `components/questions.tsx`, `lib/catalog.ts`, `lib/auth-client.ts`, `lib/auth-error.ts`, `lib/answers.ts`, `lib/load-lock.ts`, `lib/save-lock.ts`, `lib/session.ts`, `lib/sign-out.ts`, plus `lib/auth-error.test.ts` and `lib/answers.test.ts` on the test script. `components/ui/field.tsx` and `components/ui/label.tsx` are new. `lib/supabase/server.ts` was left as it was.
+
+When the checks pass, write that here, move this task under Done this session, and stop.
 
 Roy replaced the magic link on 5 Oct 2026. Supabase Auth stores the password. Do not add a `passwords` table. Do not send a magic link.
 

@@ -60,6 +60,29 @@ export const page = {
   applyTo(company: string) {
     return `Apply to ${company}`
   },
+  signIn: "Sign in",
+  signOut: "Sign out",
+  email: "Email",
+  password: "Password",
+  createAccount: "Create account",
+  needAccount: "Create an account",
+  haveAccount: "Already have an account",
+  forgot: "Forgot password",
+  resetSent: "Check your email. The link sets a new password.",
+  confirmSent: "Check your email to finish creating the account.",
+  resend: "Send the email again.",
+  continueGitHub: "Continue with GitHub",
+  continueGoogle: "Continue with Google",
+  saveFailed: "The lock did not save. The questions are still here.",
+  setPassword: "Set a new password",
+  credentials: "That email and password do not match.",
+  alreadyGitHub: "This email already signs in with GitHub.",
+  alreadyGoogle: "This email already signs in with Google.",
+  alreadyEmail: "This email already signs in with email and password.",
+  alreadyAccount: "This email already has an account.",
+  weak: "That password does not meet the rules on this project.",
+  rate: "Wait a moment, then try again.",
+  authFailed: "Sign-in did not finish. Try again.",
 }
 
 /**

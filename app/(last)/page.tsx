@@ -1,27 +1,34 @@
-import type { Metadata } from "next"
-
 import { CompanyTable } from "@/components/company-table"
-import { Lockup } from "@/components/lockup"
-import { MarkPhaseProvider } from "@/components/mark"
-import { Placement } from "@/components/placement"
+import { Frame } from "@/components/frame"
+import { Locked } from "@/components/locked"
 import { Questions } from "@/components/questions"
-import { EveryRole, InRange, StretchList } from "@/components/role-sections"
-import { Rule } from "@/components/rule"
+import { EveryRole } from "@/components/role-sections"
 import { loadCatalogue } from "@/lib/catalogue"
 import { page } from "@/lib/catalog"
-import { lockFrom, parseAnswers, type Answers, type Lock } from "@/lib/place"
-import { checkedOn, type Role } from "@/lib/roles"
-import { aimCompany, everyRole, splitRoles } from "@/lib/read"
-
-export const metadata: Metadata = {
-  title: page.title,
-  description: page.dek,
-}
+import { bethEnv } from "@/lib/beth-env"
+import { parseAnswers } from "@/lib/place"
+import { everyRole } from "@/lib/read"
+import { sessionClaims } from "@/lib/session"
 
 type Search = Record<string, string | string[] | undefined>
 
 function first(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value
+}
+
+function currentPath(params: Search) {
+  const query = new URLSearchParams()
+
+  for (const [key, value] of Object.entries(params)) {
+    if (Array.isArray(value)) {
+      value.forEach((item) => query.append(key, item))
+    } else if (value) {
+      query.set(key, value)
+    }
+  }
+
+  const text = query.toString()
+  return text ? `/?${text}` : "/"
 }
 
 export default async function HomePage({
@@ -34,82 +41,33 @@ export default async function HomePage({
   const answers = parseAnswers(params)
   const companies = first(params.companies) === "1"
   const skip = !answers && !companies && first(params.skip) === "1"
-  const questionsLink = { href: "/", label: page.questions }
-  const companiesLink = { href: "/?companies=1", label: page.companies }
+  const claims = bethEnv() ? await sessionClaims() : null
+  const signedIn = Boolean(claims)
 
   return (
-    <MarkPhaseProvider>
-      <main className="mx-auto flex w-full max-w-lg flex-col gap-10 px-6 py-10">
-        <Lockup
-          links={[questionsLink, companiesLink]}
-          dek={
-            answers
-              ? null
-              : companies
-                ? page.companiesLead
-                : skip
-                  ? page.skipLead
-                  : page.dek
-          }
-        />
-        <Rule />
-        {companies ? (
-          <CompanyTable companies={catalogue.companies} />
-        ) : answers ? (
-          <Locked answers={answers} roles={catalogue.roles} />
-        ) : skip ? (
-          <EveryRole roles={everyRole(catalogue.roles)} />
-        ) : (
-          <Questions />
-        )}
-        <Rule />
-        <footer className="text-base text-pretty text-muted-foreground">
-          <p>
-            {companies
-              ? page.companiesFoot
-              : `Checked ${checkedOn} against the company pages. A closed role comes off.`}
-          </p>
-        </footer>
-      </main>
-    </MarkPhaseProvider>
+    <Frame
+      signedIn={signedIn}
+      next={currentPath(params)}
+      companies={companies}
+      dek={
+        answers
+          ? null
+          : companies
+            ? page.companiesLead
+            : skip
+              ? page.skipLead
+              : page.dek
+      }
+    >
+      {companies ? (
+        <CompanyTable companies={catalogue.companies} />
+      ) : answers ? (
+        <Locked answers={answers} roles={catalogue.roles} />
+      ) : skip ? (
+        <EveryRole roles={everyRole(catalogue.roles)} />
+      ) : (
+        <Questions signedIn={signedIn} />
+      )}
+    </Frame>
   )
-}
-
-function Locked({ answers, roles }: { answers: Answers; roles: Role[] }) {
-  const lock = lockFrom(answers)
-  const split = splitRoles(lock, roles)
-  const company = aimCompany(split.stretch, split.inRange)
-  // In range sits under the proof. Stretch replaces it when nothing is in range.
-  const showStretch = split.inRange.length === 0
-
-  return (
-    <div className="flex flex-col gap-10">
-      <Placement lock={lock} company={company} />
-      <OpenedRoles
-        viewAll={showStretch}
-        lock={lock}
-        inRange={split.inRange}
-        stretch={split.stretch}
-      />
-    </div>
-  )
-}
-
-/** The list sits under the sentence. It is not the result. */
-function OpenedRoles({
-  viewAll,
-  lock,
-  inRange,
-  stretch,
-}: {
-  viewAll: boolean
-  lock: Lock
-  inRange: Role[]
-  stretch: Role[]
-}) {
-  if (viewAll) {
-    return <StretchList roles={stretch} lock={lock} />
-  }
-
-  return <InRange roles={inRange} lock={lock} />
 }
