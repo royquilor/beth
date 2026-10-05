@@ -1,6 +1,6 @@
 # Beth roadmap
 
-Handoff for the next session. Product lives in this repo (`last/`). One public page. No auth, no database. Answers stay in the URL.
+Handoff for the next session. Product lives in this repo (`last/`). One public page. The catalogue and the answer row live in Supabase. The page still reads the TypeScript files and the URL. The next task is to connect them.
 
 ## Where we are
 
@@ -39,6 +39,10 @@ The ask screen uses the shadcn Questionnaire (`components/ui/questionnaire.tsx`)
 - Hands, show, and craft use `multiple`. Seat, origin, and what you ship most stay one choice. Craft is the question. The five crafts are systems, motion, what to build and the flow, HTML and CSS in a reviewed pull request, and production frontend. Every selected craft counts. None of them raise the band.
 
 ## Done this session
+
+Supabase, 5 Oct 2026. Beth is a live project, ref `opuoavkqfwrcknmhskma`, URL `https://opuoavkqfwrcknmhskma.supabase.co`. Region was chosen in the dashboard. Status was Healthy before the tables were created. The MCP server in `~/.cursor/mcp.json` points at `https://mcp.supabase.com/mcp?project_ref=opuoavkqfwrcknmhskma&features=docs%2Caccount%2Cdatabase%2Cdebugging%2Cdevelopment%2Cfunctions%2Cbranching`. Sign-in for that server is already done in Cursor. Automatic RLS was ticked at project creation. That installs `public.rls_auto_enable()`, an event trigger. Execute on that function was revoked from `public`, `anon`, and `authenticated` so the Data API cannot call it. The trigger itself stays.
+
+Two remote migrations: `beth_catalogue`, then `revoke_rls_auto_enable_execute`. There is no `supabase/` folder in this repo. The TypeScript files stayed the seed. They were copied once into the database. Counts checked after the copy: 26 companies, 40 live roles (`off` is null), 2 archived roles, 0 answers. Marker and Screen Studio are the two companies with no stage. Wise is in London. `elevenlabs-creative` carries the archive sentence. A request with the publishable key returned Wise and the 40 live roles. The same key was refused on `answers` (`42501`, no select grant for `anon`). Security advisors were clean after the revoke. Performance advisors were clean. No app file was changed. `.env.local` was not written. `@supabase/ssr` is not installed.
 
 Theme, 4 Oct 2026. Light, dark, and system. `next-themes` was already installed, and the provider was forced to light, so the class never changed. That force is gone. The default is system. The header control is `components/mode-toggle.tsx`: a ghost icon button, then a menu with Light, Dark, and System. The check marks the choice. The sun and moon follow the colour on the page, so system still looks like light or dark. D still cycles the three, and it stays off the menu so Dark can take that letter there. Words live in `lib/catalog.ts`. In the dark theme, `--border` and `--input` are `oklch(0.53 0.003 48.717)`. Same stone hue as the light edge. The 10% white line measured 1.48:1 on the page. 0.53 clears 3:1 on the page and on the choice fill. Do not put the translucent white back.
 
@@ -88,11 +92,42 @@ Left off. Cogram, because the title is three jobs. Lovable’s Design Engineer, 
 
 ## Next
 
-The data-flow pass was not done on 4 Oct. Wise and the company descriptions came first. Learn how data moves through the page before adding more companies. Today the lists live in the repo. Companies are `lib/companies.ts`. Roles are `lib/lists/2026-w40.ts`, gathered in `lib/roles.ts`. Answers are the query string, read by `parseAnswers` in `lib/place.ts`. The page imports those modules. There is no database. The question is whether that stays in git, or the lists move to something like Convex. The pass is a map of the flow, and a recommendation. Do not add Convex, or any database, in that pass.
+Wire the page to Beth. Start here. Do not create the tables again. Do not add companies. Read this section, then `AGENTS.md`, then `node_modules/next/dist/docs/` before writing a route or middleware. This Next.js is not the one in training data.
 
-No installed skill covers Convex. Context7 can fetch library docs if the recommendation needs them. The Supabase skill is for Postgres, and this page does not use Supabase. The flow itself is read from this repo.
+The page is still a server component in `app/(last)/page.tsx`. It imports the lists and reads the query string. Nothing is in `localStorage`.
 
-The research task after that is a list of 100 companies Roy would work with. Hiring is not the gate. A closed role can still be tagged later. The cut is the product: a tool he already uses, or a company on a published list such as [Fast Company’s Most Innovative Companies](https://www.fastcompany.com/most-innovative-companies/list), kept when the design or the use case is one he would join. The seed is the tools on the machine: Figma, ChatGPT, Grok, X, Cursor, Vercel, Cosmos, Granola, Opal. Cursor and Vercel stay on this list. They left the week 40 roles because the place was the United States. Place is a column here, not a reason to drop the company.
+- Companies. `components/company-table.tsx` imports `companies` from `lib/companies.ts` and groups them with `groupCompanies`.
+- Jobs. `lib/read.ts` closes over `roles` from `lib/roles.ts`. `splitRoles` and `everyRole` take no list. `app/(last)/page.tsx` calls them. Archived roles are not rendered. `lib/read.test.ts` imports `roles` and `archive` from the files.
+- Answers. `components/questions.tsx` writes the six answers into the query string on submit and routes to `/?hands=…`. `parseAnswers` in `lib/place.ts` reads that string. A partial or invalid query is no answers. The header is `components/lockup.tsx`: Questions, Companies, then the theme control. Words live in `lib/catalog.ts`.
+
+### Do this
+
+1. Add `.env.local` in `last/`. It is already ignored by `.env*` in `.gitignore`. `NEXT_PUBLIC_SUPABASE_URL` is `https://opuoavkqfwrcknmhskma.supabase.co`. `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` is the `sb_publishable_` key from the Supabase MCP `get_publishable_keys`. Do not use the legacy anon JWT. Do not put the database password or the service role key in any file.
+2. Install `@supabase/supabase-js` and `@supabase/ssr`. Pin the versions and commit the lockfile. Look up the current Next.js App Router server-client guide with the Supabase skill and the Supabase MCP `search_docs` before writing the clients. Do not trust a remembered snippet.
+3. Read companies and live roles in the server page. Live roles are `off` null. Map the quoted column `"where"` onto `where` on `Company` and `Role`. Drop `created_at`, `updated_at`, and `off` before the components see the row. Pass the rows into `CompanyTable`, and into `splitRoles` and `everyRole`. Those two functions take the list. The tests keep using the TypeScript arrays.
+4. Missing env uses the TypeScript files, so `npm run dev` still works before the env file exists. Env set and a failed query does not fall back to the files.
+5. Sign-in is a magic link. Supabase sends the email. No password field. In the Supabase dashboard, Authentication → URL configuration, set the site URL to `http://localhost:3000` and allow that redirect. The email needs `app/auth/callback/route.ts`. Session refresh follows the current `@supabase/ssr` guide. Read the Next docs before adding middleware. This version may not want `middleware.ts`.
+6. The ask screen stays the six questions. Sign-in is a header link, words in `lib/catalog.ts`, beside Questions and Companies. The form is a sheet, built from `components/ui/input.tsx` and Button. Do not restyle them. Do not put the form on the questionnaire. If a sheet cannot hold the email step, stop and say so before adding a second page.
+7. A stranger still locks into the URL only. A signed-in lock upserts `answers` for `auth.uid()`, then routes to the same query string. Coming back with no answers in the URL loads that row and shows the lock. The band is still `lockFrom`. The database does not grade it.
+8. Verify in the browser: companies and skip still list the same rows, a stranger can lock, a signed-in lock is still there after a new visit to `/`, and another account cannot read that row. Run `npm test` and `npm run typecheck`.
+
+### Decisions already made
+
+Supabase, not Convex. One shared catalogue. One private answer row per person. No bookmarks table. The six questions do not filter companies. Row security is on. `anon` and `authenticated` may select companies and roles. Insert, update, and delete on those two require `app_metadata.role = 'owner'`. Do not read `user_metadata` for that. `answers` has select, insert, update, and delete for `authenticated` only, with `auth.uid() = user_id` on both `using` and `with check`. `anon` has no grant on `answers`. The publishable key may ship in the browser. The service role key may not. The TypeScript files stay in git as the Friday seed and the test fixture. A later Friday edits the files, then copies the change into Beth. This pass does not build that copy step.
+
+### Ruled out
+
+Convex. `localStorage`. A passwords table. A per-user copy of companies or roles. Hiding a company that does not match. Letting the database set the band. Rendering archived roles. Putting the direct connection string or the service role key in the app. Using the legacy anon JWT for the new client. Calling `rls_auto_enable` from the website. A sign-in form on the ask screen. A newsletter field. Requiring an account to see the lists or to lock. Docker and a local Supabase stack. The old project ref `khuwcrrsdsiouzdnqpcx`, and the mistyped ref `opuouavkqfwrcnmhskma`. The `agent` CLI, which is not installed. `npx skills add supabase/agent-skills`, because the Supabase skill is already in use.
+
+### Files
+
+Already touched, outside the app: `roadmap.md`, `AGENTS.md`, and `~/.cursor/mcp.json`. Remote only: the two migrations above. Not touched, and still the source of the rows until this pass: `lib/companies.ts`, `lib/lists/2026-w40.ts`, `lib/archive.ts`, `lib/roles.ts`.
+
+This pass may touch `app/(last)/page.tsx`, `components/company-table.tsx`, `components/questions.tsx`, `components/lockup.tsx`, `lib/read.ts`, `lib/read.test.ts`, `lib/catalog.ts`, `package.json`, `package-lock.json`, and new files `lib/supabase/client.ts`, `lib/supabase/server.ts`, and `app/auth/callback/route.ts`. Add a session helper only if the current Supabase guide still wants one. Do not add a `.css` file. Do not add a second component library.
+
+### After this, not this task
+
+The research task after the wire-up is a list of 100 companies Roy would work with. Hiring is not the gate. A closed role can still be tagged later. The cut is the product: a tool he already uses, or a company on a published list such as [Fast Company’s Most Innovative Companies](https://www.fastcompany.com/most-innovative-companies/list), kept when the design or the use case is one he would join. The seed is the tools on the machine: Figma, ChatGPT, Grok, X, Cursor, Vercel, Cosmos, Granola, Opal. Cursor and Vercel stay on this list. They left the week 40 roles because the place was the United States. Place is a column here, not a reason to drop the company.
 
 Companies is a link in the header, beside Questions. It uses the same row and sheet as the roles. The groups are horizontal tabs. Seed opens first. Names inside a tab are alphabetical. tldraw stays with the T names. The row is the company and the description copied from its site. The sheet holds the tags and a link to the official site. The list shows every company until the values questions are answered. Those answers stay in the URL, the same way the six do. A company that does not match stays on the list in the light shade. Hiding it would pretend the company was never one he liked.
 
@@ -112,7 +147,7 @@ Product designer belongs when the posting is that seat: design origin, the proof
 
 A pass on X, with Grok, on a week or a month. It finds postings and people hiring. Roy still tags the band, the craft, and the seat, and copies salary and place only when the company published them. The pass does not scrape this page, and it does not add a server. Cal.com came from an X post Roy found. The posting is on `cal.com/jobs/senior-product-designer`. The heading says Senior Product Design Engineer.
 
-A newsletter is how someone comes back for that pass. It can ask for an address. This page still has no auth and no database, so the address does not live here yet. Do not put a signup form on the ask screen. The letter is the list, not a second product.
+A newsletter is how someone comes back for that pass. It can ask for an address. Do not put a signup form on the ask screen. The letter is the list, not a second product. An address is not part of the Supabase wire-up.
 
 The quadrant component is `components/quadrant.tsx`. It is not mounted. The result is the lock sentence, then the one proof, then the matching table. Bring the grid back by rendering `Quadrant` in `components/placement.tsx`. It is a grid. No chart library. shadcn charts are Recharts, and this picture is four named cells.
 

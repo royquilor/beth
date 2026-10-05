@@ -22,7 +22,7 @@ Placement rules live in `lib/place.ts`. Roles Roy edits live in `lib/roles.ts`. 
 
 - Next.js App Router + TypeScript
 - shadcn/ui + Tailwind only. Never add another component library or a raw HTML button
-- No auth, no database, no scraper. Answers stay in the URL for the session.
+- No scraper. A stranger still locks into the URL. The next pass wires Beth: read the catalogue from Supabase, magic-link sign-in, and save a signed-in lock. The brief is the Next section of `roadmap.md`.
 
 ## How to work
 
