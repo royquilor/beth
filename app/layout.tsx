@@ -42,6 +42,10 @@ export default function RootLayout({
       className={cn("font-sans", openRunde.variable)}
     >
       <body className="antialiased">
+        <script
+          src="https://mcp.figma.com/mcp/html-to-design/capture.js"
+          async
+        />
         <ThemeProvider>
           <TooltipProvider>{children}</TooltipProvider>
         </ThemeProvider>

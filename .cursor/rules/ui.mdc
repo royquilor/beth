@@ -6,7 +6,15 @@ alwaysApply: true
 
 # UI
 
-- Search `components/ui` before writing markup.
-- Use semantic tokens (`bg-background`, `text-muted-foreground`). No raw palettes.
-- Layout with `flex` / `grid` and `gap-*`. Do not use `space-y-*`.
-- Do not add `.css` files. Tokens live in `app/globals.css` and `design.md`.
+Before writing markup for a new screen or control:
+
+1. List `components/ui` and reuse an installed export if it fits.
+2. If none fits, call the shadcn MCP search tools for the pattern (questionnaire, form, field, empty, dialog). Do not guess from memory.
+3. If a registry item fits, install it with the MCP or `npx shadcn@latest add <name>`. Do not paste the source in by hand.
+4. Compose the screen from those parts. `className` is layout only (`flex`, `grid`, `gap-*`, `max-w-*`).
+5. A custom component is allowed only after the search returns nothing relevant. Say that in the reply.
+6. Use semantic tokens (`bg-background`, `text-muted-foreground`). No raw palettes.
+7. Layout with `flex` / `grid` and `gap-*`. Do not use `space-y-*`.
+8. Do not add `.css` files. Tokens live in `app/globals.css` and `design.md`.
+
+Multi-step questions, onboarding, and intake use `questionnaire`, not a custom form.
