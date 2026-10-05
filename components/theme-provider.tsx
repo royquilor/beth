@@ -49,7 +49,9 @@ function ThemeHotkey() {
         return
       }
 
-      if (event.key.toLowerCase() !== "d") {
+      // Autofill and some mail-client opens fire keydown with no key.
+      // Reading it here used to crash the page after the confirm link.
+      if (!event.key || event.key.toLowerCase() !== "d") {
         return
       }
 

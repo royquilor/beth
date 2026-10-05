@@ -47,6 +47,10 @@ export function LoginForm({
   const [message, setMessage] = useState<string | null>(notice)
   const [showConfirm, setShowConfirm] = useState(confirm)
   const [pending, setPending] = useState(false)
+  // The confirm sentence and the reset sentence are the next step.
+  // A real failure is the only message that marks the fields.
+  const invalid =
+    Boolean(message) && message !== page.confirmSent && message !== page.resetSent
 
   function clear(next: Mode) {
     setMode(next)
@@ -126,6 +130,7 @@ export function LoginForm({
         message={message}
         pending={pending}
         confirm={showConfirm}
+        invalid={invalid}
         onEmail={setEmail}
         onPassword={setPassword}
         onSubmit={onSubmit}
@@ -153,14 +158,14 @@ export function LoginForm({
             ) : null}
             <EmailField
               email={email}
-              message={message}
+              invalid={invalid}
               onEmail={setEmail}
               disabled={mode === "recovery"}
             />
             {mode === "forgot" ? null : (
               <PasswordField
                 password={password}
-                message={message}
+                invalid={invalid}
                 autoComplete={mode === "recovery" ? "new-password" : "current-password"}
                 onPassword={setPassword}
                 forgot={
@@ -180,6 +185,7 @@ export function LoginForm({
             <Notice
               message={message}
               confirm={showConfirm}
+              invalid={invalid}
               pending={pending}
               email={email}
               onResend={onResend}

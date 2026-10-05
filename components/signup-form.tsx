@@ -31,6 +31,7 @@ export function SignupForm({
   message,
   pending,
   confirm,
+  invalid,
   onEmail,
   onPassword,
   onSubmit,
@@ -43,6 +44,7 @@ export function SignupForm({
   message: string | null
   pending: boolean
   confirm: boolean
+  invalid: boolean
   onEmail: (value: string) => void
   onPassword: (value: string) => void
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
@@ -59,14 +61,21 @@ export function SignupForm({
         <form onSubmit={onSubmit}>
           <FieldGroup>
             <ProviderButtons pending={pending} onProvider={onProvider} />
-            <EmailField email={email} message={message} onEmail={onEmail} />
+            <EmailField email={email} invalid={invalid} onEmail={onEmail} />
             <PasswordField
               password={password}
-              message={message}
+              invalid={invalid}
               autoComplete="new-password"
               onPassword={onPassword}
             />
-            <Notice message={message} confirm={confirm} pending={pending} email={email} onResend={onResend} />
+            <Notice
+              message={message}
+              confirm={confirm}
+              invalid={invalid}
+              pending={pending}
+              email={email}
+              onResend={onResend}
+            />
             <Field>
               <Button type="submit" disabled={pending}>
                 {page.createAccount}
@@ -105,17 +114,17 @@ export function ProviderButtons({
 
 export function EmailField({
   email,
-  message,
+  invalid,
   onEmail,
   disabled = false,
 }: {
   email: string
-  message: string | null
+  invalid: boolean
   onEmail: (value: string) => void
   disabled?: boolean
 }) {
   return (
-    <Field data-invalid={message ? true : undefined}>
+    <Field data-invalid={invalid ? true : undefined}>
       <FieldLabel htmlFor="email">{page.email}</FieldLabel>
       <Input
         id="email"
@@ -124,7 +133,7 @@ export function EmailField({
         required
         disabled={disabled}
         value={email}
-        aria-invalid={Boolean(message)}
+        aria-invalid={invalid ? true : undefined}
         onChange={(event) => onEmail(event.target.value)}
       />
     </Field>
@@ -133,19 +142,19 @@ export function EmailField({
 
 export function PasswordField({
   password,
-  message,
+  invalid,
   autoComplete,
   onPassword,
   forgot,
 }: {
   password: string
-  message: string | null
+  invalid: boolean
   autoComplete: "current-password" | "new-password"
   onPassword: (value: string) => void
   forgot?: React.ReactNode
 }) {
   return (
-    <Field data-invalid={message ? true : undefined}>
+    <Field data-invalid={invalid ? true : undefined}>
       <div className="flex items-center">
         <FieldLabel htmlFor="password">{page.password}</FieldLabel>
         {forgot}
@@ -156,7 +165,7 @@ export function PasswordField({
         autoComplete={autoComplete}
         required
         value={password}
-        aria-invalid={Boolean(message)}
+        aria-invalid={invalid ? true : undefined}
         onChange={(event) => onPassword(event.target.value)}
       />
     </Field>
@@ -166,12 +175,14 @@ export function PasswordField({
 export function Notice({
   message,
   confirm,
+  invalid,
   pending,
   email,
   onResend,
 }: {
   message: string | null
   confirm: boolean
+  invalid: boolean
   pending: boolean
   email: string
   onResend: () => void
@@ -179,8 +190,15 @@ export function Notice({
   if (!message && !confirm) return null
 
   return (
-    <Field data-invalid={message ? true : undefined}>
-      {message ? <FieldError>{message}</FieldError> : null}
+    <Field data-invalid={invalid ? true : undefined}>
+      {message ? (
+        invalid ? (
+          <FieldError>{message}</FieldError>
+        ) : (
+          // A confirm note is the next step, not a failed field.
+          <FieldDescription role="status">{message}</FieldDescription>
+        )
+      ) : null}
       {confirm ? (
         <Button type="button" variant="outline" disabled={pending || !email} onClick={onResend}>
           {page.resend}

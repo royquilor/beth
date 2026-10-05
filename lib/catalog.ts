@@ -69,7 +69,7 @@ export const page = {
   haveAccount: "Already have an account",
   forgot: "Forgot password",
   resetSent: "Check your email. The link sets a new password.",
-  confirmSent: "Check your email to finish creating the account.",
+  confirmSent: "Check your email to confirm the address.",
   resend: "Send the email again.",
   continueGitHub: "Continue with GitHub",
   continueGoogle: "Continue with Google",
