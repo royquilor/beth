@@ -1,114 +1,77 @@
 "use client"
 
-"use client"
-
+import { GitHubMark, GoogleMark } from "@/components/provider-marks"
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field"
+import { Field, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { Spinner } from "@/components/ui/spinner"
 import { page } from "@/lib/catalog"
 
-type Provider = "github" | "google"
+export type Provider = "github" | "google"
 
-/**
- * Create account, from the signup block.
- * The same two fields as sign-in. No name, no second password, no strength meter.
- */
-export function SignupForm({
-  email,
-  password,
-  message,
-  pending,
-  confirm,
-  invalid,
-  onEmail,
-  onPassword,
-  onSubmit,
-  onProvider,
-  onSwitch,
-  onResend,
-}: {
-  email: string
-  password: string
-  message: string | null
-  pending: boolean
-  confirm: boolean
-  invalid: boolean
-  onEmail: (value: string) => void
-  onPassword: (value: string) => void
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
-  onProvider: (provider: Provider) => void
-  onSwitch: () => void
-  onResend: () => void
-}) {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{page.createAccount}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={onSubmit}>
-          <FieldGroup>
-            <ProviderButtons pending={pending} onProvider={onProvider} />
-            <EmailField email={email} invalid={invalid} onEmail={onEmail} />
-            <PasswordField
-              password={password}
-              invalid={invalid}
-              autoComplete="new-password"
-              onPassword={onPassword}
-            />
-            <Notice
-              message={message}
-              confirm={confirm}
-              invalid={invalid}
-              pending={pending}
-              email={email}
-              onResend={onResend}
-            />
-            <Field>
-              <Button type="submit" disabled={pending}>
-                {page.createAccount}
-              </Button>
-              <FieldDescription className="text-center">
-                <Button type="button" variant="link" className="h-auto px-0" onClick={onSwitch}>
-                  {page.haveAccount}
-                </Button>
-              </FieldDescription>
-            </Field>
-          </FieldGroup>
-        </form>
-      </CardContent>
-    </Card>
-  )
-}
+/** Which control is in flight. Null means the form is idle. */
+export type Pending = Provider | "submit" | null
 
 export function ProviderButtons({
   pending,
   onProvider,
 }: {
-  pending: boolean
+  pending: Pending
   onProvider: (provider: Provider) => void
 }) {
   return (
-    <Field>
-      <Button type="button" variant="outline" disabled={pending} onClick={() => onProvider("github")}>
-        {page.continueGitHub}
-      </Button>
-      <Button type="button" variant="outline" disabled={pending} onClick={() => onProvider("google")}>
-        {page.continueGoogle}
-      </Button>
-    </Field>
+    <div className="flex w-full gap-2">
+      <ProviderButton
+        provider="github"
+        label={page.continueGitHub}
+        pending={pending}
+        onProvider={onProvider}
+      >
+        <GitHubMark />
+      </ProviderButton>
+      <ProviderButton
+        provider="google"
+        label={page.continueGoogle}
+        pending={pending}
+        onProvider={onProvider}
+      >
+        <GoogleMark />
+      </ProviderButton>
+    </div>
+  )
+}
+
+function ProviderButton({
+  provider,
+  label,
+  pending,
+  onProvider,
+  children,
+}: {
+  provider: Provider
+  label: string
+  pending: Pending
+  onProvider: (provider: Provider) => void
+  children: React.ReactNode
+}) {
+  const busy = pending === provider
+  // The clicked button keeps its colour and shows the spinner.
+  // The other controls wait, so a second request does not start.
+  const waiting = pending !== null && !busy
+
+  return (
+    <Button
+      type="button"
+      variant="secondary"
+      className="flex-1"
+      disabled={waiting}
+      aria-busy={busy || undefined}
+      aria-label={label}
+      size="icon-lg"
+      onClick={() => onProvider(provider)}
+    >
+      {busy ? <Spinner aria-hidden /> : children}
+    </Button>
   )
 }
 
@@ -117,21 +80,25 @@ export function EmailField({
   invalid,
   onEmail,
   disabled = false,
+  autoFocus = false,
 }: {
   email: string
   invalid: boolean
   onEmail: (value: string) => void
   disabled?: boolean
+  autoFocus?: boolean
 }) {
   return (
-    <Field data-invalid={invalid ? true : undefined}>
+    <Field className="gap-1" data-invalid={invalid ? true : undefined}>
       <FieldLabel htmlFor="email">{page.email}</FieldLabel>
       <Input
         id="email"
         type="email"
         autoComplete="email"
+        placeholder={page.emailAddress}
         required
         disabled={disabled}
+        autoFocus={autoFocus}
         value={email}
         aria-invalid={invalid ? true : undefined}
         onChange={(event) => onEmail(event.target.value)}
@@ -154,8 +121,8 @@ export function PasswordField({
   forgot?: React.ReactNode
 }) {
   return (
-    <Field data-invalid={invalid ? true : undefined}>
-      <div className="flex items-center">
+    <Field className="gap-1" data-invalid={invalid ? true : undefined}>
+      <div className="flex w-full items-center">
         <FieldLabel htmlFor="password">{page.password}</FieldLabel>
         {forgot}
       </div>
@@ -163,47 +130,12 @@ export function PasswordField({
         id="password"
         type="password"
         autoComplete={autoComplete}
+        placeholder={page.password}
         required
         value={password}
         aria-invalid={invalid ? true : undefined}
         onChange={(event) => onPassword(event.target.value)}
       />
-    </Field>
-  )
-}
-
-export function Notice({
-  message,
-  confirm,
-  invalid,
-  pending,
-  email,
-  onResend,
-}: {
-  message: string | null
-  confirm: boolean
-  invalid: boolean
-  pending: boolean
-  email: string
-  onResend: () => void
-}) {
-  if (!message && !confirm) return null
-
-  return (
-    <Field data-invalid={invalid ? true : undefined}>
-      {message ? (
-        invalid ? (
-          <FieldError>{message}</FieldError>
-        ) : (
-          // A confirm note is the next step, not a failed field.
-          <FieldDescription role="status">{message}</FieldDescription>
-        )
-      ) : null}
-      {confirm ? (
-        <Button type="button" variant="outline" disabled={pending || !email} onClick={onResend}>
-          {page.resend}
-        </Button>
-      ) : null}
     </Field>
   )
 }

@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation"
 
-import { Frame } from "@/components/frame"
 import { LoginForm } from "@/components/login-form"
 import { mapAuthCode } from "@/lib/auth-error"
 import { bethEnv } from "@/lib/beth-env"
@@ -28,13 +27,11 @@ export default async function LoginPage({
   const error = first(params.error) ?? null
 
   return (
-    <Frame signedIn={Boolean(claims)} next="/login" dek={null}>
-      <LoginForm
-        account={first(params.account) === "1"}
-        recovery={recovery}
-        notice={mapAuthCode(error)}
-        confirm={error === "email_not_confirmed"}
-      />
-    </Frame>
+    <LoginForm
+      account={first(params.account) === "1"}
+      recovery={recovery}
+      notice={mapAuthCode(error)}
+      confirm={error === "email_not_confirmed"}
+    />
   )
 }

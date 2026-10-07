@@ -1,26 +1,16 @@
 "use client"
 
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 
-import {
-  EmailField,
-  Notice,
-  PasswordField,
-  ProviderButtons,
-  SignupForm,
-} from "@/components/signup-form"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Field, FieldDescription, FieldGroup } from "@/components/ui/field"
+import { AuthForm } from "@/components/auth-form"
+import { type Pending, type Provider } from "@/components/signup-form"
 import {
   createAccount,
-  resendSignup,
   saveNewPassword,
   sendReset,
   signInWithEmail,
   startProvider,
-  type Provider,
 } from "@/lib/auth-client"
 import { page } from "@/lib/catalog"
 
@@ -44,9 +34,12 @@ export function LoginForm({
   )
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [message, setMessage] = useState<string | null>(notice)
-  const [showConfirm, setShowConfirm] = useState(confirm)
-  const [pending, setPending] = useState(false)
+  const [message, setMessage] = useState<string | null>(
+    notice ?? (confirm ? page.confirmSent : null)
+  )
+  const [pending, setPending] = useState<Pending>(null)
+  // The click handler can run twice before React stores pending.
+  const busy = useRef(false)
   // The confirm sentence and the reset sentence are the next step.
   // A real failure is the only message that marks the fields.
   const invalid =
@@ -55,7 +48,6 @@ export function LoginForm({
   function clear(next: Mode) {
     setMode(next)
     setMessage(null)
-    setShowConfirm(false)
   }
 
   function enterApp() {
@@ -63,28 +55,38 @@ export function LoginForm({
     router.refresh()
   }
 
-  async function onProvider(provider: Provider) {
-    setPending(true)
-    setMessage(null)
-    try {
-      const next = await startProvider(provider)
-      if (next) setMessage(next)
-    } finally {
-      setPending(false)
-    }
+  function release() {
+    busy.current = false
+    setPending(null)
   }
 
-  async function onResend() {
-    setPending(true)
-    setMessage(await resendSignup(email))
-    setShowConfirm(true)
-    setPending(false)
+  async function onProvider(provider: Provider) {
+    if (busy.current) return
+
+    busy.current = true
+    setPending(provider)
+    setMessage(null)
+
+    try {
+      const next = await startProvider(provider)
+      if (!next) return
+
+      setMessage(next)
+      release()
+    } catch {
+      setMessage(page.authFailed)
+      release()
+    }
   }
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    setPending(true)
+    if (busy.current) return
+
+    busy.current = true
+    setPending("submit")
     setMessage(null)
+    let hold = false
 
     try {
       if (mode === "forgot") {
@@ -98,6 +100,8 @@ export function LoginForm({
           setMessage(next)
           return
         }
+
+        hold = true
         enterApp()
         return
       }
@@ -105,109 +109,39 @@ export function LoginForm({
       if (mode === "create") {
         const result = await createAccount(email, password)
         setMessage(result.message)
-        setShowConfirm(result.confirm)
         return
       }
 
       const result = await signInWithEmail(email, password)
       if (!result.ok) {
         setMessage(result.message)
-        setShowConfirm(result.confirm)
         return
       }
 
+      hold = true
       enterApp()
+    } catch {
+      setMessage(page.authFailed)
     } finally {
-      setPending(false)
+      // A redirect keeps the spinner up until the next page replaces this one.
+      if (!hold) release()
     }
   }
 
-  if (mode === "create") {
-    return (
-      <SignupForm
-        email={email}
-        password={password}
-        message={message}
-        pending={pending}
-        confirm={showConfirm}
-        invalid={invalid}
-        onEmail={setEmail}
-        onPassword={setPassword}
-        onSubmit={onSubmit}
-        onProvider={onProvider}
-        onSwitch={() => clear("sign-in")}
-        onResend={onResend}
-      />
-    )
-  }
-
-  const title = mode === "sign-in" ? page.signIn : page.forgot
-  const submit =
-    mode === "forgot" ? page.forgot : mode === "recovery" ? page.setPassword : page.signIn
-
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={onSubmit}>
-          <FieldGroup>
-            {mode === "sign-in" ? (
-              <ProviderButtons pending={pending} onProvider={onProvider} />
-            ) : null}
-            <EmailField
-              email={email}
-              invalid={invalid}
-              onEmail={setEmail}
-              disabled={mode === "recovery"}
-            />
-            {mode === "forgot" ? null : (
-              <PasswordField
-                password={password}
-                invalid={invalid}
-                autoComplete={mode === "recovery" ? "new-password" : "current-password"}
-                onPassword={setPassword}
-                forgot={
-                  mode === "sign-in" ? (
-                    <Button
-                      type="button"
-                      variant="link"
-                      className="ml-auto h-auto px-0"
-                      onClick={() => clear("forgot")}
-                    >
-                      {page.forgot}
-                    </Button>
-                  ) : null
-                }
-              />
-            )}
-            <Notice
-              message={message}
-              confirm={showConfirm}
-              invalid={invalid}
-              pending={pending}
-              email={email}
-              onResend={onResend}
-            />
-            <Field>
-              <Button type="submit" disabled={pending}>
-                {submit}
-              </Button>
-              <FieldDescription className="text-center">
-                <Button
-                  type="button"
-                  variant="link"
-                  className="h-auto px-0"
-                  onClick={() => clear(mode === "sign-in" ? "create" : "sign-in")}
-                >
-                  {mode === "sign-in" ? page.needAccount : page.haveAccount}
-                </Button>
-              </FieldDescription>
-            </Field>
-          </FieldGroup>
-        </form>
-      </CardContent>
-    </Card>
+    <AuthForm
+      mode={mode}
+      email={email}
+      password={password}
+      message={message}
+      invalid={invalid}
+      pending={pending}
+      onEmail={setEmail}
+      onPassword={setPassword}
+      onSubmit={onSubmit}
+      onProvider={onProvider}
+      onForgot={() => clear("forgot")}
+      onSwitch={() => clear("sign-in")}
+    />
   )
 }

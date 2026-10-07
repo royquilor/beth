@@ -4,7 +4,7 @@ Handoff for the next session. Product lives in this repo (`last/`). One public p
 
 ## Where we are
 
-On `main`, after the account pass of 5 Oct 2026. Dev server: `npm run dev` → http://localhost:3000.
+On `main`, after the auth screens of 6 Oct 2026. The next task is still the company list. Dev server: `npm run dev` → http://localhost:3000.
 
 The [Beth](https://www.figma.com/design/qyO4FMguMfbsb5Bb8iU2Ut/Beth) frames are the layout reference. Type and the column have moved on purpose since those frames: face is Open Runde (regular and medium) through `--font-sans`, body is `text-base` at 1rem, column is `max-w-lg`. Section titles are uppercase, regular, tracked, at a 1.1 line-height, and the lines balance. A week under a section is `text-sm`. On skip the week is the section, so it stays `text-base`. Descriptions wrap pretty. Rows that wrap use a 1.5 line-height. The step count is `text-sm` with tabular figures. The A/B/C caps stay `text-xs` on the same face. Do not put Departure Mono, a second face, or the 16.5px size back. The mark is the 24px dithered dot tile in `components/mark.tsx`. It sits still. Hover runs an inward spiral. Next holds the step and runs a diagonal sweep on that same tile. The name is not set beside it. Light is stone 50, and cards stay white. Dark uses the stone dark tokens. System follows the machine. The control is a ghost button in the header, beside Questions and Companies. It opens Light, Dark, and System.
 
@@ -24,6 +24,24 @@ The role list is two columns: company and title. The company name is underlined 
 
 The worked-example card (`components/lock-card.tsx`) matches the all-screens frame and is not mounted. The ask frame does not include it.
 
+### Auth
+
+`/login` is its own column. It does not use Frame. No Questions, no Companies, no theme control. The mark is centered. The column is `max-w-sm`. Create account is `/login?account=1`. `/signup` redirects there. Email is focused on sign-in and on create.
+
+The frames are in the [Last](https://www.figma.com/design/VDrdv94a30tTwLcNiUQAaK/Last) file. Sign in says “Welcome back”. Create says “Create your account”. GitHub and Google are icon buttons, then “or”, then the two fields. Create account stays faded until both fields have a value. While that request runs the label is “Creating account” and the spinner shows. The same spinner sits on whichever control was clicked. GitHub and Google keep their names for the reader and swap the mark for the spinner. The marks live in `components/provider-marks.tsx`. They have no size class, so the button draws them at `size-4`. The fill is `currentColor`.
+
+Forgot? sits on the password label. The sign-in frame has no link to create account. The create frame ends with “Already have an account? Log in”. “By continuing you agree to our Terms of Service” is text. There is no terms page. Do not make it a link until there is one.
+
+A sent confirm replaces the form. The sentence is “Please check your email for the confirmation link”. Do not put “Send the email again.” back on that screen. A wrong password still marks the fields. The confirm sentence does not. Forgot password and set-a-new-password use this same column. Recovery is `/login?recovery=1`. The title is “Set a new password”. The email field is not shown.
+
+Chrome paints a saved password with its own fill. `autofill:` on the input covers it with an inset shadow of `--autofill`. Light uses the page color. Dark uses the same mix as `dark:bg-input/30`, kept opaque. The text fill is the foreground.
+
+`--input` is the shadcn stone field again. Light is `oklch(0.923 0.003 48.717)`. Dark is white at 15%. `--border` stays `oklch(0.65 0.003 48.717)` in light and `oklch(0.53 0.003 48.717)` in dark. Choice cards and the empty checkbox use `border-input`, so those edges followed the field. Do not darken `--input` back to 0.65 or 0.53. The 4 Oct note set the page edge and the field together. The field has since returned to the stone input.
+
+Button text is `text-sm` and medium. The default size is `h-8`, `gap-1.5`, `px-2.5`. Large is `h-10`. Focus stays the browser outline. Do not put the focus ring back. Do not reinstall the button from the registry.
+
+A standout color was named and not applied. Orange, the stone hue with the chroma turned up. Primary stays near-black.
+
 ## Questions today
 
 The ask screen uses the shadcn Questionnaire (`components/ui/questionnaire.tsx`). `components/questions.tsx` only wires the six questions, the URL, and Beth’s Skip mode. It does not restyle the component.
@@ -39,6 +57,8 @@ The ask screen uses the shadcn Questionnaire (`components/ui/questionnaire.tsx`)
 - Hands, show, and craft use `multiple`. Seat, origin, and what you ship most stay one choice. Craft is the question. The five crafts are systems, motion, what to build and the flow, HTML and CSS in a reviewed pull request, and production frontend. Every selected craft counts. None of them raise the band.
 
 ## Done this session
+
+Auth screens, 6 Oct 2026. The login card left Frame. The column, the sentences, the spinner, the field border, and the saved-password fill are under Auth. Email focuses on sign-in and on create. Checked in the browser on `http://localhost:3000/login` and `http://localhost:3000/login?account=1`.
 
 Account pass, 5 Oct 2026. The confirm link crashed the page. A keydown with no key reached the theme shortcut, and `event.key` was read. That listener now returns when the key is missing. D still cycles Light, Dark, and System. Create account stays on `/login`. The sentence is “Check your email to confirm the address.” The fields stay unmarked. “Send the email again.” stays under the line. A wrong password still marks the fields and says “That email and password do not match.” The reset sentence is the same kind of note. Sign out from a lock query (`/?hands=…`) returns to `/`, the six questions. The answers stay on the account, so the next sign-in shows that lock again. A stranger who opens the lock URL still sees it. Sign out on Companies stays on `/?companies=1`. Sign out on Skip stays on `/?skip=1`. Sign out on `/app` goes to `/login`. `pathAfterSignOut` in `lib/sign-out-path.ts` is the rule. `npm test` (40) and `npm run typecheck` passed.
 
@@ -98,7 +118,7 @@ Left off. Cogram, because the title is three jobs. Lovable’s Design Engineer, 
 
 ## Next
 
-One task: file the next companies Roy would work with, toward 100. 26 are already in `lib/companies.ts`. Do not redo sign-in. Do not commit unless Roy asks. The button loader, the Friday role pass, and the quadrant stay under After the company list.
+One task: file the next companies Roy would work with, toward 100. 26 are already in `lib/companies.ts`. Do not redo sign-in. The auth column is in. Do not put it back inside Frame. Do not commit unless Roy asks. The button loader, the Friday role pass, and the quadrant stay under After the company list.
 
 ### Where the list lives
 
@@ -150,7 +170,7 @@ Read Company list so far before adding a name. Those paragraphs are the record. 
 
 Sign-in is checked. Do not rebuild `/login`, `proxy.ts`, or the saved lock. Do not mark the confirm note as a field error. Do not send a lock query back on sign out. `pathAfterSignOut` returns that page to `/`. Companies and Skip stay. `lib/supabase/client.ts` passes each `NEXT_PUBLIC_` name in directly. Do not put `bethEnv()` with no argument back in that file. GitHub, Google, and email and password are on. Email confirmation is still required. The built-in mailer only sends to team addresses until Authentication → Emails has a custom SMTP server. Do not invent a client id or a secret. Do not send a magic link. Do not add a `passwords` table.
 
-No env file means no Sign in control. Do not reinstall `@supabase/supabase-js` or `@supabase/ssr`. Do not overwrite `components/ui/button.tsx`. The login block’s overwrite would put the focus ring and the `text-sm` size back. The local button stays.
+No env file means no Sign in control. Do not reinstall `@supabase/supabase-js` or `@supabase/ssr`. Do not reinstall `components/ui/button.tsx` from the registry. That file would put the focus ring back. The local button keeps `text-sm`, medium, and the browser outline.
 
 ### Company list so far
 
