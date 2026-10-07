@@ -41,6 +41,7 @@ export default async function HomePage({
   const answers = parseAnswers(params)
   const companies = first(params.companies) === "1"
   const skip = !answers && !companies && first(params.skip) === "1"
+  const questions = !answers && !companies && !skip
   const claims = bethEnv() ? await sessionClaims() : null
   const signedIn = Boolean(claims)
 
@@ -49,6 +50,7 @@ export default async function HomePage({
       signedIn={signedIn}
       next={currentPath(params)}
       companies={companies}
+      questions={questions}
       dek={
         answers
           ? null

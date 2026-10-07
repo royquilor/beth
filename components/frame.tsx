@@ -7,23 +7,32 @@ import { checkedOn } from "@/lib/roles"
 
 /**
  * The public column. Sign in is omitted when the env file is missing.
+ * The questionnaire is max-w-lg. Companies, a lock, and skip use the window.
  */
 export function Frame({
   dek,
   signedIn,
   next,
   companies = false,
+  questions = false,
   children,
 }: {
   dek: string | null
   signedIn: boolean
   next: string
   companies?: boolean
+  questions?: boolean
   children: React.ReactNode
 }) {
   return (
     <MarkPhaseProvider>
-      <main className="mx-auto flex w-full max-w-lg flex-col gap-10 px-6 py-10">
+      <main
+        className={
+          questions
+            ? "mx-auto flex w-full max-w-lg flex-col gap-10 px-6 py-10"
+            : "mx-auto flex w-full flex-col gap-10 px-6 py-10"
+        }
+      >
         <Lockup
           links={[
             { href: "/", label: page.questions },

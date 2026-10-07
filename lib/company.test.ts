@@ -76,8 +76,24 @@ test("names sit in alphabetical order inside a stage", () => {
   )
 })
 
-test("every filed company has a site and a reason", () => {
-  assert.ok(companies.length > 0)
+test("the company page is the Europe and London cut", () => {
+  assert.deepEqual(
+    companies.map((company) => company.id),
+    [
+      "ashby",
+      "elevenlabs",
+      "granola",
+      "wise",
+      "yonder",
+      "dessn",
+      "tldraw",
+      "cal",
+      "figma",
+      "recraft",
+      "conduct",
+      "jack-and-jill",
+    ]
+  )
 
   for (const company of companies) {
     assert.equal(company.href.startsWith("https://"), true)

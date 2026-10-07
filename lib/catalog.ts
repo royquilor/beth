@@ -17,14 +17,8 @@ export const page = {
   dark: "Dark",
   system: "System",
   companiesLead:
-    "Companies worth the work. A posting is optional. Pre-seed and seed stay, because a small team can take freelance.",
-  companiesFoot:
-    "Stage is the last public round. A company with no round stays on the list.",
-  noRound: "No public round",
-  site: "Site",
-  siteFor(name: string) {
-    return `${name} site`
-  },
+    "Companies in Europe, or with a London office, or hiring in London.",
+  companiesFoot: "The name opens the company site.",
   skipLead:
     "No lock. Every role is listed. The band, the craft, and the seat open with the role.",
   nothingInRange: "Nothing in range",

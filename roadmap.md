@@ -1,12 +1,12 @@
 # Beth roadmap
 
-Handoff for the next session. Product lives in this repo (`last/`). One public page. The catalogue and the answer row live in Supabase. The page reads companies and live roles from Beth when `.env.local` is set. A stranger still locks into the URL. Sign-in is checked. Sign out from a lock returns to the questions. The next task is the company list, in Next.
+Handoff for the next session. Product lives in this repo (`last/`). One public page. The catalogue and the answer row live in Supabase. The page reads companies and live roles from Beth when `.env.local` is set. The company page shows the names in `lib/companies.ts`. A company that is only in the table stays off that page. A stranger still locks into the URL. Sign-in is checked. Sign out from a lock returns to the questions. The next task is under After the company list.
 
 ## Where we are
 
-On `main`, after the play pass of 7 Oct 2026. The next task is still the company list. Dev server: `npm run dev` → http://localhost:3000.
+On `main`, after the company list of 7 Oct 2026. The list is Europe, or a London office, or hiring in London. Dev server: `npm run dev` → http://localhost:3000.
 
-The [Beth](https://www.figma.com/design/qyO4FMguMfbsb5Bb8iU2Ut/Beth) frames are the layout reference. Type and the column have moved on purpose since those frames: face is Timeless Sans, the Sans cut, through `--font-sans`. Regular is the body. Medium is `font-medium`. Auth titles are semibold. Do not put Open Runde back. Body is `text-base` at 1rem. The column is `max-w-lg`. Section titles are uppercase, regular, tracked, at a 1.1 line-height, and the lines balance. A week under a section is `text-sm`. On skip the week is the section, so it stays `text-base`. Descriptions wrap pretty. Rows that wrap use a 1.5 line-height. The step count is `text-sm` with tabular figures. The A/B/C caps stay `text-xs` on the same face. Do not put Departure Mono, a second face, or the 16.5px size back. The mark is the 24px dithered dot tile in `components/mark.tsx`. It sits still. Hover runs an inward spiral. Next holds the step and runs a diagonal sweep on that same tile. The name is not set beside it. Light is stone 50, and cards stay white. Dark uses the stone dark tokens. System follows the machine. The control is a ghost button in the header, beside Questions and Companies. It opens Light, Dark, and System.
+The [Beth](https://www.figma.com/design/qyO4FMguMfbsb5Bb8iU2Ut/Beth) frames are the layout reference. Type and the column have moved on purpose since those frames: face is Timeless Sans, the Sans cut, through `--font-sans`. Regular is the body. Medium is `font-medium`. Auth titles are semibold. Do not put Open Runde back. Body is `text-base` at 1rem. The questionnaire is `max-w-lg`. The company list has no max width. Section titles are uppercase, regular, tracked, at a 1.1 line-height, and the lines balance. A week under a section is `text-sm`. On skip the week is the section, so it stays `text-base`. Descriptions wrap pretty. Rows that wrap use a 1.5 line-height. The step count is `text-sm` with tabular figures. The A/B/C caps stay `text-xs` on the same face. Do not put Departure Mono, a second face, or the 16.5px size back. The mark is the 24px dithered dot tile in `components/mark.tsx`. It sits still. Hover runs an inward spiral. Next holds the step and runs a diagonal sweep on that same tile. The name is not set beside it. Light is stone 50, and cards stay white. Dark uses the stone dark tokens. System follows the machine. The control is a ghost button in the header, beside Questions and Companies. It opens Light, Dark, and System.
 
 Taste: `design.md`. Voice: `lib/catalog.ts`. Placement: `lib/place.ts`. Roles: `lib/roles.ts`.
 
@@ -14,9 +14,10 @@ Taste: `design.md`. Voice: `lib/catalog.ts`. Placement: `lib/place.ts`. Roles: `
 
 | State | URL | What shows |
 | --- | --- | --- |
-| Ask | `/` | Mark, dek, `***`, six questions, `***`, footer |
+| Ask | `/` | Mark, dek, `***`, six questions, `***`, footer. The column is `max-w-lg`. |
 | Result | `/?hands=…` | Lock sentence, then the one next proof, then the matching table. In range when any role fits. Stretch when none do. The dek is hidden here. |
 | Skip | `/?skip=1` | Every role, no lock. The lead is the skip line. Questions returns to `/` |
+| Companies | `/?companies=1` | One list, no max width. `text-sm`. The name links to the site, with no underline. The description sits beside it. A `border-input` line under each row, with `pt-3` and `pb-5`. No tabs. No sheet. |
 
 Skip is a mode, not “skip this question.” It lists every role with no band lock.
 
@@ -59,6 +60,8 @@ The ask screen uses the shadcn Questionnaire (`components/ui/questionnaire.tsx`)
 - Hands, show, and craft use `multiple`. Seat, origin, and what you ship most stay one choice. Craft is the question. The five crafts are systems, motion, what to build and the flow, HTML and CSS in a reviewed pull request, and production frontend. Every selected craft counts. None of them raise the band.
 
 ## Done this session
+
+Company list, 7 Oct 2026. The cut is Europe, or a London office, or hiring in London. The three tabs are gone. A row does not open a sheet. The name is the link to the company site, and the description sits beside it. Twelve companies: Ashby, ElevenLabs, Granola, Wise, Yonder, Dessn, tldraw, Cal.com, Figma, Recraft, Conduct, and Jack & Jill. Yonder is the rewards card at yonder.com, the London office in Spitalfields. Dessn is dessn.com. Conduct is conduct.ai. Jack & Jill is jackandjill.ai. The descriptions are the lines on those sites. Ashby stays because the UK design engineer seat is remote in the United Kingdom. The other twenty stay in the Beth `companies` table and stay off this page, including Marker and Meticulous, which are London and were not on this cut. Six new rows were inserted: Ashby, Yonder, Dessn, Cal.com, Conduct, and Jack & Jill. The earlier rows were not rewritten, apart from ElevenLabs, whose site now says 90+ languages. The file is who appears. A matching row in Beth fills that company. The page has no max width. The questionnaire stays `max-w-lg`. A lock and skip use the window. The rows are `text-sm`. The name has no underline. Do not put `.underline-name` back on a company. Each row has `border-b border-input`, the same edge as a choice. Do not use `--border` for that line. Padding is `pt-3` and `pb-5`.
 
 Play and type, 7 Oct 2026. Play mode walks the auth column without sending a letter. The rules are under Auth. The face is Timeless Sans, the Sans cut. Auth titles are semibold. The dark field edge is the stone at 15%. A short password says it needs at least 6 characters. Terms of Service and Log in have no underline. Checked in the browser. The play tests passed.
 
@@ -122,13 +125,13 @@ Left off. Cogram, because the title is three jobs. Lovable’s Design Engineer, 
 
 ## Next
 
-One task: file the next companies Roy would work with, toward 100. 26 are already in `lib/companies.ts`. Do not redo sign-in. The auth column is in. Do not put it back inside Frame. Do not commit unless Roy asks. The button loader, the Friday role pass, and the quadrant stay under After the company list.
+The company list is the Europe and London cut. Do not put the stage tabs or the company sheet back. Further names wait until Roy names them. Do not redo sign-in. The auth column is in. Do not put it back inside Frame. Do not commit unless Roy asks. The button loader, the Friday role pass, and the quadrant stay under After the company list.
 
 ### Where the list lives
 
-`/?companies=1` is the page. Seed opens first. Names inside a tab are alphabetical. tldraw stays with the T names. The file keeps the order they were filed. `groupCompanies` in `lib/company.ts` sorts.
+`/?companies=1` is the page. One list, and the page has no max width. Do not put `max-w-lg` or `max-w-xl` back on it. Names are alphabetical. tldraw stays with the T names. The file in `lib/companies.ts` keeps the order they were filed. The page sorts. Rows are `text-sm`. The name is the site link, with no underline. A `border-input` line sits under each row. Padding is `pt-3` and `pb-5`.
 
-With `.env.local` set, the page reads `companies` from Beth. A new object in the file does not show until that row is in the table. Insert only the new rows. Do not rebuild the table. Do not rewrite the 26 already there. Do not write a general Friday copy command. The TypeScript file stays the seed and the test fixture. Tests use that file. They do not assert a count of 26.
+With `.env.local` set, a row in Beth fills a company that is in the file. A company in the table and absent from the file stays off the page. Insert only a new name Roy adds. Do not rebuild the table. Do not rewrite the rows already there. Do not write a general Friday copy command. The TypeScript file stays the seed and the test fixture. Tests use that file. They assert these twelve ids.
 
 Missing env uses the file. Env set and a failed query throws, and does not fall back to the file. Dev server: `npm run dev` → http://localhost:3000. Node for `npm test` is 22. The `node` on the default path is 20, and that version rejects `--experimental-strip-types`.
 
@@ -156,7 +159,7 @@ Run `stage-check.md` for every name you file. Read the company’s own post firs
 
 The six questions still set the band. They do not filter this list. Values questions are not written. Do not add a free-text values field. A company that does not match stays on the list. Hiding it would pretend the company was never one he liked.
 
-The row is the company and `why`. The sheet holds the tags and a link to the official site. Companies uses the same row and sheet as the roles.
+The row is the name and `why`, at `text-sm`. The name links to the official site and has no underline. A `border-input` line closes the row. There is no sheet, and there are no tabs. Stage, round, work, and place can stay on the record. They are not shown.
 
 ### Already in, and left off
 
@@ -166,7 +169,7 @@ Read Company list so far before adding a name. Those paragraphs are the record. 
 
 - The new companies are in `lib/companies.ts` and in the Beth `companies` table.
 - Each new `why` is from that company’s site. Stage, round, work, and place are copied only when the company published them.
-- `/?companies=1` shows the new names under the right tab. Seed still opens first.
+- `/?companies=1` shows the names in one list. Seed does not open first. There are no tabs.
 - Who stayed off, and why, is written under Company list so far.
 - `npm test` and `npm run typecheck` pass. Do not commit unless Roy asks.
 
@@ -182,9 +185,11 @@ Read this before adding a name. It is the record of who is already filed and who
 
 The first list is on `/?companies=1`, filed 3 Oct 2026. A Fast Company 2026 AI pass the same day filed Anthropic, World Labs, Runway, Factory, Hume, and Decart. Left off that list: Google, Abridge, Cerebras, Alibaba, Darktrace, Mithril, Lila Sciences, FieldAI, OpenEvidence, GC AI, Turing, Cohere, Snorkel, and Reflection. Recraft was filed the same day, after that pass. The source is [recraft.ai](https://www.recraft.ai) and their [Series B post](https://www.recraft.ai/press-releases/series-b-announcement) of May 2025. A July 2025 note adds investors to that same series, so the stage stays later. The [AI designer](https://jobs.ashbyhq.com/recraft/64655615-7a15-4e41-bd92-d2c91201b7a8) posting is open on the [careers page](https://www.recraft.ai/careers). It stayed off the role list. That seat grades taste on the image model. The place is remote in Armenia, Georgia, Kazakhstan, and Serbia. Marker and Meticulous were filed the same evening. Marker is [marker.page](https://marker.page). The writing product is on their about page. The $13m seed is in the press, not on that page, so the stage stays off. The [product designer](https://marker.page/jobs/product-designer) posting is on the week 40 role list. They grade a portfolio and the design system, and they say you are not the engineer, so the band is taste, the craft is systems, and the seat is a team. Meticulous is their [Series A post](https://www.meticulous.ai/blog/series-a) of 14 July 2026. The product is a pixel-level preview before merge. Onlook and Semiotic are the recent seeds. Glue is a YC Winter 2026 seed, two people, and the site was down, so it stayed off. Amie stays under seed. The last round the company named is the 2022 seed. Opal stays under seed too. In May 2026 the company said it raised $10M and did not name a letter, so the amount is on the sheet and the stage did not move. tldraw sits under later. The company announced a $10M Series A on 9 April 2025, led by Lux Capital and Definition. The design engineer posting says the same. Screen Studio has no public round. A database row that calls it a seed was left off. The same pass copied rounds from company posts: Cursor Series D, Nov 2025; Vercel Series F, Sep 2025; ElevenLabs Series C, Jan 2025; Paper Series A, Jul 2026; Hume Series B, Mar 2024. Factory’s post names $200M in Sep 2026 and no letter. Figma, OpenAI, xAI, X, and Anthropic stay later with no round until their own post is the source. Pre-seed is empty until a public pre-seed round is in hand. The check for the next pass is `stage-check.md`. Values questions are still not written, so the list does not filter yet.
 
+The page on 7 Oct 2026 is the twelve Roy named: Ashby, ElevenLabs, Granola, Wise, Yonder, Dessn, tldraw, Cal.com, Figma, Recraft, Conduct, and Jack & Jill. Yonder is [yonder.com](https://www.yonder.com), the rewards card, office-first in Spitalfields. Dessn is [dessn.com](https://www.dessn.com). Conduct is [conduct.ai](https://conduct.ai). Jack & Jill is [jackandjill.ai](https://www.jackandjill.ai). Ashby stays for the UK design engineer seat, remote in the United Kingdom. Cal.com stays because the remote seat includes Europe. Left off this page, and still in the table: Onlook, Semiotic, Amie, Opal, OpenAI, xAI, X, Cursor, Vercel, Cosmos, Paper, Anthropic, World Labs, Runway, Factory, Hume, Decart, Meticulous, Screen Studio, and Marker. Marker and Meticulous are London. They were not on this cut, so they stay off the page.
+
 ### After the company list
 
-Not this task. The button loader, the Friday role pass, and the quadrant wait until the company batch is filed.
+The company list is filed. The button loader, the Friday role pass, and the quadrant are the next work.
 
 The mark half of the wait is in. Next and Lock are pressable, and an empty Next names the fix, but the button still has no loader. Lock does not hold the mark. Do not add a server to slow the list. Do not install the Dot Matrix registry. The paths already live on the tile.
 

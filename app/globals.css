@@ -209,8 +209,8 @@
   }
 }
 
-/* The company or role name is the control that opens the sheet.
-   Thickness and position come from the font, so the line clears descenders. */
+/* The line comes from the font, so it clears descenders.
+   On a role, the name opens the sheet. */
 .underline-name {
   text-decoration-line: underline;
   text-decoration-thickness: from-font;

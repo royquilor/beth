@@ -7,10 +7,22 @@ import { toCompany, toRole } from "@/lib/rows"
 import { createClient } from "@/lib/supabase/server"
 
 /**
+ * The file is who appears on the company page.
+ * A matching row in Beth fills that company.
+ * A company left in the table, and absent from the file, stays off the page.
+ * A name in the file and missing from Beth uses the file.
+ * Env set and a failed query throws. It does not fall back to the files.
+ */
+function companiesOnPage(fromBeth: Company[]): Company[] {
+  const byId = new Map(fromBeth.map((company) => [company.id, company]))
+
+  return filedCompanies.map((company) => byId.get(company.id) ?? company)
+}
+
+/**
  * Companies and live roles for the page.
  * Live roles are the ones whose `off` is null. Archived rows stay in Beth
  * and are not rendered.
- * Env set and a failed query throws. It does not fall back to the files.
  */
 export async function loadCatalogue(): Promise<{
   companies: Company[]
@@ -34,7 +46,9 @@ export async function loadCatalogue(): Promise<{
   }
 
   return {
-    companies: (companies.data ?? []).map((row) => toCompany(row)),
+    companies: companiesOnPage(
+      (companies.data ?? []).map((row) => toCompany(row))
+    ),
     roles: (roles.data ?? []).map((row) => toRole(row)),
   }
 }

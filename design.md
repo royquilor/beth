@@ -8,7 +8,7 @@ House taste for Last. Read this before changing UI. Same lock as Holt: shadcn pr
 - The mark is the dithered 24px dot tile. The name is not set beside it.
 - Section titles are uppercase, regular, `tracking-wide`, `leading-heading` (1.1), and `text-balance`. A week under a section is `text-sm`. On skip the week is the section, so it stays `text-base`.
 - Descriptions use `text-pretty`. Text that wraps to several lines uses `leading-normal` (1.5).
-- A name that opens a sheet uses `.underline-name`. The line comes from the font.
+- A name that opens a sheet uses `.underline-name`. The line comes from the font. On the company list the name is the site link, with no underline, at `text-sm`. Each company row has a bottom border in `border-input`, the same edge as a choice.
 - Step count is `text-sm` with tabular figures. Badges are `text-xs` uppercase, `tracking-wide`, square, `bg-muted`. Letter caps stay `text-xs` on the same face.
 - Rules are the characters `***` and `---`.
 
@@ -25,7 +25,7 @@ House taste for Last. Read this before changing UI. Same lock as Holt: shadcn pr
 ## Space
 
 - Prefer `gap-*` on flex and grid.
-- Article column: `max-w-lg`, `px-6`, `py-10`.
+- Article column: `px-6`, `py-10`. The questionnaire is `max-w-lg`. The company list has no max width.
 - No arbitrary values.
 
 ## Components

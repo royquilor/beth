@@ -39,6 +39,7 @@ function byName(a: Company, b: Company) {
  * Pre-seed, then seed, then later.
  * A company with no public round stays on the list, after the staged ones.
  * Names inside a stage are alphabetical. The file keeps the order they were filed.
+ * The company page does not use these groups. It lists the filed companies.
  */
 export function groupCompanies(companies: Company[]): CompanyGroup[] {
   const groups: CompanyGroup[] = []
