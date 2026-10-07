@@ -78,7 +78,7 @@ export const page = {
   termsLead: "By continuing you agree to our",
   terms: "Terms of Service",
   resetSent: "Check your email. The link sets a new password.",
-  confirmSent: "Please check your email for the confirmation link",
+  confirmSent: "Confirmation link sent to",
   resend: "Send the email again.",
   continueGitHub: "Continue with GitHub",
   continueGoogle: "Continue with Google",
@@ -89,7 +89,8 @@ export const page = {
   alreadyGoogle: "This email already signs in with Google.",
   alreadyEmail: "This email already signs in with email and password.",
   alreadyAccount: "This email already has an account.",
-  weak: "That password does not meet the rules on this project.",
+  // This project rejects fewer than 6 characters. No other password rule is on.
+  weak: "That password needs at least 6 characters.",
   rate: "Wait a moment, then try again.",
   authFailed: "Sign-in did not finish. Try again.",
 }

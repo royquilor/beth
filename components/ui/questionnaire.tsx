@@ -136,7 +136,7 @@ function QuestionnaireChoice({
       >
         {children}
       </QuestionnairePrimitive.ChoiceLabel>
-      {/* One letter, on Open Runde. A second face is not set here. */}
+      {/* One letter, on Timeless Sans. A second face is not set here. */}
       <QuestionnairePrimitive.ChoiceShortcut
         data-slot="questionnaire-choice-shortcut"
         className="pointer-events-none ms-auto hidden size-5 shrink-0 translate-y-[--spacing(0.45)] items-center justify-center rounded-md border border-input bg-background text-xs leading-none font-medium text-muted-foreground group-has-data-[slot=questionnaire-choice-description]/questionnaire-choice:translate-y-0.5 group-data-[shortcut]/questionnaire-choice:inline-flex"

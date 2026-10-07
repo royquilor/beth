@@ -12,9 +12,11 @@ import { page } from "@/lib/catalog"
 export function AuthScreen({
   children,
   footer,
+  aside,
 }: {
   children: React.ReactNode
   footer?: React.ReactNode
+  aside?: React.ReactNode
 }) {
   return (
     <div className="flex min-h-svh flex-col items-center">
@@ -24,7 +26,12 @@ export function AuthScreen({
           <Mark />
         </header>
         <div className="flex flex-1 flex-col items-center justify-center">{children}</div>
-        {footer ? <footer className="flex justify-center">{footer}</footer> : null}
+        {footer || aside ? (
+          <div className="flex flex-col items-center gap-4">
+            {footer ? <footer className="flex justify-center">{footer}</footer> : null}
+            {aside}
+          </div>
+        ) : null}
       </div>
     </div>
   )
@@ -34,19 +41,19 @@ export function AuthScreen({
 export function TermsLine() {
   return (
     <p className="text-center text-xs leading-6 text-pretty text-muted-foreground">
-      {page.termsLead} <span className="text-foreground underline">{page.terms}</span>
+      {page.termsLead} <span className="text-foreground">{page.terms}</span>
     </p>
   )
 }
 
 export function AccountFooter({ onSwitch }: { onSwitch: () => void }) {
   return (
-    <p className="text-center text-xs leading-6 text-muted-foreground">
+    <p className="text-center text-xs leading-6 text-pretty text-muted-foreground">
       {page.haveAccount}{" "}
       <Button
         type="button"
         variant="link"
-        className="h-auto px-0 text-xs text-foreground underline"
+        className="h-auto px-0 text-xs text-foreground no-underline hover:no-underline"
         onClick={onSwitch}
       >
         {page.logIn}
@@ -65,12 +72,12 @@ export function FormNote({
   if (!message) return null
 
   if (invalid) {
-    return <FieldError className="text-center">{message}</FieldError>
+    return <FieldError className="text-center text-pretty">{message}</FieldError>
   }
 
   // A reset note is the next step, not a failed field.
   return (
-    <p role="status" className="text-center text-sm text-muted-foreground">
+    <p role="status" className="text-center text-sm text-pretty text-muted-foreground">
       {message}
     </p>
   )

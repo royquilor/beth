@@ -12,6 +12,7 @@ import {
   signInWithEmail,
   startProvider,
 } from "@/lib/auth-client"
+import { playProviderStep, playStep, waitForPlayBeat, type PlayStep } from "@/lib/auth-play"
 import { page } from "@/lib/catalog"
 
 type Mode = "sign-in" | "create" | "forgot" | "recovery"
@@ -22,11 +23,13 @@ export function LoginForm({
   recovery = false,
   notice = null,
   confirm = false,
+  play = false,
 }: {
   account?: boolean
   recovery?: boolean
   notice?: string | null
   confirm?: boolean
+  play?: boolean
 }) {
   const router = useRouter()
   const [mode, setMode] = useState<Mode>(
@@ -37,6 +40,7 @@ export function LoginForm({
   const [message, setMessage] = useState<string | null>(
     notice ?? (confirm ? page.confirmSent : null)
   )
+  const [note, setNote] = useState<string | null>(null)
   const [pending, setPending] = useState<Pending>(null)
   // The click handler can run twice before React stores pending.
   const busy = useRef(false)
@@ -48,6 +52,12 @@ export function LoginForm({
   function clear(next: Mode) {
     setMode(next)
     setMessage(null)
+    setNote(null)
+  }
+
+  function show(step: PlayStep) {
+    if (step.kind === "message") setMessage(step.message)
+    else setNote(step.note)
   }
 
   function enterApp() {
@@ -66,6 +76,17 @@ export function LoginForm({
     busy.current = true
     setPending(provider)
     setMessage(null)
+    setNote(null)
+
+    if (play) {
+      try {
+        await waitForPlayBeat()
+        show(playProviderStep(provider, email))
+      } finally {
+        release()
+      }
+      return
+    }
 
     try {
       const next = await startProvider(provider)
@@ -86,7 +107,18 @@ export function LoginForm({
     busy.current = true
     setPending("submit")
     setMessage(null)
+    setNote(null)
     let hold = false
+
+    if (play) {
+      try {
+        await waitForPlayBeat()
+        show(playStep(mode, email))
+      } finally {
+        release()
+      }
+      return
+    }
 
     try {
       if (mode === "forgot") {
@@ -134,6 +166,8 @@ export function LoginForm({
       email={email}
       password={password}
       message={message}
+      note={note}
+      play={play}
       invalid={invalid}
       pending={pending}
       onEmail={setEmail}

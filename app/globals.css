@@ -108,8 +108,8 @@
     --destructive: oklch(0.704 0.191 22.216);
     /* The page edge stays a solid stone so it clears 3:1. */
     --border: oklch(0.53 0.003 48.717);
-    /* shadcn dark input: white at 15%. */
-    --input: oklch(1 0 0 / 15%);
+    /* Light stone at 15%, so the field edge stays on hue 48.717. */
+    --input: oklch(0.923 0.003 48.717 / 15%);
     /* Same mix as dark:bg-input/30, kept opaque so the browser paint cannot show through. */
     --autofill: color-mix(in oklab, var(--input) 30%, var(--background));
     --ring: oklch(0.553 0.013 58.071);

@@ -1,5 +1,6 @@
 "use client"
 
+import { AuthPlayNote } from "@/components/auth-play-note"
 import {
   AccountFooter,
   AuthScreen,
@@ -25,6 +26,8 @@ export function AuthForm({
   email,
   password,
   message,
+  note = null,
+  play = false,
   invalid,
   pending,
   onEmail,
@@ -38,6 +41,8 @@ export function AuthForm({
   email: string
   password: string
   message: string | null
+  note?: string | null
+  play?: boolean
   invalid: boolean
   pending: Pending
   onEmail: (value: string) => void
@@ -47,15 +52,20 @@ export function AuthForm({
   onForgot: () => void
   onSwitch: () => void
 }) {
+  // On the confirmation screen the form is gone, so Log in is the way back to the column.
+  const aside = play ? (
+    <AuthPlayNote onBack={message === page.confirmSent ? onSwitch : undefined} />
+  ) : null
+
   if (message === page.confirmSent) {
     return (
-      <AuthScreen>
-        <h2
-          role="status"
-          className="w-full text-center text-base font-medium text-balance"
-        >
-          {page.confirmSent}
-        </h2>
+      <AuthScreen aside={aside}>
+        <div role="status" className="flex w-full flex-col items-center gap-1 text-center">
+          <h2 className="text-base font-semibold text-balance">{page.confirmSent}</h2>
+          {email ? (
+            <p className="text-base text-pretty break-all text-muted-foreground">{email}</p>
+          ) : null}
+        </div>
       </AuthScreen>
     )
   }
@@ -87,6 +97,7 @@ export function AuthForm({
 
   return (
     <AuthScreen
+      aside={aside}
       footer={
         mode === "sign-in" || mode === "recovery" ? null : (
           <AccountFooter onSwitch={onSwitch} />
@@ -94,7 +105,7 @@ export function AuthForm({
       }
     >
       <section className="flex w-full flex-col items-center gap-4">
-        <h2 className="text-center text-base font-medium text-pretty">{title}</h2>
+        <h2 className="text-center text-base font-semibold text-pretty">{title}</h2>
         <form className="flex w-full flex-col gap-4 p-4" onSubmit={onSubmit}>
           {showProviders ? (
             <>
@@ -131,6 +142,11 @@ export function AuthForm({
             />
           )}
           <FormNote message={message} invalid={invalid} />
+          {note ? (
+            <p role="status" className="text-center text-sm text-pretty text-muted-foreground">
+              {note}
+            </p>
+          ) : null}
           <Button
             type="submit"
             className="w-full"

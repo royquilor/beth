@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "node --experimental-strip-types --import ./lib/register-test-hook.mjs --test lib/place.test.ts lib/read.test.ts lib/quadrant.test.ts lib/company.test.ts lib/rows.test.ts lib/beth-env.test.ts lib/auth-error.test.ts lib/answers.test.ts lib/sign-out-path.test.ts",
+    "test": "node --experimental-strip-types --import ./lib/register-test-hook.mjs --test lib/place.test.ts lib/read.test.ts lib/quadrant.test.ts lib/company.test.ts lib/rows.test.ts lib/beth-env.test.ts lib/auth-error.test.ts lib/auth-play.test.ts lib/answers.test.ts lib/sign-out-path.test.ts",
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit"

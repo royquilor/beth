@@ -4,7 +4,7 @@ House taste for Last. Read this before changing UI. Same lock as Holt: shadcn pr
 
 ## Type
 
-- Face: Open Runde (`--font-sans`). Regular for body, medium for `font-medium`. Body is `text-base` (1rem). One face. Do not add another.
+- Face: Timeless Sans, the Sans cut (`--font-sans`). Regular for body, medium for `font-medium`. Body is `text-base` (1rem). One face. Do not add another.
 - The mark is the dithered 24px dot tile. The name is not set beside it.
 - Section titles are uppercase, regular, `tracking-wide`, `leading-heading` (1.1), and `text-balance`. A week under a section is `text-sm`. On skip the week is the section, so it stays `text-base`.
 - Descriptions use `text-pretty`. Text that wraps to several lines uses `leading-normal` (1.5).

@@ -12,17 +12,23 @@ export const metadata: Metadata = {
   description: page.dek,
 }
 
-// Open Runde. Regular is the body. Medium is font-medium.
-const openRunde = localFont({
+// Timeless Sans, the Sans cut. Regular is the body. Medium is font-medium.
+// Semibold is the auth h2.
+const timelessSans = localFont({
   src: [
     {
-      path: "../fonts/OpenRunde-Regular.woff2",
+      path: "../fonts/TimelessSans-SansRegular.woff2",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../fonts/OpenRunde-Medium.woff2",
+      path: "../fonts/TimelessSans-SansMedium.woff2",
       weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../fonts/TimelessSans-SansSemibold.woff2",
+      weight: "600",
       style: "normal",
     },
   ],
@@ -39,7 +45,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("font-sans", openRunde.variable)}
+      className={cn("font-sans", timelessSans.variable)}
     >
       <body className="antialiased">
         <script

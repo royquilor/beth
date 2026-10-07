@@ -4,9 +4,9 @@ Handoff for the next session. Product lives in this repo (`last/`). One public p
 
 ## Where we are
 
-On `main`, after the auth screens of 6 Oct 2026. The next task is still the company list. Dev server: `npm run dev` → http://localhost:3000.
+On `main`, after the play pass of 7 Oct 2026. The next task is still the company list. Dev server: `npm run dev` → http://localhost:3000.
 
-The [Beth](https://www.figma.com/design/qyO4FMguMfbsb5Bb8iU2Ut/Beth) frames are the layout reference. Type and the column have moved on purpose since those frames: face is Open Runde (regular and medium) through `--font-sans`, body is `text-base` at 1rem, column is `max-w-lg`. Section titles are uppercase, regular, tracked, at a 1.1 line-height, and the lines balance. A week under a section is `text-sm`. On skip the week is the section, so it stays `text-base`. Descriptions wrap pretty. Rows that wrap use a 1.5 line-height. The step count is `text-sm` with tabular figures. The A/B/C caps stay `text-xs` on the same face. Do not put Departure Mono, a second face, or the 16.5px size back. The mark is the 24px dithered dot tile in `components/mark.tsx`. It sits still. Hover runs an inward spiral. Next holds the step and runs a diagonal sweep on that same tile. The name is not set beside it. Light is stone 50, and cards stay white. Dark uses the stone dark tokens. System follows the machine. The control is a ghost button in the header, beside Questions and Companies. It opens Light, Dark, and System.
+The [Beth](https://www.figma.com/design/qyO4FMguMfbsb5Bb8iU2Ut/Beth) frames are the layout reference. Type and the column have moved on purpose since those frames: face is Timeless Sans, the Sans cut, through `--font-sans`. Regular is the body. Medium is `font-medium`. Auth titles are semibold. Do not put Open Runde back. Body is `text-base` at 1rem. The column is `max-w-lg`. Section titles are uppercase, regular, tracked, at a 1.1 line-height, and the lines balance. A week under a section is `text-sm`. On skip the week is the section, so it stays `text-base`. Descriptions wrap pretty. Rows that wrap use a 1.5 line-height. The step count is `text-sm` with tabular figures. The A/B/C caps stay `text-xs` on the same face. Do not put Departure Mono, a second face, or the 16.5px size back. The mark is the 24px dithered dot tile in `components/mark.tsx`. It sits still. Hover runs an inward spiral. Next holds the step and runs a diagonal sweep on that same tile. The name is not set beside it. Light is stone 50, and cards stay white. Dark uses the stone dark tokens. System follows the machine. The control is a ghost button in the header, beside Questions and Companies. It opens Light, Dark, and System.
 
 Taste: `design.md`. Voice: `lib/catalog.ts`. Placement: `lib/place.ts`. Roles: `lib/roles.ts`.
 
@@ -32,13 +32,15 @@ The frames are in the [Last](https://www.figma.com/design/VDrdv94a30tTwLcNiUQAaK
 
 Forgot? sits on the password label. The sign-in frame has no link to create account. The create frame ends with “Already have an account? Log in”. “By continuing you agree to our Terms of Service” is text. There is no terms page. Do not make it a link until there is one.
 
-A sent confirm replaces the form. The sentence is “Please check your email for the confirmation link”. Do not put “Send the email again.” back on that screen. A wrong password still marks the fields. The confirm sentence does not. Forgot password and set-a-new-password use this same column. Recovery is `/login?recovery=1`. The title is “Set a new password”. The email field is not shown.
+A sent confirm replaces the form. The line is “Confirmation link sent to”. The address sits under it in the muted foreground. That address is the one typed on the form. A visit from the letter has none, so only the line shows. Do not put “Please check your email for the confirmation link” back. Do not put “Send the email again.” back on that screen. A wrong password still marks the fields. The confirm line does not. A short password says “That password needs at least 6 characters.” That is the only rule on this project. Forgot password and set-a-new-password use this same column. Recovery is `/login?recovery=1`. The title is “Set a new password”. The email field is not shown. Terms of Service and Log in have no underline. Do not put it back.
 
 Chrome paints a saved password with its own fill. `autofill:` on the input covers it with an inset shadow of `--autofill`. Light uses the page color. Dark uses the same mix as `dark:bg-input/30`, kept opaque. The text fill is the foreground.
 
-`--input` is the shadcn stone field again. Light is `oklch(0.923 0.003 48.717)`. Dark is white at 15%. `--border` stays `oklch(0.65 0.003 48.717)` in light and `oklch(0.53 0.003 48.717)` in dark. Choice cards and the empty checkbox use `border-input`, so those edges followed the field. Do not darken `--input` back to 0.65 or 0.53. The 4 Oct note set the page edge and the field together. The field has since returned to the stone input.
+`--input` in the light theme is `oklch(0.923 0.003 48.717)`. In the dark theme it is that same stone at 15%. Do not put white at 15% back. `--border` stays `oklch(0.65 0.003 48.717)` in light and `oklch(0.53 0.003 48.717)` in dark. Choice cards and the empty checkbox use `border-input`, so those edges followed the field. Do not darken `--input` back to 0.65 or 0.53.
 
 Button text is `text-sm` and medium. The default size is `h-8`, `gap-1.5`, `px-2.5`. Large is `h-10`. Focus stays the browser outline. Do not put the focus ring back. Do not reinstall the button from the registry.
+
+Play is `/login?play=1`, and only while `next dev` is running. Create is `/login?play=1&account=1`. A new password is `/login?play=1&recovery=1`. The flag does nothing in production, and a fake address never creates a session. An outline badge says PLAY MODE. Any address walks to the next step. The word before @ shows the other sentence: wrong, taken, weak, wait, or fail. GitHub and Google stay on the column and name the provider. Do not put the play sentence back. The Grotesk cut is not loaded.
 
 A standout color was named and not applied. Orange, the stone hue with the chroma turned up. Primary stays near-black.
 
@@ -52,11 +54,13 @@ The ask screen uses the shadcn Questionnaire (`components/ui/questionnaire.tsx`)
 - Letter shortcuts are on: A, B, C, in choice order, on the current question. A letter selects. It does not advance. Numbers stay off.
 - Submit writes each answer into the query string and routes to `/?hands=…`.
 - `parseAnswers` in `lib/place.ts` reads that string. A partial or invalid query is treated as no answers.
-- The face is Open Runde through `--font-sans`. The title uses `font-heading`, which points at the same token. Do not set a second face on the questionnaire.
+- The face is Timeless Sans through `--font-sans`. The title uses `font-heading`, which points at the same token. Do not set a second face on the questionnaire.
 - Beth’s Skip is a plain text link to `/?skip=1`. It is not a button, and it is not `QuestionnaireSkip`. That control is for an optional item left blank, and every question here is required. Back, Next, and Lock are the questionnaire actions at `size="lg"`.
 - Hands, show, and craft use `multiple`. Seat, origin, and what you ship most stay one choice. Craft is the question. The five crafts are systems, motion, what to build and the flow, HTML and CSS in a reviewed pull request, and production frontend. Every selected craft counts. None of them raise the band.
 
 ## Done this session
+
+Play and type, 7 Oct 2026. Play mode walks the auth column without sending a letter. The rules are under Auth. The face is Timeless Sans, the Sans cut. Auth titles are semibold. The dark field edge is the stone at 15%. A short password says it needs at least 6 characters. Terms of Service and Log in have no underline. Checked in the browser. The play tests passed.
 
 Auth screens, 6 Oct 2026. The login card left Frame. The column, the sentences, the spinner, the field border, and the saved-password fill are under Auth. Email focuses on sign-in and on create. Checked in the browser on `http://localhost:3000/login` and `http://localhost:3000/login?account=1`.
 
@@ -170,7 +174,7 @@ Read Company list so far before adding a name. Those paragraphs are the record. 
 
 Sign-in is checked. Do not rebuild `/login`, `proxy.ts`, or the saved lock. Do not mark the confirm note as a field error. Do not send a lock query back on sign out. `pathAfterSignOut` returns that page to `/`. Companies and Skip stay. `lib/supabase/client.ts` passes each `NEXT_PUBLIC_` name in directly. Do not put `bethEnv()` with no argument back in that file. GitHub, Google, and email and password are on. Email confirmation is still required. The built-in mailer only sends to team addresses until Authentication → Emails has a custom SMTP server. Do not invent a client id or a secret. Do not send a magic link. Do not add a `passwords` table.
 
-No env file means no Sign in control. Do not reinstall `@supabase/supabase-js` or `@supabase/ssr`. Do not reinstall `components/ui/button.tsx` from the registry. That file would put the focus ring back. The local button keeps `text-sm`, medium, and the browser outline.
+No env file means no Sign in control. Do not reinstall `@supabase/supabase-js` or `@supabase/ssr`. Do not reinstall `components/ui/button.tsx` from the registry. That file would put the focus ring back. The local button keeps `text-sm`, medium, and the browser outline. Play stays off unless `next dev` is running. Do not put Open Runde back.
 
 ### Company list so far
 

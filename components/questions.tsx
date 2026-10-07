@@ -44,7 +44,7 @@ const items = questions.map((question) => ({
  * Beth's Skip is a mode: it leaves this form and opens every role.
  * A stranger keeps the answers in the URL.
  * A signed-in Lock writes that person's row, then uses the same URL.
- * The face comes from --font-sans (Open Runde).
+ * The face comes from --font-sans (Timeless Sans).
  */
 export function Questions({ signedIn = false }: { signedIn?: boolean }) {
   const router = useRouter()
