@@ -23,6 +23,13 @@ export type Company = {
   round?: string
   work?: Work
   where?: string
+  /** Careers page. Absent when the company has not published one. */
+  careers?: string
+  /**
+   * True when that careers page listed an open role.
+   * A closed board does not remove the company.
+   */
+  hiring?: boolean
 }
 
 export type CompanyGroup = {

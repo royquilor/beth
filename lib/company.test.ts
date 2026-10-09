@@ -99,5 +99,19 @@ test("the company page is the Europe and London cut", () => {
   for (const company of companies) {
     assert.equal(company.href.startsWith("https://"), true)
     assert.ok(company.why.length > 0)
+    assert.equal(typeof company.hiring, "boolean")
+  }
+
+  const closed = companies.filter((company) => company.hiring === false)
+  assert.deepEqual(
+    closed.map((company) => company.id),
+    ["dessn", "tldraw"]
+  )
+  assert.equal(closed[0]?.careers, undefined)
+  assert.equal(closed[1]?.careers, "https://tldraw.dev/careers")
+
+  for (const company of companies) {
+    if (!company.careers) continue
+    assert.equal(company.careers.startsWith("https://"), true)
   }
 })

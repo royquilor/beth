@@ -18,7 +18,8 @@ export const page = {
   system: "System",
   companiesLead:
     "Product designer and design engineer jobs in the United Kingdom, or remote.",
-  companiesFoot: "The name opens the company site.",
+  companiesFoot: "The name opens the company site. Hiring opens the careers page.",
+  hiring: "Hiring",
   skipLead:
     "No lock. Every role is listed. The band, the craft, and the seat open with the role.",
   nothingInRange: "Nothing in range",

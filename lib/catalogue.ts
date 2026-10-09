@@ -16,7 +16,18 @@ import { createClient } from "@/lib/supabase/server"
 function companiesOnPage(fromBeth: Company[]): Company[] {
   const byId = new Map(fromBeth.map((company) => [company.id, company]))
 
-  return filedCompanies.map((company) => byId.get(company.id) ?? company)
+  return filedCompanies.map((company) => {
+    const fromBeth = byId.get(company.id)
+    if (!fromBeth) return company
+
+    // Beth fills the published fields. The careers link and the hiring
+    // mark stay on the file. They are not columns in Beth.
+    return {
+      ...fromBeth,
+      careers: company.careers,
+      hiring: company.hiring,
+    }
+  })
 }
 
 /**
