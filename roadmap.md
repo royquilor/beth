@@ -4,7 +4,7 @@ Handoff for the next session. Product lives in this repo (`last/`). One public p
 
 ## Where we are
 
-On `main`, after Oxford Dynamics, 9 Oct 2026. Thirteen companies. The list is Europe, or a London office, or hiring in London. Dev server: `npm run dev` → http://localhost:3000.
+On `main`, after Oxford Dynamics, 9 Oct 2026. Thirteen companies. The company page line is “Product designer and design engineer jobs in the United Kingdom, or remote.” Do not put the Europe and London sentence back. Dev server: `npm run dev` → http://localhost:3000.
 
 The [Beth](https://www.figma.com/design/qyO4FMguMfbsb5Bb8iU2Ut/Beth) frames are the layout reference. Type and the column have moved on purpose since those frames: face is Timeless Sans, the Sans cut, through `--font-sans`. Regular is the body. Medium is `font-medium`. Auth titles are semibold. Do not put Open Runde back. Body is `text-base` at 1rem. The questionnaire is `max-w-lg`. The company list has no max width. Section titles are uppercase, regular, tracked, at a 1.1 line-height, and the lines balance. A week under a section is `text-sm`. On skip the week is the section, so it stays `text-base`. Descriptions wrap pretty. Rows that wrap use a 1.5 line-height. The step count is `text-sm` with tabular figures. The A/B/C caps stay `text-xs` on the same face. Do not put Departure Mono, a second face, or the 16.5px size back. The mark is the 24px dithered dot tile in `components/mark.tsx`. It sits still. Hover runs an inward spiral. Next holds the step and runs a diagonal sweep on that same tile. The name is not set beside it. Light is stone 50, and cards stay white. Dark uses the stone dark tokens. System follows the machine. The control is a ghost button in the header, beside Questions and Companies. It opens Light, Dark, and System.
 
@@ -17,7 +17,7 @@ Taste: `design.md`. Voice: `lib/catalog.ts`. Placement: `lib/place.ts`. Roles: `
 | Ask | `/` | Mark, dek, `***`, six questions, `***`, footer. The column is `max-w-lg`. |
 | Result | `/?hands=…` | Lock sentence, then the one next proof, then the matching table. In range when any role fits. Stretch when none do. The dek is hidden here. |
 | Skip | `/?skip=1` | Every role, no lock. The lead is the skip line. Questions returns to `/` |
-| Companies | `/?companies=1` | One list, no max width. `text-sm`. The name links to the site, with no underline. The description sits beside it. A `border-input` line under each row, with `pt-3` and `pb-5`. No tabs. No sheet. |
+| Companies | `/?companies=1` | The line is “Product designer and design engineer jobs in the United Kingdom, or remote.” One list, no max width. `text-sm`. The name links to the site, with no underline. The description sits beside it. A `border-input` line under each row, with `pt-3` and `pb-5`. No tabs. No sheet. |
 
 Skip is a mode, not “skip this question.” It lists every role with no band lock.
 
@@ -60,6 +60,8 @@ The ask screen uses the shadcn Questionnaire (`components/ui/questionnaire.tsx`)
 - Hands, show, and craft use `multiple`. Seat, origin, and what you ship most stay one choice. Craft is the question. The five crafts are systems, motion, what to build and the flow, HTML and CSS in a reviewed pull request, and production frontend. Every selected craft counts. None of them raise the band.
 
 ## Done this session
+
+Company page line, 9 Oct 2026. The dek is “Product designer and design engineer jobs in the United Kingdom, or remote.” It names both seats. United Kingdom covers London and Harwell. Remote covers Cal.com, whose posting says work from anywhere. Figma stays on the list because Roy uses it. The line does not say Europe, and it does not say London. Do not put that sentence back.
 
 Oxford Dynamics, 9 Oct 2026. Roy named [oxdynamics.com](https://oxdynamics.com). The row is in `lib/companies.ts` and in the Beth `companies` table. The description is the meta description. The place is Harwell, from the address on the site. The BAE investment is named and has no series, so the stage stays off. The page is thirteen companies. Checked on `/?companies=1`. `npm test` (44) and `npm run typecheck` passed.
 

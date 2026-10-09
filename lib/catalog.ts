@@ -17,7 +17,7 @@ export const page = {
   dark: "Dark",
   system: "System",
   companiesLead:
-    "Companies in Europe, or with a London office, or hiring in London.",
+    "Product designer and design engineer jobs in the United Kingdom, or remote.",
   companiesFoot: "The name opens the company site.",
   skipLead:
     "No lock. Every role is listed. The band, the craft, and the seat open with the role.",
