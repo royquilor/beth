@@ -1,7 +1,7 @@
 import type { Company } from "@/lib/company"
 
 /**
- * Companies on the page, 7 Oct 2026.
+ * Companies on the page, 9 Oct 2026.
  * Europe, or a London office, or hiring in London.
  * Each row is the name, the description from that company's site, and the site.
  * Stage stays on a company that already had a public round. It is not shown.
@@ -99,5 +99,12 @@ export const companies: Company[] = [
     name: "Jack & Jill",
     href: "https://www.jackandjill.ai",
     why: "Jack is the AI agent for careers. Jill is the AI agent for hiring. Together they introduce remarkable people to ambitious companies.",
+  },
+  {
+    id: "oxford-dynamics",
+    name: "Oxford Dynamics",
+    href: "https://oxdynamics.com",
+    why: "Oxford Dynamics develops mission-ready, Sovereign AI Defence Systems that deliver intelligence and decision advantage across defence operations.",
+    where: "Harwell",
   },
 ]
