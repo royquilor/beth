@@ -15,7 +15,8 @@ export default function NotFound() {
       <EmptyHeader>
         <EmptyTitle>This page is not on the list</EmptyTitle>
         <EmptyDescription>
-          The roles, the questions, and the lock are on the front page.
+          The company list is on the front page. Where do I fit opens the
+          questions.
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>

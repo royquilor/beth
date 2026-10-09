@@ -75,7 +75,8 @@ export const companies: Company[] = [
     href: "https://tldraw.com",
     why: "A free and instant virtual whiteboarding with online collaboration. No signup required. Works on all devices: mobile, tablets, and desktop.",
     careers: "https://tldraw.dev/careers",
-    hiring: false,
+    // Design Engineer is open on that page. London, onsite. Checked 9 Oct 2026.
+    hiring: true,
     stage: "later",
     round: "Series A, Apr 2025",
     work: "hybrid",

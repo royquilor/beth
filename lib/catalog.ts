@@ -10,7 +10,8 @@ import type { Answers, Band, Origin } from "@/lib/place"
 export const page = {
   title: "Beth",
   dek: "Beth names the kind of design engineer you can prove, and the one piece that would change that.",
-  questions: "Questions",
+  // The front page is the company list. This link opens the six questions.
+  questions: "Where do I fit",
   companies: "Companies",
   theme: "Theme",
   light: "Light",
@@ -18,7 +19,8 @@ export const page = {
   system: "System",
   companiesLead:
     "Product designer and design engineer jobs in the United Kingdom, or remote.",
-  companiesFoot: "The name opens the company site. Hiring opens the careers page.",
+  companiesFoot:
+    "The name opens the company site. Hiring opens the careers page.",
   hiring: "Hiring",
   skipLead:
     "No lock. Every role is listed. The band, the craft, and the seat open with the role.",

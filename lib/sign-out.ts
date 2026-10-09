@@ -9,7 +9,7 @@ import { createClient } from "@/lib/supabase/server"
 /**
  * Ends the session.
  * A lock in the URL is this person's result, so that page returns to the questions.
- * Companies and Skip stay. /app returns to /login.
+ * The company list is /. Skip stays. /app returns to /login.
  */
 export async function signOut(formData: FormData) {
   if (bethEnv()) {

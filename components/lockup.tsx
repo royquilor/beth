@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
  * The page heading is read out and kept off the mark.
  * It sits still. Hover runs the inward spiral.
  * Next holds the step and runs a diagonal sweep on this tile.
- * Questions, Companies, and the theme control stay in the top right.
+ * Where do I fit, Companies, and the theme control stay in the top right.
  * Sign in sits after those links. No env file means no Sign in control.
  * The ask screen keeps the dek. Pass null to hide the line.
  * Skip and Companies pass their own lead.
@@ -64,7 +64,7 @@ export function Lockup({
           <ModeToggle />
         </nav>
       </div>
-      {dek ? <p className="text-pretty text-base">{dek}</p> : null}
+      {dek ? <p className="text-base text-pretty">{dek}</p> : null}
     </header>
   )
 }

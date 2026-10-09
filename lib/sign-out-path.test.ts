@@ -8,13 +8,14 @@ test("a lock query returns to the questions", () => {
     pathAfterSignOut(
       "/?hands=merged&ships=prototype&show=merged&seat=team&prong=systems&prong=judgment&prong=css&origin=design"
     ),
-    "/"
+    "/?questions=1"
   )
 })
 
-test("companies and skip stay put", () => {
-  assert.equal(pathAfterSignOut("/?companies=1"), "/?companies=1")
+test("companies lands on the front page and skip stays put", () => {
+  assert.equal(pathAfterSignOut("/?companies=1"), "/")
   assert.equal(pathAfterSignOut("/?skip=1"), "/?skip=1")
+  assert.equal(pathAfterSignOut("/?questions=1"), "/?questions=1")
 })
 
 test("the app page goes to sign in", () => {

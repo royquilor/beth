@@ -7,7 +7,8 @@ import { checkedOn } from "@/lib/roles"
 
 /**
  * The public column. Sign in is omitted when the env file is missing.
- * The questionnaire is max-w-lg. Companies, a lock, and skip use the window.
+ * The company list is the front page and uses the window.
+ * The six questions stay max-w-lg. A lock and skip use the window too.
  */
 export function Frame({
   dek,
@@ -35,8 +36,8 @@ export function Frame({
       >
         <Lockup
           links={[
-            { href: "/", label: page.questions },
-            { href: "/?companies=1", label: page.companies },
+            { href: "/?questions=1", label: page.questions },
+            { href: "/", label: page.companies },
           ]}
           dek={dek}
           session={bethEnv() ? { signedIn, next } : null}

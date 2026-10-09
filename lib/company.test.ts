@@ -105,10 +105,13 @@ test("the company page is the Europe and London cut", () => {
   const closed = companies.filter((company) => company.hiring === false)
   assert.deepEqual(
     closed.map((company) => company.id),
-    ["dessn", "tldraw"]
+    ["dessn"]
   )
   assert.equal(closed[0]?.careers, undefined)
-  assert.equal(closed[1]?.careers, "https://tldraw.dev/careers")
+
+  const tldraw = companies.find((company) => company.id === "tldraw")
+  assert.equal(tldraw?.hiring, true)
+  assert.equal(tldraw?.careers, "https://tldraw.dev/careers")
 
   for (const company of companies) {
     if (!company.careers) continue

@@ -1,3 +1,6 @@
+import type { Metadata } from "next"
+import { redirect } from "next/navigation"
+
 import { CompanyTable } from "@/components/company-table"
 import { Frame } from "@/components/frame"
 import { Locked } from "@/components/locked"
@@ -31,17 +34,49 @@ function currentPath(params: Search) {
   return text ? `/?${text}` : "/"
 }
 
+/**
+ * The company list is the front page.
+ * Where do I fit opens the six questions.
+ * A lock in the query still wins, and Skip still lists every role.
+ */
+function viewOf(params: Search) {
+  const answers = parseAnswers(params)
+  const skip = !answers && first(params.skip) === "1"
+  const questions = !answers && !skip && first(params.questions) === "1"
+  const companies = !answers && !skip && !questions
+
+  return { answers, skip, questions, companies }
+}
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<Search>
+}): Promise<Metadata> {
+  const { answers, skip, questions } = viewOf(await searchParams)
+
+  return {
+    description:
+      answers || questions
+        ? page.dek
+        : skip
+          ? page.skipLead
+          : page.companiesLead,
+  }
+}
+
 export default async function HomePage({
   searchParams,
 }: {
   searchParams: Promise<Search>
 }) {
   const params = await searchParams
+  const { answers, skip, questions, companies } = viewOf(params)
+
+  // The old company flag is the same list. One address for it.
+  if (companies && first(params.companies) === "1") redirect("/")
+
   const catalogue = await loadCatalogue()
-  const answers = parseAnswers(params)
-  const companies = first(params.companies) === "1"
-  const skip = !answers && !companies && first(params.skip) === "1"
-  const questions = !answers && !companies && !skip
   const claims = bethEnv() ? await sessionClaims() : null
   const signedIn = Boolean(claims)
 

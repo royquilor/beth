@@ -1,6 +1,6 @@
 # Beth roadmap
 
-Handoff for the next session. Product lives in this repo (`last/`). One public page. The catalogue and the answer row live in Supabase. The page reads companies and live roles from Beth when `.env.local` is set. The company page shows the names in `lib/companies.ts`. A company that is only in the table stays off that page. A stranger still locks into the URL. Sign-in is checked. Sign out from a lock returns to the questions. The next task is under After the company list.
+Handoff for the next session. Product lives in this repo (`last/`). One public page. The catalogue and the answer row live in Supabase. The page reads companies and live roles from Beth when `.env.local` is set. The company page shows the names in `lib/companies.ts`. A company that is only in the table stays off that page. A stranger still locks into the URL. Sign-in is checked. Sign out from a lock returns to the questions. The next task is On the row, under Next. The button loader, the Friday role pass, and the quadrant stay under After the company list.
 
 ## Where we are
 
@@ -14,10 +14,10 @@ Taste: `design.md`. Voice: `lib/catalog.ts`. Placement: `lib/place.ts`. Roles: `
 
 | State | URL | What shows |
 | --- | --- | --- |
-| Ask | `/` | Mark, dek, `***`, six questions, `***`, footer. The column is `max-w-lg`. |
+| Companies | `/` | The front page. The line is “Product designer and design engineer jobs in the United Kingdom, or remote.” One list, no max width. `text-sm`. The name links to the site, with no underline. The description sits beside it. The last column is Hiring, and it opens the careers page. A closed board leaves that cell empty. A `border-input` line under each row, with `pt-3` and `pb-5`. No tabs. No sheet. `/?companies=1` redirects here. |
+| Ask | `/?questions=1` | Mark, dek, `***`, six questions, `***`, footer. The column is `max-w-lg`. The header link is “Where do I fit”. |
 | Result | `/?hands=…` | Lock sentence, then the one next proof, then the matching table. In range when any role fits. Stretch when none do. The dek is hidden here. |
-| Skip | `/?skip=1` | Every role, no lock. The lead is the skip line. Questions returns to `/` |
-| Companies | `/?companies=1` | The line is “Product designer and design engineer jobs in the United Kingdom, or remote.” One list, no max width. `text-sm`. The name links to the site, with no underline. The description sits beside it. The last column is Hiring, and it opens the careers page. A closed board leaves that cell empty. A `border-input` line under each row, with `pt-3` and `pb-5`. No tabs. No sheet. |
+| Skip | `/?skip=1` | Every role, no lock. The lead is the skip line. Companies returns to `/` |
 
 Skip is a mode, not “skip this question.” It lists every role with no band lock.
 
@@ -61,7 +61,7 @@ The ask screen uses the shadcn Questionnaire (`components/ui/questionnaire.tsx`)
 
 ## Done this session
 
-Careers column, 9 Oct 2026. The company row is the name, the description, and Hiring. Hiring opens the careers page Roy named. The mark is the company, not the design seat. Checked that day: Ashby, Cal.com, Conduct, ElevenLabs, Figma, Granola, Jack & Jill, Oxford Dynamics, Recraft, Wise, and Yonder listed open roles. tldraw’s careers page lists none, and Dessn has no public careers page, so those cells stay empty. Do not put Not hiring back. A closed board does not drop the row. The file keeps the link and the mark. Beth does not. Do not put the two-column row back.
+Careers column, 9 Oct 2026. The company row is the name, the description, and Hiring. Hiring opens the careers page Roy named. The mark is the company, not the design seat. Checked that day: Ashby, Cal.com, Conduct, ElevenLabs, Figma, Granola, Jack & Jill, Oxford Dynamics, Recraft, Wise, and Yonder listed open roles. Dessn has no public careers page, so that cell stays empty. tldraw’s Design Engineer is open on [tldraw.dev/careers](https://tldraw.dev/careers), London, onsite, checked the same evening, so Hiring is on. Do not put Not hiring back. A closed board does not drop the row. The file keeps the link and the mark. Beth does not. Do not put the two-column row back.
 
 Company page line, 9 Oct 2026. The dek is “Product designer and design engineer jobs in the United Kingdom, or remote.” It names both seats. United Kingdom covers London and Harwell. Remote covers Cal.com, whose posting says work from anywhere. Figma stays on the list because Roy uses it. The line does not say Europe, and it does not say London. Do not put that sentence back.
 
@@ -131,11 +131,29 @@ Left off. Cogram, because the title is three jobs. Lovable’s Design Engineer, 
 
 ## Next
 
-The company list is the Europe and London cut. Do not put the stage tabs or the company sheet back. Further names wait until Roy names them. Do not redo sign-in. The auth column is in. Do not put it back inside Frame. Do not commit unless Roy asks. The button loader, the Friday role pass, and the quadrant stay under After the company list.
+The company list is the front page. The next work is On the row, in that order. Do not put the stage tabs or the company sheet back. Further names wait until Roy names them. Do not redo sign-in. The auth column is in. Do not put it back inside Frame. Do not commit unless Roy asks. The button loader, the Friday role pass, and the quadrant stay under After the company list.
+
+### On the row
+
+Filed 9 Oct 2026. Do these in order. Do not start the next one until the one above is on the page.
+
+Show the fields already on each company. Stage, round, place, and work mode sit on the row beside the name, the description, and Hiring. A missing field stays blank. Do not invent a value to fill the gap. The company’s own page is the source, the same rule as `stage-check.md`.
+
+Split the stage scale. Bootstrapped, pre-seed, seed, and Series A. Series A comes out of `later`. The public list stops at Series A. `later` stays on the record for anything past that. It does not appear on `/`.
+
+Keep a second list for everything past Series A. Figma, Wise, ElevenLabs, and any Series B or later company stay in the Beth `companies` table and off the front page, the same way Marker already does. The file in `lib/companies.ts` is who appears on `/`. A name that leaves the file stays in the table.
+
+Add the design room, by hand. On each company: how many designers you can name, who leads design, and who the seat reports to. Copy it from the site or the posting. Leave it blank when the page does not say. A model does not fill it.
+
+Add diversity only when the company published a number or named the people. No score, and no “equal opportunity” line counted as data. Most seed rows will be blank. That blank stays.
+
+Put one email field under the list. The letter is the Friday pass: which of these companies opened a design seat. Ask ten designers if they want it, and if they would pay for a version filtered to their craft and their seat. The field sits under the company list. Do not put it on the questions. The letter is the list, not a second product.
+
+Hold the LinkedIn agent. The next search is the careers pages you already check. Sign-in and a matcher wait until people on that list reply with a missing job in their own words. Do not build the agent in this repo.
 
 ### Where the list lives
 
-`/?companies=1` is the page. One list, and the page has no max width. Do not put `max-w-lg` or `max-w-xl` back on it. Names are alphabetical. tldraw stays with the T names. The file in `lib/companies.ts` keeps the order they were filed. The page sorts. Rows are `text-sm`. The name is the site link, with no underline. A `border-input` line sits under each row. Padding is `pt-3` and `pb-5`.
+`/` is the page. `/?companies=1` redirects there. One list, and the page has no max width. Do not put `max-w-lg` or `max-w-xl` back on it. Names are alphabetical. tldraw stays with the T names. The file in `lib/companies.ts` keeps the order they were filed. The page sorts. Rows are `text-sm`. The name is the site link, with no underline. A `border-input` line sits under each row. Padding is `pt-3` and `pb-5`.
 
 With `.env.local` set, a row in Beth fills a company that is in the file. A company in the table and absent from the file stays off the page. Insert only a new name Roy adds. Do not rebuild the table. Do not rewrite the rows already there. Do not write a general Friday copy command. The TypeScript file stays the seed and the test fixture. Tests use that file. They assert these thirteen ids.
 
@@ -147,7 +165,7 @@ Hiring is not the gate. A closed role can be tagged later. Keep a company when t
 
 The tools on the machine are already filed: Figma, ChatGPT, Grok, X, Cursor, Vercel, Cosmos, Granola, Opal. Cursor and Vercel stay on this list. They left the week 40 roles because the place was the United States. Place is a column. It is not a reason to drop the company.
 
-A name that is not already a tool he uses still has to pass Roy’s chance cut: London, at pre-seed, seed, or Series A. Series A sits under Later.
+A name that is not already a tool he uses still has to pass Roy’s chance cut: London, at pre-seed, seed, or Series A. Series A sits under Later until On the row splits it out.
 
 The people source is `w40/internet-friends.txt`, beside this repo. The 100 is a reading list of companies. The people list stays at ten to twenty. Do not follow that people list in one sitting. File a batch, write who stayed off and why, then stop.
 
@@ -165,7 +183,7 @@ Run `stage-check.md` for every name you file. Read the company’s own post firs
 
 The six questions still set the band. They do not filter this list. Values questions are not written. Do not add a free-text values field. A company that does not match stays on the list. Hiding it would pretend the company was never one he liked.
 
-The row is the name and `why`, at `text-sm`. The name links to the official site and has no underline. A `border-input` line closes the row. There is no sheet, and there are no tabs. Stage, round, work, and place can stay on the record. They are not shown.
+The row is the name and `why`, at `text-sm`. The name links to the official site and has no underline. A `border-input` line closes the row. There is no sheet, and there are no tabs. Stage, round, work, and place stay on the record. They are not on the row yet. On the row is the pass that shows them.
 
 ### Already in, and left off
 
@@ -211,7 +229,7 @@ Product designer belongs when the posting is that seat: design origin, the proof
 
 A pass on X, with Grok, on a week or a month. It finds postings and people hiring. Roy still tags the band, the craft, and the seat, and copies salary and place only when the company published them. The pass does not scrape this page, and it does not add a server. Cal.com came from an X post Roy found. The posting is on `cal.com/jobs/senior-product-designer`. The heading says Senior Product Design Engineer.
 
-A newsletter is how someone comes back for that pass. It can ask for an address. Do not put a signup form on the ask screen. The letter is the list, not a second product. An address is not part of the Supabase wire-up.
+A newsletter is how someone comes back for that pass. It can ask for an address. Do not put a signup form on the questions. The letter is the list, not a second product. An address is not part of the Supabase wire-up. The field under the company list is On the row.
 
 The quadrant component is `components/quadrant.tsx`. It is not mounted. The result is the lock sentence, then the one proof, then the matching table. Bring the grid back by rendering `Quadrant` in `components/placement.tsx`. It is a grid. No chart library. shadcn charts are Recharts, and this picture is four named cells.
 
@@ -253,12 +271,12 @@ Roy is the second case, from the inside. Look and feel, plus a PR, is design ori
 
 The next proof should be small enough to finish. Standing out is one small project aimed at one company, not a portfolio site. A page of experiments is the artifact people delay. The practice line in `lib/catalog.ts` stays one proof. Point it at a named company and a piece that can ship this week. Do not ask for a portfolio.
 
-The personal agent is the last product, not this one. Later, one agent is how you get the next product or service, first digital, then physical. Beth is the first skill that agent would run: place the person, name the kind, name the one gap. Do not build the agent in this repo.
+The personal agent is the last product, not this one. Later, one agent is how you get the next product or service, first digital, then physical. Beth is the first skill that agent would run: place the person, name the kind, name the one gap. Hold the LinkedIn agent is in On the row. Do not build the agent in this repo.
 
 ## Open
 
 Unranked, and not next. The quadrant cells are named. The grid is not on the result. Do not treat the order below as priority.
 
 - Look at the ask screen in the browser against the [Beth](https://www.figma.com/design/qyO4FMguMfbsb5Bb8iU2Ut/Beth) frames and note only what the questionnaire’s own layout still misses. Do not rebuild a custom form to close that gap. Placement does not move. The band is still `lockFrom` in `lib/place.ts`.
-- A row already opens the posting sentence, the craft, the seat, salary, and place. Richer detail, the design team, their X profile, the head, and leadership, waits until someone is paying for the fit. It makes the board better, and the board is not the first product.
+- A row already opens the posting sentence, the craft, the seat, salary, and place. Richer detail on that sheet, their X profile, the head, and leadership, waits until someone is paying for the fit. The design room on the company row is On the row. It makes the board better, and the board is not the first product.
 - More product-designer seats, for a person who owns the look while an engineer still holds backend and data. The 2 Oct fund pass filed Sequence, Edra, Circle, Lovable, voize, Hera, telli, and Mirelo beside Granola and ElevenLabs. The next pass uses the same five sources.
