@@ -1,6 +1,6 @@
 # Beth roadmap
 
-Handoff for the next session. Product lives in this repo (`last/`). One public page. The catalogue and the answer row live in Supabase. The page reads companies and live roles from Beth when `.env.local` is set. The company page shows the names in `lib/companies.ts`. A company that is only in the table stays off that page. A stranger still locks into the URL. Sign-in is checked. Sign out from a lock returns to the questions. The next task is On the row, under Next. The button loader, the Friday role pass, and the quadrant stay under After the company list.
+Handoff for the next session. Product lives in this repo (`last/`). One public page. The catalogue and the answer row live in Supabase. The page reads companies and live roles from Beth when `.env.local` is set. The company page shows the names in `lib/companies.ts`. A company that is only in the table stays off that page. A stranger still locks into the URL. Sign-in is checked. Sign out from a lock returns to the questions. The next task is under Next: dig into the design evidence for the thirteen companies. The button loader, the Friday role pass, and the quadrant stay under After the company list.
 
 ## Where we are
 
@@ -14,7 +14,7 @@ Taste: `design.md`. Voice: `lib/catalog.ts`. Placement: `lib/place.ts`. Roles: `
 
 | State | URL | What shows |
 | --- | --- | --- |
-| Companies | `/` | The front page. The line is “Product designer and design engineer jobs in the United Kingdom, or remote.” One list, no max width. `text-sm`. The name links to the site, with no underline. The description sits beside it. The last column is Hiring, and it opens the careers page. A closed board leaves that cell empty. A `border-input` line under each row, with `pt-3` and `pb-5`. No tabs. No sheet. `/?companies=1` redirects here. |
+| Companies | `/` | The front page. The line is “Product designer and design engineer jobs in the United Kingdom, or remote.” One list, no max width. The list is the Table component. `text-sm` comes from that component. The columns are Name, Why designers might care, Stage, Follow, and Hiring. The Hiring header is hidden. The name links to the site, with no underline. The description is the design line when one is filed, and the short line from the site when it is not. Stage is the series they published, in an outline badge. A missing round leaves that cell empty. Follow is an avatar that opens their X profile. A company with no named person leaves that cell empty. Cal.com is Matt, [uixmat](https://x.com/uixmat). His picture is `public/leads/uixmat.png`. Do not load it from X. The last column is Hiring, and it opens the careers page. A closed board leaves that cell empty. The row line is `border-input`. Cell padding is `px-4` and `py-5`. No tabs. No sheet. Do not put the custom grid back. `/?companies=1` redirects here. |
 | Ask | `/?questions=1` | Mark, dek, `***`, six questions, `***`, footer. The column is `max-w-lg`. The header link is “Where do I fit”. |
 | Result | `/?hands=…` | Lock sentence, then the one next proof, then the matching table. In range when any role fits. Stretch when none do. The dek is hidden here. |
 | Skip | `/?skip=1` | Every role, no lock. The lead is the skip line. Companies returns to `/` |
@@ -60,6 +60,16 @@ The ask screen uses the shadcn Questionnaire (`components/ui/questionnaire.tsx`)
 - Hands, show, and craft use `multiple`. Seat, origin, and what you ship most stay one choice. Craft is the question. The five crafts are systems, motion, what to build and the flow, HTML and CSS in a reviewed pull request, and production frontend. Every selected craft counts. None of them raise the band.
 
 ## Done this session
+
+Description, 10 Oct 2026. The column is “Why designers might care”. A company with a design line shows that sentence. Yonder, Dessn, Recraft, Conduct, and Oxford Dynamics have no design line, so they keep the short line from the site. Lead is Follow. The design line stays on the file. Beth does not wipe it. The page line is unchanged.
+
+
+
+Lead column, 9 Oct 2026. The table has a Lead column. The cell is an avatar, and it opens that person’s X profile. A company with no named person leaves the cell empty. Cal.com is Matt, [uixmat](https://x.com/uixmat), Head of Product. His picture is `public/leads/uixmat.png`. Do not load a lead photo from X. Do not guess the others. The lead stays on the file. Beth does not store it.
+
+Stage column, 9 Oct 2026. The table has a Stage column. It shows the series, not the date. A company with no public round leaves the cell empty. Dessn’s site does not name a round. Oxford Dynamics names a BAE investment and no series, so that cell stays empty. Filed from the company’s own post: Ashby [Series D, 22 July 2025](https://www.ashbyhq.com/blog/culture/series-d); Yonder [£62.5M Series A](https://www.yonder.com/blog/weve-raised-62m-series-a-and-youre-invited), no month on the post; Cal.com [Series A, 9 September 2022](https://cal.com/blog/cal-v-1-5); Figma [NYSE, 31 July 2025](https://www.figma.com/blog/the-anatomy-of-an-activation-figma-commons/); Conduct [Series A, 17 June 2026](https://conduct.ai/blog/series-a); Jack & Jill [Series A, 15 September 2026](https://www.jackandjill.ai/blog/series-a). The earlier rounds stay: ElevenLabs Series C, Granola Series C, Wise Nasdaq, tldraw Series A, Recraft Series B. Series A and anything after it stays `later`. The same rounds were written to the Beth rows that had no round. Do not invent a stage for Dessn or Oxford Dynamics.
+
+Table, 9 Oct 2026. The company list uses the Table component in `components/ui/table.tsx`. The columns are Name, Description, and Hiring. The Hiring header is hidden. The name still opens the site, with no underline. Hiring still opens the careers page. A closed board still leaves that cell empty. The row line is `border-input`, quieter than the table default. Cells are `px-4` and `py-5`. Do not put the custom grid back.
 
 Careers column, 9 Oct 2026. The company row is the name, the description, and Hiring. Hiring opens the careers page Roy named. The mark is the company, not the design seat. Checked that day: Ashby, Cal.com, Conduct, ElevenLabs, Figma, Granola, Jack & Jill, Oxford Dynamics, Recraft, Wise, and Yonder listed open roles. Dessn has no public careers page, so that cell stays empty. tldraw’s Design Engineer is open on [tldraw.dev/careers](https://tldraw.dev/careers), London, onsite, checked the same evening, so Hiring is on. Do not put Not hiring back. A closed board does not drop the row. The file keeps the link and the mark. Beth does not. Do not put the two-column row back.
 
@@ -131,29 +141,51 @@ Left off. Cogram, because the title is three jobs. Lovable’s Design Engineer, 
 
 ## Next
 
-The company list is the front page. The next work is On the row, in that order. Do not put the stage tabs or the company sheet back. Further names wait until Roy names them. Do not redo sign-in. The auth column is in. Do not put it back inside Frame. Do not commit unless Roy asks. The button loader, the Friday role pass, and the quadrant stay under After the company list.
+The company list is the front page. The column is already “Why designers might care”. The next work is to dig into design culture, dated 10 Oct 2026. A sentence on the row is not the reading. Do not add a score, a new column, or a settings panel. Do not start On the row from 9 Oct. Diversity, the Friday letter, and hiding every company past Series A stay off. Do not put the stage tabs or the company sheet back. Further names wait until a name shows design has a say. Do not redo sign-in. Do not commit unless Roy asks. The button loader, the Friday role pass, and the quadrant stay under After the company list.
 
-### On the row
+### Dig into the evidence
 
-Filed 9 Oct 2026. Do these in order. Do not start the next one until the one above is on the page.
+Do these in order. One company at a time. Finish the note before the next name.
 
-Show the fields already on each company. Stage, round, place, and work mode sit on the row beside the name, the description, and Hiring. A missing field stays blank. Do not invent a value to fill the gap. The company’s own page is the source, the same rule as `stage-check.md`.
+Open the company’s own job description, then the team page or the design page. A job description says what they ask a designer to do. A team page or a named design lead is the check on that claim. Both are wanted. The company’s own site is the source. LinkedIn and The Org do not confirm a title.
 
-Split the stage scale. Bootstrapped, pre-seed, seed, and Series A. Series A comes out of `later`. The public list stops at Series A. `later` stays on the record for anything past that. It does not appear on `/`.
+Write which of the five signals that page shows. Copy a signal only when the page shows it. Leave it blank when the page does not say. A model does not fill a blank. Product craft stays his. Do not write it.
 
-Keep a second list for everything past Series A. Figma, Wise, ElevenLabs, and any Series B or later company stay in the Beth `companies` table and off the front page, the same way Marker already does. The file in `lib/companies.ts` is who appears on `/`. A name that leaves the file stays in the table.
+Design leadership. A Head, VP, or Director of Design, named on the site or the posting. Design team. More than one product, brand, or design engineer. One designer on their own does not count. Design and engineering. A design engineer, a prototyper, or a designer who ships. Public design. The company or its designers publish process, talks, or work. Product craft. His judgement of the product. This is the only signal that is not a fact on a page.
 
-Add the design room, by hand. On each company: how many designers you can name, who leads design, and who the seat reports to. Copy it from the site or the posting. Leave it blank when the page does not say. A model does not fill it.
+One posting that asks for a design engineer is not yet a design culture. Two founding designers, with no design lead, are not yet a design culture. When the pages still do not show it, take `fit` off and leave the short line from the site. Say why, under Company list so far.
 
-Add diversity only when the company published a number or named the people. No score, and no “equal opportunity” line counted as data. Most seed rows will be blank. That blank stays.
+Do not put the five signals on the row. They sit on the record, under the sentence. `fit` stays the one line a stranger can read. It does not mention salary, his week, or remote. Last reviewed is the month of this pass.
 
-Put one email field under the list. The letter is the Friday pass: which of these companies opened a design seat. Ask ten designers if they want it, and if they would pay for a version filtered to their craft and their seat. The field sits under the company list. Do not put it on the questions. The letter is the list, not a second product.
+Start with the eight that already have a sentence. Ashby, ElevenLabs, Granola, and Wise were easy to read. Dig those first, and keep the sentence only if the signals still hold. tldraw, Cal.com, and Jack & Jill are thin. tldraw’s posting asks for a product designer who builds and names no design lead. Cal.com’s posting is a design engineer beside Matt, the head of product. Jack & Jill’s about page names two founding designers and no head of design. Dig those three until a page shows a design team or a design lead, or take the sentence off.
 
-Hold the LinkedIn agent. The next search is the careers pages you already check. Sign-in and a matcher wait until people on that list reply with a missing job in their own words. Do not build the agent in this repo.
+Then the five with no sentence. Yonder, Dessn, Recraft, Conduct, and Oxford Dynamics. A senior product designer listing, an AI designer seat, or a product that is a design tool is not enough. Leave them on the short line until a page of theirs shows a design culture.
+
+Figma’s sentence cites their [design team post](https://www.figma.com/blog/figma-design-team-career-levels/) of 23 March 2023, which names Noah Levin, head of design. Dig the same way. Do not add a second sentence from memory.
+
+### Already on the page, 10 Oct 2026
+
+The column header is “Why designers might care”. `fit` is the sentence. `why` is the line from the site, and it shows when `fit` is absent. Yonder, Dessn, Recraft, Conduct, and Oxford Dynamics are on `why`. Follow is the avatar that opens X. Cal.com is Matt. Do not guess the others. `fit` stays on the file. Beth does not wipe it. `descriptionOf` and `withFileFields` in `lib/company.ts` are the rules. The page line is still “Product designer and design engineer jobs in the United Kingdom, or remote.” It changes when the readings are deeper than one sentence. When it changes, it names design culture. It does not name his week.
+
+### The rule, not the task
+
+The list is companies where design has a say. Remote, the length of the week, and hire-from-the-UK are his. They sit on the record. They do not add a company, and they do not remove one. Granola is London, onsite. It stays if the design reading holds. Do not drop it for the office. A company with no open seat stays. The round does not decide. Salary has no number until he names a minimum. Do not invent one.
+
+His arrangement, recorded and not a gate: three or four days a week, remote, for six months or longer, with days left for his own products. An agency is on the list when its work shows a design culture, the same test as a product company. Trueform is the example. It is not filed. A headquarters in the United States is not a reason to drop the name. The six questions stay. They do not pick the company.
+
+The person on the row is someone to follow. Name, the title they published, and a public X profile. Do not infer the title. Do not collect an email. Work mode stays on the record. It is not the column that earns the row.
+
+### Sources for the dig
+
+Ashby: Chris Lee, head of Product Design, on the [Senior Product Designer](https://jobs.ashbyhq.com/ashby/f40ef345-82a8-4956-9150-193b4fdf8183/) posting, and a [design team page](https://www.ashbyhq.com/team/design). Abhik, co-founder, on the [Staff Design Engineer](https://jobs.ashbyhq.com/ashby/306a353b-aab5-49d6-a711-a77aa0f5a660) posting. Granola: the [Product Designer](https://jobs.ashbyhq.com/granola/0897636e-e415-493e-b501-7c610ea72eff) posting, and a [Design Engineer](https://www.granola.ai/jobs/design-engineer) posting. ElevenLabs: the [Product Designer](https://elevenlabs.io/careers/89da00ec-11b0-4359-913b-c3a89c1013bc/product-designer) posting. Wise: [wise.design](https://wise.design/design-at-wise/work-at-wise). Figma: the [design team post](https://www.figma.com/blog/figma-design-team-career-levels/). Jack & Jill: the [about page](https://www.jackandjill.ai/about-us). tldraw: the [Design Engineer](https://jobs.ashbyhq.com/tldraw/c52007ee-bac0-4176-a5f0-48fe6e1fe854) posting. Cal.com: the [Senior Product Design Engineer](https://cal-com.breezy.hr/p/ff94f3182ac2-senior-product-design-engineer) posting. Conduct: the [Product Designer](https://jobs.ashbyhq.com/conduct/4b9179a9-b0f6-46bb-bff1-82d6391d0ecb) posting. Recraft: the [AI Designer](https://jobs.ashbyhq.com/recraft/64655615-7a15-4e41-bd92-d2c91201b7a8) posting. Dessn: the [mission](https://www.dessn.com/mission). Oxford Dynamics: [careers](https://oxdynamics.com/careers/) and the [company page](https://www.oxdynamics.com/company/). Yonder’s Head of Design is on LinkedIn, not on yonder.com. Leave that title off.
+
+### Left from 9 Oct, and not this task
+
+Show stage, place, and work mode on the row. Work mode is his reading of a row that is already earned. It waits until the design readings exist. Splitting Series A out of `later`, and a second list for everything past Series A, are dropped. Figma, Wise, and ElevenLabs are past Series A and they stay, because design culture is the cut. Diversity is dropped. The email field under the list is dropped. That letter asked ten designers if they would pay. This page is not that product. Hold the LinkedIn agent. Still hold it. The next search is the careers pages already checked. Do not build the agent in this repo.
 
 ### Where the list lives
 
-`/` is the page. `/?companies=1` redirects there. One list, and the page has no max width. Do not put `max-w-lg` or `max-w-xl` back on it. Names are alphabetical. tldraw stays with the T names. The file in `lib/companies.ts` keeps the order they were filed. The page sorts. Rows are `text-sm`. The name is the site link, with no underline. A `border-input` line sits under each row. Padding is `pt-3` and `pb-5`.
+`/` is the page. `/?companies=1` redirects there. One list, and the page has no max width. Do not put `max-w-lg` or `max-w-xl` back on it. Names are alphabetical. tldraw stays with the T names. The file in `lib/companies.ts` keeps the order they were filed. The page sorts. The list is the Table component. Columns are Name, Why designers might care, Stage, Follow, and Hiring. The name is the site link, with no underline. The description wraps. A design sentence shows when `fit` is set. The site line shows when it is not. Do not put the custom grid back.
 
 With `.env.local` set, a row in Beth fills a company that is in the file. A company in the table and absent from the file stays off the page. Insert only a new name Roy adds. Do not rebuild the table. Do not rewrite the rows already there. Do not write a general Friday copy command. The TypeScript file stays the seed and the test fixture. Tests use that file. They assert these thirteen ids.
 
@@ -161,11 +193,13 @@ Missing env uses the file. Env set and a failed query throws, and does not fall 
 
 ### The cut
 
+The chance cut below is who got onto the page through 9 Oct. From 10 Oct, a new name has to show that design has a say. London, pre-seed, Series A, and remote are not enough on their own. A later round is not a reason to leave. An office is not a reason to leave.
+
 Hiring is not the gate. A closed role can be tagged later. Keep a company when the product is a tool Roy already uses, or when it sits on a published list such as [Fast Company’s Most Innovative Companies](https://www.fastcompany.com/most-innovative-companies/list) and the design or the use case is one he would join.
 
 The tools on the machine are already filed: Figma, ChatGPT, Grok, X, Cursor, Vercel, Cosmos, Granola, Opal. Cursor and Vercel stay on this list. They left the week 40 roles because the place was the United States. Place is a column. It is not a reason to drop the company.
 
-A name that is not already a tool he uses still has to pass Roy’s chance cut: London, at pre-seed, seed, or Series A. Series A sits under Later until On the row splits it out.
+A name that is not already a tool he uses still has to show that design has a say. The old chance cut was London, at pre-seed, seed, or Series A. That cut no longer drops a later round, and it no longer files a seed whose pages show no design leadership. Remote does not earn the row. Series A stays under `later` until a later pass splits the scale. That split is not this task.
 
 The people source is `w40/internet-friends.txt`, beside this repo. The 100 is a reading list of companies. The people list stays at ten to twenty. Do not follow that people list in one sitting. File a batch, write who stayed off and why, then stop.
 
@@ -183,7 +217,7 @@ Run `stage-check.md` for every name you file. Read the company’s own post firs
 
 The six questions still set the band. They do not filter this list. Values questions are not written. Do not add a free-text values field. A company that does not match stays on the list. Hiding it would pretend the company was never one he liked.
 
-The row is the name and `why`, at `text-sm`. The name links to the official site and has no underline. A `border-input` line closes the row. There is no sheet, and there are no tabs. Stage, round, work, and place stay on the record. They are not on the row yet. On the row is the pass that shows them.
+The row is the name, `why`, and the stage. The name links to the official site and has no underline. The list is the Table. There is no sheet, and there are no tabs. Stage is the series they published. The date stays on the record. Work and place stay on the record. They are not on the row yet.
 
 ### Already in, and left off
 
@@ -229,7 +263,7 @@ Product designer belongs when the posting is that seat: design origin, the proof
 
 A pass on X, with Grok, on a week or a month. It finds postings and people hiring. Roy still tags the band, the craft, and the seat, and copies salary and place only when the company published them. The pass does not scrape this page, and it does not add a server. Cal.com came from an X post Roy found. The posting is on `cal.com/jobs/senior-product-designer`. The heading says Senior Product Design Engineer.
 
-A newsletter is how someone comes back for that pass. It can ask for an address. Do not put a signup form on the questions. The letter is the list, not a second product. An address is not part of the Supabase wire-up. The field under the company list is On the row.
+A newsletter is how someone comes back for that pass. It can ask for an address. Do not put a signup form on the questions. The letter is the list, not a second product. An address is not part of the Supabase wire-up. The email field under the company list was dropped on 10 Oct. Do not put it back.
 
 The quadrant component is `components/quadrant.tsx`. It is not mounted. The result is the lock sentence, then the one proof, then the matching table. Bring the grid back by rendering `Quadrant` in `components/placement.tsx`. It is a grid. No chart library. shadcn charts are Recharts, and this picture is four named cells.
 
@@ -251,6 +285,14 @@ Roy can show a design file, a prototype, or a merged diff. He also has a system 
 Two jobs got mixed in that box. One job sorts a sentence into the closed show values: a design file, a prototype, or a merged diff. If the sort is unsure, show those choices. The sentence does not become D, and it does not become Spike. The other job takes the person’s own answer, and that answer may be a kind of work the list does not have. That second job needs the missing answers named before any model. A chat that writes a band will disagree with `lockFrom`. Jev only does the first job. Until the box is one of those two, do not wire it.
 
 A public URL is the same park. Portfolio, LinkedIn, or an X profile can confirm a closed answer. It cannot invent a band. Reading a bio, pinned posts, or a case study needs a server, and this page has none. When it is unparked, the same rule holds: sort the page into the closed values, and if the sort is unsure, show the choices.
+
+## Direction (10 Oct 2026)
+
+The list is companies where design has a say, not a board of open seats and not a filter of his week. The notes from 10 Oct are `w41-5-11-Oct/design-culture-1.txt` and `w41-5-11-Oct/Startup Design Culture Advice.txt`. The useful object is the company. A seat is one signal. A company with no opening stays when the design reading holds.
+
+Remote, three or four days, and hire-from-the-UK are his. They are fields. They are not the cut. No design leadership is the reason a name stays off. An on-site company with a strong room stays on. An agency is a second kind of place, not an industry. Hire-from-the-UK is confirmed, indicated, or unknown. A score out of ten is not a field.
+
+The six questions still say what kind of design engineer he is. They are not the next build. A panel that lets someone else weight design culture, salary, and remote is a different product. Do not build it.
 
 ## Direction (2 Oct 2026)
 
@@ -278,5 +320,5 @@ The personal agent is the last product, not this one. Later, one agent is how yo
 Unranked, and not next. The quadrant cells are named. The grid is not on the result. Do not treat the order below as priority.
 
 - Look at the ask screen in the browser against the [Beth](https://www.figma.com/design/qyO4FMguMfbsb5Bb8iU2Ut/Beth) frames and note only what the questionnaire’s own layout still misses. Do not rebuild a custom form to close that gap. Placement does not move. The band is still `lockFrom` in `lib/place.ts`.
-- A row already opens the posting sentence, the craft, the seat, salary, and place. Richer detail on that sheet, their X profile, the head, and leadership, waits until someone is paying for the fit. The design room on the company row is On the row. It makes the board better, and the board is not the first product.
+- A row already opens the posting sentence, the craft, the seat, salary, and place. Richer detail on that sheet waits. The design readings on the company record are the cut under Next. They are for his shortlist. They are not a richer jobs board.
 - More product-designer seats, for a person who owns the look while an engineer still holds backend and data. The 2 Oct fund pass filed Sequence, Edra, Circle, Lovable, voize, Hera, telli, and Mirelo beside Granola and ElevenLabs. The next pass uses the same five sources.

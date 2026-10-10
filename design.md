@@ -8,7 +8,7 @@ House taste for Last. Read this before changing UI. Same lock as Holt: shadcn pr
 - The mark is the dithered 24px dot tile. The name is not set beside it.
 - Section titles are uppercase, regular, `tracking-wide`, `leading-heading` (1.1), and `text-balance`. A week under a section is `text-sm`. On skip the week is the section, so it stays `text-base`.
 - Descriptions use `text-pretty`. Text that wraps to several lines uses `leading-normal` (1.5).
-- A name that opens a sheet uses `.underline-name`. The line comes from the font. On the company list the name is the site link, with no underline, at `text-sm`. Each company row has a bottom border in `border-input`, the same edge as a choice.
+- A name that opens a sheet uses `.underline-name`. The line comes from the font. On the company list the name is the site link, with no underline. That list is `Table`.
 - Step count is `text-sm` with tabular figures. Badges are `text-xs` uppercase, `tracking-wide`, square, `bg-muted`. Letter caps stay `text-xs` on the same face.
 - Rules are the characters `***` and `---`.
 
@@ -34,6 +34,7 @@ House taste for Last. Read this before changing UI. Same lock as Holt: shadcn pr
 - Steps: `Card`, `Badge`, `Breadcrumb`.
 - Missing routes: `Empty`.
 - Actions: `Button` variants. Do not restyle Button with custom colours.
+- Company list: `Table`. Do not put the custom grid back.
 
 ## Voice
 

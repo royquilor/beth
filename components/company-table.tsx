@@ -1,9 +1,54 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import { page } from "@/lib/catalog"
-import type { Company } from "@/lib/company"
+import { descriptionOf, stageLine, type Company } from "@/lib/company"
 
 /** A to Z. Case does not split tldraw from the T names. */
 function byName(a: Company, b: Company) {
   return a.name.localeCompare(b.name, undefined, { sensitivity: "base" })
+}
+
+/**
+ * The series they published, in a badge.
+ * No public round leaves the cell empty. The row stays.
+ */
+function Stage({ company }: { company: Company }) {
+  const stage = stageLine(company)
+  if (!stage) return null
+
+  return <Badge variant="outline">{stage}</Badge>
+}
+
+/**
+ * Someone to follow. The avatar opens their X profile.
+ * A company with no named person leaves the cell empty.
+ */
+function Follow({ company }: { company: Company }) {
+  const lead = company.lead
+  if (!lead) return null
+
+  return (
+    <a
+      href={lead.href}
+      className="inline-flex no-underline"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`${lead.name}, ${company.name}`}
+    >
+      <Avatar size="sm">
+        <AvatarImage src={lead.src} alt="" />
+        <AvatarFallback>{lead.name.slice(0, 1)}</AvatarFallback>
+      </Avatar>
+    </a>
+  )
 }
 
 /**
@@ -16,7 +61,7 @@ function Careers({ company }: { company: Company }) {
   return (
     <a
       href={company.careers}
-      className="whitespace-nowrap no-underline"
+      className="no-underline"
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`${page.hiring}, ${company.name}`}
@@ -26,38 +71,70 @@ function Careers({ company }: { company: Company }) {
   )
 }
 
+/** Quieter than the table's own border. Same edge as a field. */
+const row = "border-input"
+
+/** More room than the table default. The first column stays a fixed width. */
+const head = "h-auto w-56 px-4 py-4"
+const cell = "px-4 py-5"
+
 /**
- * One list. No stage tabs, and a row does not open a sheet.
+ * One list, built with the Table component.
+ * No stage tabs, and a row does not open a sheet.
  * The name is the link to the company site.
- * The description is the line copied from that site.
+ * The description is why a designer might care, when a page shows a design culture.
+ * A company with no design reading keeps the short line from its site.
+ * Stage is the series they published. A missing round leaves that cell empty.
+ * Follow is someone to follow. The avatar opens their X profile.
  * The last column opens the careers page.
+ * Its header is hidden. The cell still says Hiring.
  */
 export function CompanyTable({ companies }: { companies: Company[] }) {
   const rows = [...companies].sort(byName)
 
   return (
-    <div className="flex flex-col text-sm">
-      {rows.map((company) => (
-        <div
-          key={company.id}
-          className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-6 gap-y-2 border-b border-input pt-3 pb-5 leading-normal sm:grid-cols-[minmax(8rem,14rem)_minmax(0,1fr)_auto] sm:gap-y-0"
-        >
-          <a
-            href={company.href}
-            className="min-w-0 no-underline sm:col-start-1"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {company.name}
-          </a>
-          <p className="col-span-2 min-w-0 text-pretty text-muted-foreground sm:col-span-1 sm:col-start-2">
-            {company.why}
-          </p>
-          <div className="col-start-2 row-start-1 sm:col-start-3">
-            <Careers company={company} />
-          </div>
-        </div>
-      ))}
-    </div>
+    <Table>
+      <TableHeader>
+        <TableRow className={row}>
+          <TableHead className={head}>{page.name}</TableHead>
+          <TableHead className="h-auto px-4 py-4">{page.description}</TableHead>
+          <TableHead className="h-auto px-4 py-4">{page.stage}</TableHead>
+          <TableHead className="h-auto px-4 py-4">{page.lead}</TableHead>
+          <TableHead className="h-auto px-4 py-4 text-right">
+            <span className="sr-only">{page.hiring}</span>
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {rows.map((company) => (
+          <TableRow key={company.id} className={row}>
+            <TableCell className={cell}>
+              <a
+                href={company.href}
+                className="no-underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {company.name}
+              </a>
+            </TableCell>
+            <TableCell
+              className={`${cell} text-pretty leading-normal whitespace-normal text-muted-foreground`}
+            >
+              {descriptionOf(company)}
+            </TableCell>
+            <TableCell className={cell}>
+              <Stage company={company} />
+            </TableCell>
+            <TableCell className={cell}>
+              <Follow company={company} />
+            </TableCell>
+            <TableCell className={`${cell} text-right`}>
+              <Careers company={company} />
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   )
 }

@@ -20,7 +20,17 @@ export const page = {
   companiesLead:
     "Product designer and design engineer jobs in the United Kingdom, or remote.",
   companiesFoot:
-    "The name opens the company site. Hiring opens the careers page.",
+    "The name opens the company site. Follow opens their X profile. Hiring opens the careers page.",
+  name: "Name",
+  description: "Why designers might care",
+  stage: "Stage",
+  lead: "Follow",
+  /**
+   * The list is companies where design has a say.
+   * Remote, the length of the week, and hire-from-the-UK sit on the record.
+   * They do not add a company, and they do not remove one.
+   */
+  cut: "Companies where a page shows that design has a say.",
   hiring: "Hiring",
   skipLead:
     "No lock. Every role is listed. The band, the craft, and the seat open with the role.",

@@ -1,6 +1,6 @@
 import { bethEnv } from "@/lib/beth-env"
 import { companies as filedCompanies } from "@/lib/companies"
-import type { Company } from "@/lib/company"
+import { withFileFields, type Company } from "@/lib/company"
 import type { Role } from "@/lib/role"
 import { roles as filedRoles } from "@/lib/roles"
 import { toCompany, toRole } from "@/lib/rows"
@@ -20,13 +20,9 @@ function companiesOnPage(fromBeth: Company[]): Company[] {
     const fromBeth = byId.get(company.id)
     if (!fromBeth) return company
 
-    // Beth fills the published fields. The careers link and the hiring
-    // mark stay on the file. They are not columns in Beth.
-    return {
-      ...fromBeth,
-      careers: company.careers,
-      hiring: company.hiring,
-    }
+    // Beth fills the published fields. The careers link, the hiring
+    // mark, the person to follow, and the design line stay on the file.
+    return withFileFields(fromBeth, company)
   })
 }
 
