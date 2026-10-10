@@ -3,7 +3,7 @@ import type { Company } from "@/lib/company"
 /**
  * Companies on the page.
  * The first thirteen were filed by 9 Oct 2026.
- * Stripe and Deel were filed on 10 Oct 2026, after their own pages showed a design culture.
+ * Stripe, Deel, and Fin were filed on 10 Oct 2026, after their own pages showed a design culture.
  * Europe, or a London office, or hiring in London, was the earlier cut.
  * From 10 Oct a new name has to show that design has a say.
  * Each row is the name, why a designer might care, and the site.
@@ -207,5 +207,20 @@ export const companies: Company[] = [
     round: "Series E, Oct 2025",
     // Careers page: work from anywhere.
     work: "remote",
+  },
+  {
+    id: "fin",
+    name: "Fin",
+    href: "https://fin.ai",
+    why: "Perfect customer experiences made possible with Fin. Over 12,000 of the world's most forward looking brands use Fin across the entire customer journey.",
+    // About page: Paul Adams, chief product officer, leads product design. The staff designer posting names sixty designers, two co-founders from design, and prototypes in code.
+    fit: "Customer agent company with a product chief who leads design, sixty designers, and designers who prototype.",
+    careers: "https://fin.ai/careers/listings",
+    hiring: true,
+    // Their March 2018 post, named Series D in the December 2018 note. The 2026 debt and the Salesforce close do not name a letter.
+    stage: "later",
+    round: "Series D, Mar 2018",
+    // Staff designer posting: in the office at least three days a week.
+    work: "hybrid",
   },
 ]
