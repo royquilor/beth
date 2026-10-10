@@ -121,6 +121,8 @@ test("the company page is the Europe and London cut", () => {
       "conduct",
       "jack-and-jill",
       "oxford-dynamics",
+      "stripe",
+      "deel",
     ]
   )
 
@@ -163,6 +165,8 @@ test("the company page is the Europe and London cut", () => {
       "cal",
       "figma",
       "jack-and-jill",
+      "stripe",
+      "deel",
     ]
   )
   const plain = companies.filter((company) => company.fit === undefined)

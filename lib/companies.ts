@@ -1,8 +1,11 @@
 import type { Company } from "@/lib/company"
 
 /**
- * Companies on the page, 9 Oct 2026.
- * Europe, or a London office, or hiring in London.
+ * Companies on the page.
+ * The first thirteen were filed by 9 Oct 2026.
+ * Stripe and Deel were filed on 10 Oct 2026, after their own pages showed a design culture.
+ * Europe, or a London office, or hiring in London, was the earlier cut.
+ * From 10 Oct a new name has to show that design has a say.
  * Each row is the name, why a designer might care, and the site.
  * fit is that line, and only when the company's own page or posting shows a design culture.
  * A company with no fit keeps why, the short line from its site.
@@ -176,5 +179,33 @@ export const companies: Company[] = [
     careers: "https://oxdynamics.com/careers/",
     hiring: true,
     where: "Harwell",
+  },
+  {
+    id: "stripe",
+    name: "Stripe",
+    href: "https://stripe.com",
+    why: "Stripe is a financial services platform that helps all types of businesses accept payments, build flexible billing models and manage money movement.",
+    // Sessions 2024 names Katie Dill, head of design. The 2026 design program manager posting names the design organisation. Design engineer posting asks them to prototype and build.
+    fit: "Payments company with a named head of design, a design organisation, and design engineers.",
+    careers: "https://stripe.com/careers/search?query=design",
+    hiring: true,
+    // Their post, 15 March 2023. Series I. The 2026 tender does not name a letter.
+    stage: "later",
+    round: "Series I, Mar 2023",
+  },
+  {
+    id: "deel",
+    name: "Deel",
+    href: "https://www.deel.com",
+    why: "Hire, pay, and manage teams in 150+ countries with Deel. Run global payroll, ensure compliance, and streamline HR operations—all on one powerful platform.",
+    // Their blog names Muhammed Salim, director of product design. The design engineer posting says the seat ships in Figma and in code.
+    fit: "Payroll company with a director of product design and a design engineer who ships in code.",
+    careers: "https://www.deel.com/careers/",
+    hiring: true,
+    // Their post, 20 October 2025. $300 million Series E.
+    stage: "later",
+    round: "Series E, Oct 2025",
+    // Careers page: work from anywhere.
+    work: "remote",
   },
 ]
